@@ -19,7 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem 0; /* Reduced from 2rem */
+    padding: 1rem 0;
     position: fixed;
     width: 100%;
     top: 0;
@@ -39,7 +39,7 @@
     font-weight: 700;
     letter-spacing: 4px;
     text-align: center;
-    padding: 1rem 0; /* Reduced from 1.5rem */
+    padding: 1rem 0;
     line-height: 1.3;
   }
 
@@ -47,7 +47,7 @@
     display: flex;
     gap: 3rem;
     justify-content: center;
-    margin-top: 0.5rem; /* Reduced from 1rem */
+    margin-top: 0.5rem;
   }
 
   .nav-links a {
@@ -59,8 +59,8 @@
     display: inline-block;
     width: 60px;
     text-align: center;
-    height: 24px; /* Adjusted to match text height */
-    line-height: 24px; /* Added to align text vertically */
+    height: 24px;
+    line-height: 24px;
   }
 
   .nav-links a span {
@@ -69,8 +69,8 @@
     position: absolute;
     width: 100%;
     left: 0;
-    height: 24px; /* Match container height */
-    line-height: 24px; /* Match container line-height */
+    height: 24px;
+    line-height: 24px;
   }
 
   .nav-links a .en {
@@ -79,7 +79,7 @@
   }
 
   .nav-links a .cn {
-    top: 0; /* Positioned at same height */
+    top: 0;
     transform: translateY(100%);
   }
 
@@ -112,7 +112,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-top: 2rem; /* Reduced from 4rem */
+    margin-top: 2rem;
   }
 
   .hero-content {
@@ -180,18 +180,18 @@
 
     .logo {
       font-size: 2.2rem;
-      padding: 0.5rem 0; /* Reduced padding further for mobile */
+      padding: 0.5rem 0;
     }
 
     .projects-grid {
-      grid-template-columns: 1fr; /* Single column for mobile */
+      grid-template-columns: 1fr;
       padding: 1rem;
       gap: 1.5rem;
     }
 
     .hero {
       padding: 2rem 1rem;
-      margin-top: 4rem; /* Adjusted for mobile */
+      margin-top: 4rem;
     }
 
     .project-filters {
@@ -226,7 +226,7 @@
   .search-container {
     display: flex;
     justify-content: center;
-    margin-top: 4rem; /* Reduced from 6rem */
+    margin-top: 4rem;
   }
 
   .search-box {
@@ -287,357 +287,140 @@
     transform: scale(1);
   }
 
-  .modal-content {
+  #aboutModal .modal-content {
+    max-width: 800px; /* Reduce from full width */
+    width: 90%;
+    margin: 5% auto;
+    border-radius: 12px;
+    height: auto; /* Remove fixed height */
+    min-height: 60vh;
+    max-height: 90vh;
+    background: white;
+    padding: 3rem;
     position: relative;
-    background-color: #f5f5f3;
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-    width: 100%;
-    max-width: 100%; /* Full width */
-    max-height: 100vh;
     overflow-y: auto;
-    border-radius: 0; /* Remove border radius */
   }
 
-  .close-button {
-    position: fixed;
-    right: 2rem;
-    top: 2rem;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border-radius: 50%;
+  #aboutModal .close-button,
+  #projectDetailModal .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     width: 40px;
     height: 40px;
-    z-index: 1001;
-  }
-
-  .modal-section {
-    margin-bottom: 3.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  }
-
-  .modal-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .modal-section h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
-    color: #1a1a1a;
-    letter-spacing: 0.5px;
-  }
-
-  .modal-section p {
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    color: #4a4a4a;
-    font-size: 1.1rem;
-    letter-spacing: 0.3px;
-    white-space: pre-line; /* Preserve line breaks */
-  }
-
-  .modal-section ul {
-    list-style: none;
-    padding-left: 0;
-  }
-
-  .modal-section li {
-    margin-bottom: 1rem;
-    position: relative;
-    padding-left: 2rem;
-    color: #4a4a4a;
-    font-size: 1.1rem;
-    line-height: 1.8;
-    transition: transform 0.2s ease;
-  }
-
-  .modal-section li:before {
-    content: "→";
-    position: absolute;
-    left: 0;
-    color: #1a1a1a;
-    transition: transform 0.2s ease;
-  }
-
-  .modal-section li:hover {
-    transform: translateX(5px);
-  }
-
-  .modal-section li:hover:before {
-    transform: translateX(3px);
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    transition: background 0.3s ease;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    .modal-content {
-      padding: 2rem;
-      margin: 5% auto;
-    }
-    
-    .modal-section h2 {
-      font-size: 1.6rem;
-    }
-    
-    .modal-section p,
-    .modal-section li {
-      font-size: 1rem;
-    }
-    
-    .close-button {
-      right: 1.5rem;
-      top: 1.5rem;
-    }
-  }
-
-  /* Add new styles for project filters */
-  .project-filters {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1.5rem; /* Adjust if needed */
-    margin-bottom: 1rem; /* Add bottom margin to get closer to projects */
-    flex-wrap: wrap;
-  }
-
-  .filter-button {
-    padding: 0.8rem 1.5rem;
     border: none;
-    background: transparent;
-    color: #666;
-    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    font-size: 28px;
     cursor: pointer;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    font-weight: 700;
   }
 
-  .filter-button::before {
+  #aboutModal .close-button:hover,
+  #projectDetailModal .close-button:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+  }
+
+  #aboutModal .modal-section {
+    margin-bottom: 3.5rem;
+    padding: 0 2rem;
+    text-align: left;
+  }
+
+  #aboutModal .modal-section h2 {
+    font-size: 2.4rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  #aboutModal .modal-section h2:after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(26, 26, 26, 0.05);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-
-  .filter-button:hover::before {
-    width: 150px;
-    height: 150px;
-  }
-
-  .filter-button:hover {
-    color: #1a1a1a;
-  }
-
-  .filter-button:hover::after {
-    width: 80%;
-  }
-
-  .filter-button.active {
-    color: #1a1a1a;
-    font-weight: 500;
-  }
-
-  .filter-button.active::after {
-    width: 80%;
-  }
-
-  /* Add these styles for the project showcase */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Increase from 300px */
-    gap: 2.5rem; /* Slightly increase gap for better spacing */
-    padding: 2.5rem;
-    margin-top: 0.5rem; /* Reduced from previous value to bring it closer to filters */
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
-    visibility: visible !important; /* Force visibility */
-  }
-
-  .project-card {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    /* Remove fixed aspect ratio */
-    aspect-ratio: auto; 
-  }
-
-  .project-image {
-    width: 100%;
-    height: auto; /* Let height adjust automatically */
-    display: block; /* Remove any extra spacing */
-    object-fit: contain; /* Ensure image maintains its proportions */
-  }
-
-  .project-title {
-    position: absolute;
-    bottom: 0;
+    bottom: -10px;
     left: 0;
-    right: 0;
-    padding: 1.5rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
+    width: 60px;
+    height: 2px;
+    background: #1a1a1a;
+  }
+
+  #aboutModal .modal-section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  #aboutModal .payment-terms {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #aboutModal .payment-item {
+    margin-bottom: 2.5rem;
+    padding-left: 0;
+    position: relative;
+  }
+
+  #aboutModal .payment-title {
+    display: block;
     font-size: 1.2rem;
     font-weight: 500;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
   }
 
-  .project-card:hover .project-title {
-    transform: translateY(-5px);
+  #aboutModal .payment-item p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #666;
+    margin: 0;
+    padding-left: 1rem;
+    border-left: 2px solid #eee;
   }
 
-  /* Add an overlay effect on hover */
-  .project-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background 0.3s ease;
+  #aboutModal.active .modal-content {
+    animation: modalSlideIn 0.4s ease-out forwards;
   }
 
-  .project-card:hover::after {
-    background: rgba(0, 0, 0, 0.2);
-  }
-
-  /* Add new styles for contact section */
-  .contact-section {
-    background-color: #1a1a1a;
-    color: #fff;
-    padding: 4rem 2rem;
-    margin-top: 4rem;
-  }
-
-  .contact-content {
-    max-width: 1440px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .contact-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    font-weight: 500;
-  }
-
-  .contact-info {
-    display: flex;
-    gap: 3rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .contact-label {
-    font-size: 0.9rem;
-    color: #999;
-  }
-
-  .contact-value {
-    font-size: 1.1rem;
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .contact-value:hover {
-    color: #ccc;
-  }
-
-  .contact-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #fff;
-  }
-
-  .contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-  }
-
-  .contact-item:hover {
-    transform: translateY(-2px);
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @media (max-width: 768px) {
-    .contact-section {
-      padding: 2rem 1rem;
+    #aboutModal .modal-content {
+      width: 95%;
+      padding: 2rem;
     }
-
-    .contact-content {
-      width: 100%;
+    
+    #aboutModal .modal-section {
+      padding: 0 1rem;
     }
-
-    .contact-info {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .contact-item {
-      width: 100%;
-      text-align: center;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-    }
-
-    .contact-title {
-      font-size: 1.6rem;
+    
+    #aboutModal .modal-section h2 {
+      font-size: 1.8rem;
     }
   }
 
-  /* Add scroll padding for fixed header */
-  html {
-    scroll-padding-top: 120px; /* Accounts for fixed header */
-    scroll-behavior: smooth;
-  }
-
-  /* Add these styles */
   .admin-modal {
     display: none;
     position: fixed;
@@ -796,7 +579,6 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
 
-  /* New styles for project creation form */
   .admin-modal {
     max-height: 90vh;
     overflow-y: auto;
@@ -870,7 +652,6 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
-  /* Add these styles for multiple photo previews */
   .photos-preview-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -878,7 +659,6 @@
     margin-top: 10px;
   }
 
-  /* Add these styles for the photo input section */
   .photo-input-group {
     display: flex;
     gap: 1rem;
@@ -943,7 +723,6 @@
     justify-content: center;
   }
 
-  /* Add styles for the analytics section */
   .analytics-section {
     padding: 2rem;
     margin-top: 2rem;
@@ -1021,7 +800,6 @@
     margin-bottom: 0.5rem;
   }
 
-  /* Add these styles for the select dropdown */
   .form-group select {
     width: 100%;
     padding: 0.8rem;
@@ -1052,6 +830,300 @@
 
   .form-group select option {
     padding: 0.8rem;
+  }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: rgba(26, 26, 26, 0.8);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 99;
+    border: none;
+    backdrop-filter: blur(5px);
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .back-to-top:hover {
+    background-color: rgba(26, 26, 26, 1);
+    transform: translateY(-3px);
+  }
+
+  .back-to-top svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  .project-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .project-description {
+    text-align: left;
+    white-space: pre-line;
+    width: 100%;
+    padding: 4rem 8%;
+    margin: 0;
+    background: white;
+  }
+
+  .project-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .lightbox-nav,
+  .lightbox-close {
+    display: none !important;
+  }
+
+  .lightbox-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Add new styles for project filters */
+  .project-filters {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .filter-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(26, 26, 26, 0.05);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  .filter-button:hover::before {
+    width: 150px;
+    height: 150px;
+  }
+
+  .filter-button:hover {
+    color: #1a1a1a;
+  }
+
+  .filter-button:hover::after {
+    width: 80%;
+  }
+
+  .filter-button.active {
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+
+  .filter-button.active::after {
+    width: 80%;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2.5rem;
+    padding: 2.5rem;
+    margin-top: 0.5rem;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    visibility: visible !important;
+  }
+
+  .project-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    aspect-ratio: auto; 
+  }
+
+  .project-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .project-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover .project-title {
+    transform: translateY(-5px);
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+  }
+
+  .project-card:hover::after {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .contact-section {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+  }
+
+  .contact-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+    min-width: 150px;
+  }
+
+  .contact-label {
+    font-size: 0.9rem;
+    color: #999;
+  }
+
+  .contact-value {
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .contact-value:hover {
+    color: #ccc;
+  }
+
+  .contact-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .contact-item:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 2rem 1rem;
+    }
+
+    .contact-content {
+      width: 100%;
+    }
+
+    .contact-info {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-item {
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+
+    .contact-title {
+      font-size: 1.6rem;
+    }
+  }
+
+  html {
+    scroll-padding-top: 120px;
+    scroll-behavior: smooth;
   }
 
   /* Back to top button styles */
@@ -1092,71 +1164,59 @@
     fill: currentColor;
   }
 
-  /* New styles for project detail modal */
-  .project-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem 5%; /* Add padding to the content instead */
+  /* Project Detail Modal */
+  #projectDetailModal .modal-content {
+    padding: 2rem;
   }
 
-  .project-description {
-    text-align: left;
-    white-space: pre-line;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 4rem; /* Increased horizontal padding */
-    background: white;
-    border-radius: 0;
+  /* Lightbox for image preview */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
   }
 
-  .project-gallery {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 0; /* Remove padding */
-    max-width: 100%; /* Full width */
-    margin: 0;
-  }
-
-  .project-gallery img {
+  .lightbox-content {
     width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    border-radius: 0; /* Remove border radius */
-  }
-  
-  .payment-terms {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .payment-item {
-    background: rgba(26, 26, 26, 0.03);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    transition: transform 0.3s ease;
-  }
-
-  .payment-item:hover {
-    transform: translateY(-2px);
-  }
-
-  .payment-title {
-    font-weight: 600;
-    font-size: 1.1rem;
+  /* Update the close button styles in the project detail modal */
+  #projectDetailModal .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(0, 0, 0, 0.1);
+    font-size: 28px;
+    cursor: pointer;
     color: #1a1a1a;
-    margin-bottom: 0.5rem;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    font-weight: 700;
   }
 
-  .payment-item p {
-    margin: 0;
-    color: #666;
-    line-height: 1.6;
+  #projectDetailModal .close-button:hover {
+    background: rgba(0, 0, 0, 0.2);
+    transform: rotate(90deg);
+  }
+
+  #projectDetailModal .modal-content {
+    position: relative; /* Ensure the close button positions relative to modal content */
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -1170,15 +1230,15 @@
   <div class="nav-container">
     <div class="logo">KING-DESIGN</div>
     <div class="nav-links">
-      <a href="https://example.com/about">
+      <a href="#about">
         <span class="en">About</span>
         <span class="cn">关于</span>
       </a>
-      <a href="https://example.com/project">
+      <a href="#projects">
         <span class="en">Project</span>
         <span class="cn">项目</span>
       </a>
-      <a href="https://example.com/contact">
+      <a href="#contact">
         <span class="en">Contact</span>
         <span class="cn">联系</span>
       </a>
@@ -1242,10 +1302,19 @@
 
     <div class="modal-section">
       <h2>我的专业服务</h2>
-      <ul>
-        <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</li>
-        <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</li>
-        <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</li>
+      <ul class="payment-terms">
+        <li class="payment-item">
+          <span class="payment-title">空间规划与优化</span>
+          <p>我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</p>
+        </li>
+        <li class="payment-item">
+          <span class="payment-title">品牌故事融入</span>
+          <p>我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</p>
+        </li>
+        <li class="payment-item">
+          <span class="payment-title">材料与技术创新</span>
+          <p>我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</p>
+        </li>
       </ul>
     </div>
 
@@ -1422,7 +1491,6 @@
 
 <section class="contact-section">
   <div class="contact-content">
-    <h2 class="contact-title">联系方式</h2>
     <div class="contact-info">
       <div class="contact-item">
         <i class="fas fa-envelope contact-icon"></i>
@@ -1467,20 +1535,17 @@
 
 <!-- Lightbox for image preview -->
 <div class="lightbox">
-  <button class="lightbox-close">×</button>
-  <button class="lightbox-nav lightbox-prev">‹</button>
-  <button class="lightbox-nav lightbox-next">›</button>
   <div class="lightbox-content">
-    <img class="lightbox-image" src="" alt="Project image">
+    <img class="lightbox-image" src="" alt="">
   </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const nav = document.querySelector('nav');
-  const aboutLink = document.querySelector('a[href="https://example.com/about"]');
-  const projectLink = document.querySelector('a[href="https://example.com/project"]');
-  const contactLink = document.querySelector('a[href="https://example.com/contact"]');
+  const aboutLink = document.querySelector('a[href="#about"]');
+  const projectLink = document.querySelector('a[href="#projects"]');
+  const contactLink = document.querySelector('a[href="#contact"]');
   const modal = document.getElementById('aboutModal');
   const closeButton = modal.querySelector('.close-button');
   const searchBox = document.querySelector('.search-box');
@@ -1543,6 +1608,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Add smooth scrolling to the contact section when clicking the contact link
+  contactLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const contactSection = document.querySelector('.contact-section');
+    contactSection.scrollIntoView({ behavior: 'smooth' });
+  });
+
   // Admin functionality
   searchBox.addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();
@@ -1593,9 +1665,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('logoutAdmin').addEventListener('click', function() {
     adminPanel.style.display = 'none';
     adminModal.style.display = 'none';
-    document.querySelector('.projects-grid').style.display = 'grid'; // Force grid display
-    document.querySelector('.hero').style.display = 'flex'; // Show hero section
-    document.querySelector('.contact-section').style.display = 'block'; // Show contact section
+    document.querySelector('.projects-grid').style.display = 'grid';
+    document.querySelector('.hero').style.display = 'flex';
+    document.querySelector('.contact-section').style.display = 'block';
     
     // Restore all project cards visibility
     document.querySelectorAll('.project-card').forEach(card => {
@@ -1636,10 +1708,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize analytics when admin panel is shown
     initializeAnalytics();
-    initializeHeatmap(); // Initialize heatmap
+    initializeHeatmap();
   }
 
-  // Also modify the deleteProject function to handle both admin and main view
   function deleteProject(index) {
     if(confirm('确定要删除这个项目吗？')) {
       const projects = document.querySelectorAll('.project-card');
@@ -1656,7 +1727,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // Handle editing and deleting projects
   function editProject(index) {
     const project = document.querySelectorAll('.project-card')[index];
     const projectTitle = project.querySelector('.project-title').textContent;
@@ -1673,7 +1743,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('newProjectForm').dataset.editIndex = index;
   }
 
-  // Modify the newProjectForm submit handler to handle both new and edited projects
   let currentFormHandler = newProjectForm.onsubmit;
   newProjectForm.onsubmit = function(e) {
     e.preventDefault();
@@ -1702,10 +1771,9 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProjects();
   };
 
-  // New Project Modal
   function showNewProjectModal() {
     newProjectModal.style.display = 'block';
-    initializePhotoManager(); // Initialize photo manager when modal opens
+    initializePhotoManager();
   }
 
   function closeNewProjectModal() {
@@ -1716,7 +1784,6 @@ document.addEventListener('DOMContentLoaded', function() {
     showNewProjectModal();
   });
 
-  // Add preview functionality for images
   document.getElementById('projectCover').addEventListener('input', function(e) {
     const preview = document.getElementById('coverPreview');
     if (e.target.value) {
@@ -1730,7 +1797,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const preview = document.getElementById('photosPreview');
     const urls = e.target.value.split(',').map(url => url.trim()).filter(url => url);
     
-    // Create preview grid for multiple photos
     preview.innerHTML = `
       <div class="photos-preview-grid">
         ${urls.map(url => `<img src="${url}" alt="Project photo preview">`).join('')}
@@ -1761,7 +1827,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `).join('');
 
-      // Add remove button handlers
       document.querySelectorAll('.remove-photo-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const index = parseInt(btn.dataset.index);
@@ -1771,7 +1836,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
-    // Color extraction from cover image
     const coverInput = document.querySelector('#projectCover');
     coverInput.addEventListener('change', async () => {
       const url = coverInput.value;
@@ -1800,7 +1864,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
         const colors = {};
         
-        // Sample pixels to find dominant color
         for (let i = 0; i < imageData.length; i += 16) {
           const r = imageData[i];
           const g = imageData[i + 1];
@@ -1809,7 +1872,6 @@ document.addEventListener('DOMContentLoaded', function() {
           colors[rgb] = (colors[rgb] || 0) + 1;
         }
         
-        // Find the most common color
         let dominantColor = Object.entries(colors)
           .sort((a, b) => b[1] - a[1])[0][0];
         
@@ -1820,15 +1882,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Project filter handling
   const filterButtons = document.querySelectorAll('.filter-button');
   const projectCards = document.querySelectorAll('.project-card');
   
   filterButtons.forEach(button => {
     button.addEventListener('click', function() {
-      // Remove active class from all buttons
       filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
       this.classList.add('active');
       
       const filterValue = this.textContent.trim();
@@ -1836,7 +1895,6 @@ document.addEventListener('DOMContentLoaded', function() {
       projectCards.forEach(card => {
         if (filterValue === '全部项目' || card.dataset.projectType === filterValue) {
           card.style.display = 'block';
-          // Add fade in animation
           card.style.opacity = '0';
           setTimeout(() => {
             card.style.opacity = '1';
@@ -1851,18 +1909,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Update project card click behavior to show modal
   document.querySelectorAll('.project-card').forEach(card => {
-    card.style.cursor = 'pointer'; // Change cursor back to pointer
-    card.addEventListener('click', function() {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
       const projectId = this.dataset.projectId;
-      const projectTitle = this.querySelector('.project-title').textContent;
-      const projectImage = this.querySelector('.project-image').src;
-      showProjectModal(projectId, projectTitle, projectImage);
+      if (projectId && projectContent[projectId]) {
+        const modal = document.getElementById('projectDetailModal');
+        const content = projectContent[projectId];
+        
+        document.getElementById('modalProjectTitle').textContent = content.title;
+        document.getElementById('modalProjectText').textContent = content.text;
+        
+        const gallery = modal.querySelector('.project-gallery');
+        gallery.innerHTML = content.images.map(img => 
+          `<img src="${img}" alt="${content.title}" style="width: 100%; height: auto;">`
+        ).join('');
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        initializeLightbox();
+      }
     });
   });
 
-  // Update the project content in the projectContent object
+  projectLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const projectsSection = document.querySelector('.projects-grid');
+    projectsSection.scrollIntoView({ behavior: 'smooth' });
+  });
+
   const projectContent = {
     'killers-dance': {
       title: 'killers舞蹈工作室',
@@ -1925,243 +2002,89 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // Update the project details in the modal
-  function showProjectModal(projectId, title, mainImage) {
-    const modal = document.getElementById('projectDetailModal');
-    const titleElement = document.getElementById('modalProjectTitle');
-    const textElement = document.getElementById('modalProjectText');
-    const gallery = document.querySelector('.project-gallery');
+  function showProjectModal(projectId) {
+    if (!projectContent[projectId]) {
+      console.error('Project content not found:', projectId);
+      return;
+    }
     
-    // Set content based on project ID
+    const modal = document.getElementById('projectDetailModal');
     const content = projectContent[projectId];
     
-    titleElement.textContent = content.title;
-    textElement.textContent = content.text;
+    modal.querySelector('#modalProjectTitle').textContent = content.title;
+    modal.querySelector('#modalProjectText').textContent = content.text;
     
-    // Populate gallery
-    gallery.innerHTML = content.images
-      .map(img => `<img src="${img}" alt="Project detail image">`)
-      .join('');
-      
+    const gallery = modal.querySelector('.project-gallery');
+    gallery.innerHTML = content.images.map(img => 
+      `<img src="${img}" alt="${content.title}" style="width: 100%; height: auto;">`
+    ).join('');
+    
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+  }
+});
 
-    // Initialize lightbox after populating gallery
-    initializeLightbox();
+// Initialize lightbox functionality
+function initializeLightbox() {
+  const lightbox = document.querySelector('.lightbox');
+  const lightboxImage = lightbox.querySelector('.lightbox-image');
+  let currentImageIndex = 0;
+  let images = [];
+
+  document.querySelectorAll('.project-gallery img').forEach((img, index) => {
+    img.addEventListener('click', () => {
+      images = Array.from(document.querySelectorAll('.project-gallery img')).map(img => img.src);
+      currentImageIndex = index;
+      showImage(currentImageIndex);
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function showImage(index) {
+    lightboxImage.style.opacity = '0';
+    lightboxImage.src = images[index];
+    lightboxImage.alt = '';
+    
+    lightboxImage.onload = function() {
+      lightboxImage.style.opacity = '1';
+    };
   }
 
-  // Initialize lightbox functionality
-  function initializeLightbox() {
-    const lightbox = document.querySelector('.lightbox');
-    const lightboxImage = lightbox.querySelector('.lightbox-image');
-    const closeBtn = lightbox.querySelector('.lightbox-close');
-    const prevBtn = lightbox.querySelector('.lightbox-prev');
-    const nextBtn = lightbox.querySelector('.lightbox-next');
-    let currentImageIndex = 0;
-    let images = [];
-
-    // Setup gallery image click handlers
-    document.querySelectorAll('.project-gallery img').forEach((img, index) => {
-      img.addEventListener('click', () => {
-        images = Array.from(document.querySelectorAll('.project-gallery img')).map(img => img.src);
-        currentImageIndex = index;
-        showImage(currentImageIndex);
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    function showImage(index) {
-      const lightboxImage = document.querySelector('.lightbox-image');
-      lightboxImage.style.opacity = '0';
-      lightboxImage.src = images[index];
-      
-      lightboxImage.onload = function() {
-        lightboxImage.style.opacity = '1';
-        updateNavButtons();
-      };
-    }
-
-    function updateNavButtons() {
-      prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
-      nextBtn.style.display = currentImageIndex < images.length - 1 ? 'block' : 'none';
-    }
-
-    // Navigation handlers
-    prevBtn.addEventListener('click', () => {
-      if (currentImageIndex > 0) {
-        currentImageIndex--;
-        showImage(currentImageIndex);
-      }
-    });
-
-    nextBtn.addEventListener('click', () => {
-      if (currentImageIndex < images.length - 1) {
-        currentImageIndex++;
-        showImage(currentImageIndex);
-      }
-    });
-
-    // Close handler
-    closeBtn.addEventListener('click', () => {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('active')) return;
-      
-      if (e.key === 'Escape') {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-      } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
-        currentImageIndex--;
-        showImage(currentImageIndex);
-      } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
-        currentImageIndex++;
-        showImage(currentImageIndex);
-      }
-    });
-
-    // Touch swipe handling
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    lightbox.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    });
-
-    lightbox.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    });
-
-    function handleSwipe() {
-      const swipeThreshold = 50;
-      const swipeLength = touchEndX - touchStartX;
-      
-      if (Math.abs(swipeLength) > swipeThreshold) {
-        if (swipeLength > 0 && currentImageIndex > 0) {
-          // Swipe right - show previous
-          currentImageIndex--;
-          showImage(currentImageIndex);
-        } else if (swipeLength < 0 && currentImageIndex < images.length - 1) {
-          // Swipe left - show next
-          currentImageIndex++;
-          showImage(currentImageIndex);
-        }
-      }
-    }
-  }
-
-  // Close project modal functionality
-  document.querySelector('#projectDetailModal .close-button').addEventListener('click', function() {
-    document.getElementById('projectDetailModal').classList.remove('active');
+  lightbox.addEventListener('click', () => {
+    lightbox.classList.remove('active');
     document.body.style.overflow = '';
   });
 
-  document.getElementById('projectDetailModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-      this.classList.remove('active');
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    
+    if (e.key === 'Escape') {
+      lightbox.classList.remove('active');
       document.body.style.overflow = '';
     }
   });
+}
 
-  // Smooth scrolling for navigation links
-  projectLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    const projectsGrid = document.querySelector('.projects-grid');
-    projectsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
+// Close project modal functionality
+document.querySelector('#projectDetailModal .close-button').addEventListener('click', function() {
+  document.getElementById('projectDetailModal').classList.remove('active');
+  document.body.style.overflow = '';
+});
 
-  contactLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    const contactSection = document.querySelector('.contact-section');
-    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  // Add scroll animations for metrics
-  const observeMetrics = () => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('reveal');
-          
-          // Animate numbers
-          if (entry.target.querySelector('.metric-value')) {
-            const value = entry.target.querySelector('.metric-value');
-            const endValue = parseInt(value.textContent.replace(/,/g, ''));
-            animateNumber(value, 0, endValue, 2000);
-          }
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.metric').forEach(metric => {
-      observer.observe(metric);
-    });
-  };
-
-  const animateNumber = (element, start, end, duration) => {
-    let current = start;
-    const range = end - start;
-    const increment = end > start ? 1 : -1;
-    const stepTime = Math.abs(Math.floor(duration / range));
-    
-    const timer = setInterval(() => {
-      current += increment;
-      element.textContent = current.toLocaleString(); // Format number with commas
-      if (current === end) {
-        clearInterval(timer);
-      }
-    }, stepTime);
-  };
-
-  // Call observe metrics when admin panel is shown
-  function initializeAnalytics() {
-    observeMetrics();
-  }
-
-  // Initialize heatmap visualization
-  function initializeHeatmap() {
-    const chinaMapContainer = document.createElement('div');
-    chinaMapContainer.id = 'chinaHeatmap';
-    chinaMapContainer.style.height = '400px';
-    
-    // Replace the geographic metrics with heatmap
-    const geoCard = document.querySelector('.analytics-card:last-child');
-    geoCard.innerHTML = '<h3>地域分布热力图</h3>';
-    geoCard.appendChild(chinaMapContainer);
-
-    // Initialize ECharts heatmap
-    const chart = echarts.init(chinaMapContainer);
-    const option = {
-      visualMap: {
-        min: 0,
-        max: 100,
-        calculable: true,
-        inRange: {
-          color: ['#50a3ba', '#eac736', '#d94e5d']
-        }
-      },
-      series: [{
-        type: 'map',
-        map: 'china',
-        data: [
-          {name: '北京', value: 35},
-          {name: '上海', value: 25},
-          {name: '广州', value: 20},
-          // Add more regions as needed
-        ],
-        label: {
-          show: true
-        }
-      }]
-    };
-    chart.setOption(option);
+document.getElementById('projectDetailModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    this.classList.remove('active');
+    document.body.style.overflow = '';
   }
 });
-</script>
 
-</body></html>
+// Smooth scrolling for navigation links
+document.querySelector('a[href="#projects"]').addEventListener('click', function(e) {
+  e.preventDefault();
+  const projectsGrid = document.querySelector('.projects-grid');
+  projectsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
+</body>
+</html>
