@@ -1,0 +1,2122 @@
+<html><head><base href="/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KING-DESIGN | Independent Designer</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    background-color: #f5f5f3;
+    color: #1a1a1a;
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0; /* Reduced from 2rem */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: rgba(245, 245, 243, 0.95);
+    z-index: 100;
+  }
+
+  .nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo {
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-align: center;
+    padding: 1rem 0; /* Reduced from 1.5rem */
+    line-height: 1.3;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 0.5rem; /* Reduced from 1rem */
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: #1a1a1a;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 60px;
+    text-align: center;
+    height: 24px; /* Adjusted to match text height */
+    line-height: 24px; /* Added to align text vertically */
+  }
+
+  .nav-links a span {
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    width: 100%;
+    left: 0;
+    height: 24px; /* Match container height */
+    line-height: 24px; /* Match container line-height */
+  }
+
+  .nav-links a .en {
+    top: 0;
+    transform: translateY(0);
+  }
+
+  .nav-links a .cn {
+    top: 0; /* Positioned at same height */
+    transform: translateY(100%);
+  }
+
+  .nav-links a:hover .en {
+    transform: translateY(-100%);
+  }
+
+  .nav-links a:hover .cn {
+    transform: translateY(0);
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #1a1a1a;
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 2rem; /* Reduced from 4rem */
+  }
+
+  .hero-content {
+    max-width: 800px;
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+    opacity: 0;
+    animation: fadeInTyping 2s ease-out forwards;
+    position: relative;
+  }
+
+  @keyframes fadeInTyping {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+      clip-path: inset(0 100% 0 0);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .hero h1:hover {
+    animation: glowPulse 2s infinite;
+  }
+
+  @keyframes glowPulse {
+    0% {
+      text-shadow: 0 0 0 rgba(26, 26, 26, 0);
+    }
+    50% {
+      text-shadow: 0 0 20px rgba(26, 26, 26, 0.2);
+    }
+    100% {
+      text-shadow: 0 0 0 rgba(26, 26, 26, 0);
+    }
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 768px) {    
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .nav-links {
+      display: none;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      padding: 0.5rem 0; /* Reduced padding further for mobile */
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr; /* Single column for mobile */
+      padding: 1rem;
+      gap: 1.5rem;
+    }
+
+    .hero {
+      padding: 2rem 1rem;
+      margin-top: 4rem; /* Adjusted for mobile */
+    }
+
+    .project-filters {
+      gap: 0.8rem;
+      padding: 0 1rem;
+    }
+
+    .filter-button {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+      white-space: nowrap;
+    }
+
+    .project-card {
+      width: 100%;
+    }
+
+    .project-image {
+      width: 100%;
+      height: auto;
+    }
+
+    .search-box {
+      padding: 0.8rem;
+    }
+
+    .analytics-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem; /* Reduced from 6rem */
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 500px;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    border-radius: 30px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    color: #1a1a1a;
+  }
+
+  .search-box:focus {
+    outline: none;
+    border-color: rgba(26, 26, 26, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .search-box::placeholder {
+    color: #999;
+    font-weight: 300;
+  }
+
+  .search-box:focus::placeholder {
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    .search-box {
+      max-width: 90%;
+      font-size: 1rem;
+      padding: 0.8rem 1.2rem;
+    }
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    transform: scale(0.95);
+  }
+
+  .modal.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .modal-content {
+    position: relative;
+    background-color: #f5f5f3;
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    width: 100%;
+    max-width: 100%; /* Full width */
+    max-height: 100vh;
+    overflow-y: auto;
+    border-radius: 0; /* Remove border radius */
+  }
+
+  .close-button {
+    position: fixed;
+    right: 2rem;
+    top: 2rem;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 1001;
+  }
+
+  .modal-section {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .modal-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: 0.5px;
+  }
+
+  .modal-section p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #4a4a4a;
+    font-size: 1.1rem;
+    letter-spacing: 0.3px;
+    white-space: pre-line; /* Preserve line breaks */
+  }
+
+  .modal-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .modal-section li {
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 2rem;
+    color: #4a4a4a;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    transition: transform 0.2s ease;
+  }
+
+  .modal-section li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #1a1a1a;
+    transition: transform 0.2s ease;
+  }
+
+  .modal-section li:hover {
+    transform: translateX(5px);
+  }
+
+  .modal-section li:hover:before {
+    transform: translateX(3px);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .modal-content {
+      padding: 2rem;
+      margin: 5% auto;
+    }
+    
+    .modal-section h2 {
+      font-size: 1.6rem;
+    }
+    
+    .modal-section p,
+    .modal-section li {
+      font-size: 1rem;
+    }
+    
+    .close-button {
+      right: 1.5rem;
+      top: 1.5rem;
+    }
+  }
+
+  /* Add new styles for project filters */
+  .project-filters {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem; /* Adjust if needed */
+    margin-bottom: 1rem; /* Add bottom margin to get closer to projects */
+    flex-wrap: wrap;
+  }
+
+  .filter-button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .filter-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(26, 26, 26, 0.05);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  .filter-button:hover::before {
+    width: 150px;
+    height: 150px;
+  }
+
+  .filter-button:hover {
+    color: #1a1a1a;
+  }
+
+  .filter-button:hover::after {
+    width: 80%;
+  }
+
+  .filter-button.active {
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+
+  .filter-button.active::after {
+    width: 80%;
+  }
+
+  /* Add these styles for the project showcase */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Increase from 300px */
+    gap: 2.5rem; /* Slightly increase gap for better spacing */
+    padding: 2.5rem;
+    margin-top: 0.5rem; /* Reduced from previous value to bring it closer to filters */
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    visibility: visible !important; /* Force visibility */
+  }
+
+  .project-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Remove fixed aspect ratio */
+    aspect-ratio: auto; 
+  }
+
+  .project-image {
+    width: 100%;
+    height: auto; /* Let height adjust automatically */
+    display: block; /* Remove any extra spacing */
+    object-fit: contain; /* Ensure image maintains its proportions */
+  }
+
+  .project-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover .project-title {
+    transform: translateY(-5px);
+  }
+
+  /* Add an overlay effect on hover */
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+  }
+
+  .project-card:hover::after {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  /* Add new styles for contact section */
+  .contact-section {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+  }
+
+  .contact-content {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+  }
+
+  .contact-info {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact-label {
+    font-size: 0.9rem;
+    color: #999;
+  }
+
+  .contact-value {
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .contact-value:hover {
+    color: #ccc;
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 2rem 1rem;
+    }
+
+    .contact-content {
+      width: 100%;
+    }
+
+    .contact-info {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-item {
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+
+    .contact-title {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* Add scroll padding for fixed header */
+  html {
+    scroll-padding-top: 120px; /* Accounts for fixed header */
+    scroll-behavior: smooth;
+  }
+
+  /* Add these styles */
+  .admin-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .admin-form input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  .admin-form button {
+    padding: 0.8rem;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .admin-panel {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f8f9fa;
+    z-index: 1000;
+    padding: 3rem;
+    overflow-y: auto;
+  }
+
+  .admin-panel h2 {
+    font-size: 2.4rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: #1a1a1a;
+    text-align: center;
+  }
+
+  #addNewProject {
+    display: block;
+    margin: 0 auto 2rem;
+    padding: 1rem 2rem;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #addNewProject:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .project-management {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem auto;
+    max-width: 900px;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
+  .project-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+
+  .project-item:hover {
+    transform: translateX(5px);
+    border-color: rgba(0,0,0,0.15);
+  }
+
+  .project-item span {
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+
+  .project-item .button-group {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .project-item button {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .project-item button.edit-btn {
+    background: #f0f0f0;
+    color: #1a1a1a;
+  }
+
+  .project-item button.delete-btn {
+    background: #ff4d4d;
+    color: white;
+  }
+
+  .project-item button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  #logoutAdmin {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 2rem;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #logoutAdmin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  /* New styles for project creation form */
+  .admin-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+
+  .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .image-preview {
+    margin-top: 0.5rem;
+    max-width: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+  }
+
+  .button-group button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .button-group button[type="submit"] {
+    background: #1a1a1a;
+    color: white;
+  }
+
+  .button-group button[type="button"] {
+    background: #f0f0f0;
+    color: #1a1a1a;
+  }
+
+  .button-group button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Add these styles for multiple photo previews */
+  .photos-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  /* Add these styles for the photo input section */
+  .photo-input-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .photo-input-group input {
+    flex: 1;
+  }
+
+  .add-photo-btn {
+    padding: 0.8rem 1.2rem;
+    background: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .add-photo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .photos-preview-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .photo-preview-item {
+    position: relative;
+    padding: 1rem;
+    background: #f8f8f8;
+    border-radius: 8px;
+  }
+
+  .photo-preview-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .remove-photo-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Add styles for the analytics section */
+  .analytics-section {
+    padding: 2rem;
+    margin-top: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+
+  .analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .analytics-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+
+  .analytics-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+  }
+
+  .analytics-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .metric {
+    text-align: center;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .metric.reveal {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .metric-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-label {
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .source-list {
+    margin-top: 1rem;
+  }
+
+  .source-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Add these styles for the select dropdown */
+  .form-group select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1rem;
+  }
+
+  .form-group select:hover {
+    border-color: #999;
+  }
+
+  .form-group select:focus {
+    outline: none;
+    border-color: #1a1a1a;
+    box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
+  }
+
+  .form-group select option {
+    padding: 0.8rem;
+  }
+
+  /* Back to top button styles */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: rgba(26, 26, 26, 0.8);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 99;
+    border: none;
+    backdrop-filter: blur(5px);
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .back-to-top:hover {
+    background-color: rgba(26, 26, 26, 1);
+    transform: translateY(-3px);
+  }
+
+  .back-to-top svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  /* New styles for project detail modal */
+  .project-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 5%; /* Add padding to the content instead */
+  }
+
+  .project-description {
+    text-align: left;
+    white-space: pre-line;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 4rem; /* Increased horizontal padding */
+    background: white;
+    border-radius: 0;
+  }
+
+  .project-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 4rem; /* Match description padding */
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .project-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px;
+    max-width: 100%;
+  }
+
+  /* Update lightbox styles to maintain image quality */
+  .lightbox-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    margin: auto;
+  }
+
+  .lightbox-image {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/china.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-container">
+    <div class="logo">KING-DESIGN</div>
+    <div class="nav-links">
+      <a href="https://example.com/about">
+        <span class="en">About</span>
+        <span class="cn">关于</span>
+      </a>
+      <a href="https://example.com/project">
+        <span class="en">Project</span>
+        <span class="cn">项目</span>
+      </a>
+      <a href="https://example.com/contact">
+        <span class="en">Contact</span>
+        <span class="cn">联系</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>DESIGN FOR THE FUTURE, CRAFTED FOR TODAY</h1>
+    <p>Independent designer creating sustainable, timeless pieces that challenge conventional fashion boundaries while embracing individual expression.</p>
+    <div class="search-container">
+      <input type="search" class="search-box" placeholder="搜索项目关键词" aria-label="Search projects">
+    </div>
+    <div class="project-filters">
+      <button class="filter-button active">全部项目</button>
+      <button class="filter-button">建筑设计</button>
+      <button class="filter-button">商业设计</button>
+      <button class="filter-button">私宅设计</button>
+      <button class="filter-button">产品设计</button>
+    </div>
+  </div>
+</section>
+
+<div class="projects-grid">
+  <div class="project-card" data-project-type="商业设计" data-project-id="killers-dance">
+    <img 
+      class="project-image" 
+      src="https://i.ibb.co/TtCXxTn/1.png" 
+      alt="killers舞蹈工作室 - 现代舞蹈工作室空间" 
+      width="600" 
+      height="400"
+    >
+    <div class="project-title">killers舞蹈工作室</div>
+  </div>
+  <div class="project-card" data-project-type="商业设计" data-project-id="fusheng-jewelry">
+    <img 
+      class="project-image" 
+      src="https://i.ibb.co/hDfFkY8/1.png" 
+      alt="福升玉器珠宝店 - 珠宝店空间" 
+      width="600" 
+      height="400"
+    >
+    <div class="project-title">福升玉器珠宝店</div>
+  </div>
+</div>
+
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <button class="close-button">×</button>
+    
+    <div class="modal-section">
+      <h2>关于我</h2>
+      <p>您好，我是king，一名热情的独立商业空间设计师。我坚信创新设计赋能无限可能，致力于通过前沿的设计思维和技术，为客户打造既实用又富有创意的商业空间。</p>
+    </div>
+
+    <div class="modal-section">
+      <h2>我的设计理念</h2>
+      <p>在我的设计实践中，我将创新作为核心驱动力，探索设计的边界，以实现空间的最大潜能。我相信，通过创新的设计，我们不仅能够提升商业价值，还能够激发人们的想象力和创造力。</p>
+    </div>
+
+    <div class="modal-section">
+      <h2>我的专业服务</h2>
+      <ul>
+        <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</li>
+        <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</li>
+        <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</li>
+      </ul>
+    </div>
+
+    <div class="modal-section">
+      <h2>我的工作流程</h2>
+      <ul>
+        <li>深入沟通：与您深入交流，全面了解您的商业目标和品牌理念。</li>
+        <li>创意构思：基于您的愿景，提出创新的设计方案，赋予空间新的生命。</li>
+        <li>细节执行：精心规划每一个细节，确保设计从概念到实现的完美过渡。</li>
+        <li>项目管理：全程监督项目进度，确保按时按预算完成，达到预期效果。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="admin-modal" id="adminModal">
+  <form class="admin-form" id="adminForm">
+    <h2>管理员登录</h2>
+    <input type="password" id="adminPassword" placeholder="请输入密码">
+    <button type="submit">登录</button>
+  </form>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <h2>项目管理后台</h2>
+  <button id="addNewProject">添加新项目</button>
+  <div class="project-management" id="projectManagement">
+    <!-- Projects will be loaded here -->
+  </div>
+
+  <div class="analytics-section">
+    <h2>数据统计</h2>
+    <div class="analytics-grid">
+      <div class="analytics-card">
+        <h3>访问统计</h3>
+        <div class="analytics-metrics">
+          <div class="metric">
+            <span class="metric-value">1,234</span>
+            <span class="metric-label">本月访问量</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">+12.5%</span>
+            <span class="metric-label">环比增长</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">15,678</span>
+            <span class="metric-label">累计访问量</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">89%</span>
+            <span class="metric-label">新访客占比</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="analytics-card">
+        <h3>用户行为</h3>
+        <div class="analytics-metrics">
+          <div class="metric">
+            <span class="metric-value">2.5分钟</span>
+            <span class="metric-label">平均停留时间</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">3.2</span>
+            <span class="metric-label">平均浏览页数</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">56%</span>
+            <span class="metric-label">跳出率</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">78%</span>
+            <span class="metric-label">移动端占比</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="analytics-card">
+        <h3>访问来源</h3>
+        <div class="analytics-metrics">
+          <div class="metric">
+            <span class="metric-value">45%</span>
+            <span class="metric-label">直接访问</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">30%</span>
+            <span class="metric-label">社交媒体</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">25%</span>
+            <span class="metric-label">搜索引擎</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">10%</span>
+            <span class="metric-label">外部链接</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="analytics-card">
+        <h3>地域分布热力图</h3>
+        <div id="chinaHeatmap" style="height: 400px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <button id="logoutAdmin">退出登录</button>
+</div>
+
+<!-- New Project Modal -->
+<div id="newProjectModal" class="admin-modal" style="display: none; max-width: 600px;">
+  <form class="admin-form" id="newProjectForm">
+    <h2 style="text-align: center; margin-bottom: 2rem;">添加新项目</h2>
+    <div class="form-group">
+      <label for="projectTitle">项目标题</label>
+      <input type="text" id="projectTitle" required placeholder="输入项目标题">
+    </div>
+    
+    <div class="form-group">
+      <label for="projectCover">封面图片URL</label>
+      <input type="url" id="projectCover" required placeholder="输入封面图片URL">
+      <div class="image-preview" id="coverPreview"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="projectDescription">项目描述</label>
+      <textarea id="projectDescription" required placeholder="输入项目描述"></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="projectPhotos">项目照片URL</label>
+      <div class="photo-input-group">
+        <input type="text" id="projectPhotos" placeholder="输入图片URL">
+        <button type="button" class="add-photo-btn">添加</button>
+      </div>
+      <div class="photos-preview-container"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="projectColor">项目主题色</label>
+      <input type="color" id="projectColor" value="#ffffff">
+    </div>
+
+    <div class="form-group">
+      <label for="projectTags">项目标签</label>
+      <input type="text" id="projectTags" placeholder="输入标签，用逗号分隔">
+    </div>
+
+    <div class="form-group">
+      <label for="projectType">项目类型</label>
+      <select id="projectType" required>
+        <option value="">请选择项目类型</option>
+        <option value="建筑设计">建筑设计</option>
+        <option value="商业设计">商业设计</option>
+        <option value="私宅设计">私宅设计</option>
+        <option value="产品设计">产品设计</option>
+      </select>
+    </div>
+    
+    <div class="button-group">
+      <button type="submit">保存</button>
+      <button type="button" onclick="closeNewProjectModal()">取消</button>
+    </div>
+  </form>
+</div>
+
+<section class="contact-section">
+  <div class="contact-content">
+    <h2 class="contact-title">联系方式</h2>
+    <div class="contact-info">
+      <div class="contact-item">
+        <span class="contact-label">邮箱</span>
+        <a href="mailto:1014852873@qq.com" class="contact-value">1014852873@qq.com</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">电话</span>
+        <a href="tel:+8613229362048" class="contact-value">+86 13229362048</a>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">INS</span>
+        <span class="contact-value">101485king</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<button class="back-to-top" aria-label="Back to top">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+  </svg>
+</button>
+
+<!-- Project Detail Modal -->
+<div id="projectDetailModal" class="modal">
+  <div class="modal-content">
+    <button class="close-button">×</button>
+    <div class="project-details">
+      <div class="project-description">
+        <h2 id="modalProjectTitle"></h2>
+        <p id="modalProjectText"></p>
+      </div>
+      <div class="project-gallery">
+        <!-- Images will be inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox for image preview -->
+<div class="lightbox">
+  <button class="lightbox-close">×</button>
+  <button class="lightbox-nav lightbox-prev">‹</button>
+  <button class="lightbox-nav lightbox-next">›</button>
+  <div class="lightbox-content">
+    <img class="lightbox-image" src="" alt="Project image">
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const nav = document.querySelector('nav');
+  const aboutLink = document.querySelector('a[href="https://example.com/about"]');
+  const projectLink = document.querySelector('a[href="https://example.com/project"]');
+  const contactLink = document.querySelector('a[href="https://example.com/contact"]');
+  const modal = document.getElementById('aboutModal');
+  const closeButton = modal.querySelector('.close-button');
+  const searchBox = document.querySelector('.search-box');
+  const adminModal = document.getElementById('adminModal');
+  const adminForm = document.getElementById('adminForm');
+  const adminPanel = document.getElementById('adminPanel');
+  const newProjectModal = document.getElementById('newProjectModal');
+  const newProjectForm = document.getElementById('newProjectForm');
+  const backToTopButton = document.querySelector('.back-to-top');
+  let lastScroll = 0;
+
+  // Scroll handling
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll <= 0) {
+      nav.style.transform = 'translateY(0)';
+      backToTopButton.classList.remove('visible');
+      return;
+    }
+    
+    if (currentScroll > lastScroll && !nav.classList.contains('scroll-down')) {
+      nav.style.transform = 'translateY(-100%)';
+    } else if (currentScroll < lastScroll && nav.classList.contains('scroll-down')) {
+      nav.style.transform = 'translateY(0)';
+    }
+
+    if (currentScroll > 300) {
+      backToTopButton.classList.add('visible');
+    } else {
+      backToTopButton.classList.remove('visible');
+    }
+
+    lastScroll = currentScroll;
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // Modal handling
+  aboutLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeButton.addEventListener('click', function() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Admin functionality
+  searchBox.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    // Check for admin login
+    if (searchTerm === '管理员') {
+      adminModal.style.display = 'block';
+      e.target.value = '';
+      return;
+    }
+    
+    // Filter projects based on search term
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    projectCards.forEach(card => {
+      const title = card.querySelector('.project-title').textContent.toLowerCase();
+      const shouldShow = searchTerm === '' || title.includes(searchTerm);
+      
+      // Animate the filtering
+      if (shouldShow) {
+        card.style.display = 'block';
+        card.style.opacity = '0';
+        setTimeout(() => {
+          card.style.opacity = '1';
+        }, 300);
+      } else {
+        card.style.opacity = '0';
+        setTimeout(() => {
+          card.style.display = 'none';
+        }, 300);
+      }
+    });
+  });
+
+  adminForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const password = document.getElementById('adminPassword').value;
+    
+    if (password === 'kk2256390') {
+      adminModal.style.display = 'none';
+      adminPanel.style.display = 'block';
+      loadProjects();
+    } else {
+      alert('密码错误');
+    }
+  });
+
+  document.getElementById('logoutAdmin').addEventListener('click', function() {
+    adminPanel.style.display = 'none';
+    adminModal.style.display = 'none';
+    document.querySelector('.projects-grid').style.display = 'grid'; // Force grid display
+    document.querySelector('.hero').style.display = 'flex'; // Show hero section
+    document.querySelector('.contact-section').style.display = 'block'; // Show contact section
+    
+    // Restore all project cards visibility
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.style.display = 'block';
+      card.style.opacity = '1';
+    });
+  });
+
+  // Load and display existing projects in admin panel
+  function loadProjects() {
+    const projectManagement = document.getElementById('projectManagement');
+    const projects = document.querySelectorAll('.project-card');
+    
+    // Store the projects grid content before modifying for admin panel
+    const projectsGridContent = document.querySelector('.projects-grid').innerHTML;
+    
+    projectManagement.innerHTML = Array.from(projects).map((project, index) => `
+      <div class="project-item">
+        <span>${project.querySelector('.project-title').textContent}</span>
+        <div class="button-group">
+          <button class="edit-btn" data-index="${index}">编辑</button>
+          <button class="delete-btn" data-index="${index}">删除</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Add event listeners for edit and delete buttons
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => editProject(parseInt(btn.dataset.index)));
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => deleteProject(parseInt(btn.dataset.index)));
+    });
+
+    // Ensure projects are still visible in main view
+    document.querySelector('.projects-grid').innerHTML = projectsGridContent;
+
+    // Initialize analytics when admin panel is shown
+    initializeAnalytics();
+    initializeHeatmap(); // Initialize heatmap
+  }
+
+  // Also modify the deleteProject function to handle both admin and main view
+  function deleteProject(index) {
+    if(confirm('确定要删除这个项目吗？')) {
+      const projects = document.querySelectorAll('.project-card');
+      const projectsGrid = document.querySelector('.projects-grid');
+      
+      // Remove from both admin panel and main view
+      projects[index].remove();
+      const mainViewProjects = projectsGrid.querySelectorAll('.project-card');
+      if(mainViewProjects[index]) {
+          mainViewProjects[index].remove();
+      }
+      
+      loadProjects(); // Refresh the project list
+    }
+  }
+
+  // Handle editing and deleting projects
+  function editProject(index) {
+    const project = document.querySelectorAll('.project-card')[index];
+    const projectTitle = project.querySelector('.project-title').textContent;
+    const projectImage = project.querySelector('.project-image').src;
+    const projectType = project.dataset.projectType;
+    
+    // Show new project modal with existing data
+    document.getElementById('newProjectModal').style.display = 'block';
+    document.getElementById('projectTitle').value = projectTitle;
+    document.getElementById('projectCover').value = projectImage;
+    document.getElementById('projectType').value = projectType || '';
+    
+    // Add data-edit-index to form to know which project we're editing
+    document.getElementById('newProjectForm').dataset.editIndex = index;
+  }
+
+  // Modify the newProjectForm submit handler to handle both new and edited projects
+  let currentFormHandler = newProjectForm.onsubmit;
+  newProjectForm.onsubmit = function(e) {
+    e.preventDefault();
+    
+    const projectType = document.getElementById('projectType').value;
+    
+    if(this.dataset.editIndex !== undefined) {
+      // Update existing project
+      const projects = document.querySelectorAll('.project-card');
+      const project = projects[this.dataset.editIndex];
+      
+      project.querySelector('.project-title').textContent = document.getElementById('projectTitle').value;
+      project.querySelector('.project-image').src = document.getElementById('projectCover').value;
+      project.dataset.projectType = projectType; // Add project type to dataset
+      
+      delete this.dataset.editIndex;
+    } else {
+      // Create new project with type
+      const newProject = document.createElement('div');
+      newProject.className = 'project-card';
+      newProject.dataset.projectType = projectType;
+      // ... rest of new project creation code
+    }
+    
+    closeNewProjectModal();
+    loadProjects();
+  };
+
+  // New Project Modal
+  function showNewProjectModal() {
+    newProjectModal.style.display = 'block';
+    initializePhotoManager(); // Initialize photo manager when modal opens
+  }
+
+  function closeNewProjectModal() {
+    newProjectModal.style.display = 'none';
+  }
+
+  document.getElementById('addNewProject').addEventListener('click', function() {
+    showNewProjectModal();
+  });
+
+  // Add preview functionality for images
+  document.getElementById('projectCover').addEventListener('input', function(e) {
+    const preview = document.getElementById('coverPreview');
+    if (e.target.value) {
+      preview.innerHTML = `<img src="${e.target.value}" alt="Cover preview">`;
+    } else {
+      preview.innerHTML = '';
+    }
+  });
+
+  document.getElementById('projectPhotos').addEventListener('input', function(e) {
+    const preview = document.getElementById('photosPreview');
+    const urls = e.target.value.split(',').map(url => url.trim()).filter(url => url);
+    
+    // Create preview grid for multiple photos
+    preview.innerHTML = `
+      <div class="photos-preview-grid">
+        ${urls.map(url => `<img src="${url}" alt="Project photo preview">`).join('')}
+      </div>
+    `;
+  });
+
+  function initializePhotoManager() {
+    const photoUrls = [];
+    const photosContainer = document.querySelector('.photos-preview-container');
+    const addPhotoBtn = document.querySelector('.add-photo-btn');
+    const photoInput = document.querySelector('#projectPhotos');
+
+    addPhotoBtn.addEventListener('click', () => {
+      const url = photoInput.value.trim();
+      if (url) {
+        photoUrls.push(url);
+        updatePhotosPreviews();
+        photoInput.value = '';
+      }
+    });
+
+    function updatePhotosPreviews() {
+      photosContainer.innerHTML = photoUrls.map((url, index) => `
+        <div class="photo-preview-item">
+          <img src="${url}" alt="Project photo ${index + 1}">
+          <button class="remove-photo-btn" data-index="${index}">×</button>
+        </div>
+      `).join('');
+
+      // Add remove button handlers
+      document.querySelectorAll('.remove-photo-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = parseInt(btn.dataset.index);
+          photoUrls.splice(index, 1);
+          updatePhotosPreviews();
+        });
+      });
+    }
+
+    // Color extraction from cover image
+    const coverInput = document.querySelector('#projectCover');
+    coverInput.addEventListener('change', async () => {
+      const url = coverInput.value;
+      if (url) {
+        try {
+          const color = await extractDominantColor(url);
+          document.querySelector('#projectColor').value = color;
+        } catch (err) {
+          console.error('Error extracting color:', err);
+        }
+      }
+    });
+  }
+
+  async function extractDominantColor(imageUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        const colors = {};
+        
+        // Sample pixels to find dominant color
+        for (let i = 0; i < imageData.length; i += 16) {
+          const r = imageData[i];
+          const g = imageData[i + 1];
+          const b = imageData[i + 2];
+          const rgb = `rgb(${r},${g},${b})`;
+          colors[rgb] = (colors[rgb] || 0) + 1;
+        }
+        
+        // Find the most common color
+        let dominantColor = Object.entries(colors)
+          .sort((a, b) => b[1] - a[1])[0][0];
+        
+        resolve(dominantColor);
+      };
+      img.onerror = reject;
+      img.src = imageUrl;
+    });
+  }
+
+  // Project filter handling
+  const filterButtons = document.querySelectorAll('.filter-button');
+  const projectCards = document.querySelectorAll('.project-card');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Remove active class from all buttons
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      // Add active class to clicked button
+      this.classList.add('active');
+      
+      const filterValue = this.textContent.trim();
+      
+      projectCards.forEach(card => {
+        if (filterValue === '全部项目' || card.dataset.projectType === filterValue) {
+          card.style.display = 'block';
+          // Add fade in animation
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.style.opacity = '1';
+          }, 300);
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 300);
+        }
+      });
+    });
+  });
+
+  // Update project card click behavior to show modal
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.style.cursor = 'pointer'; // Change cursor back to pointer
+    card.addEventListener('click', function() {
+      const projectId = this.dataset.projectId;
+      const projectTitle = this.querySelector('.project-title').textContent;
+      const projectImage = this.querySelector('.project-image').src;
+      showProjectModal(projectId, projectTitle, projectImage);
+    });
+  });
+
+  // Update the project content in the projectContent object
+  const projectContent = {
+    'killers-dance': {
+      title: 'killers舞蹈工作室',
+      text: `
+        目业主：广州奇乐思文化传播有限公司
+        项目名称：killers舞蹈工作室
+        项目类型：舞房设计商业空间设计
+        项目地点：中国广州市海珠区海珠智汇
+        完成时间：2024.11
+
+        Killer舞蹈工作室，中国街舞界的翘楚，2024年WOD中国区冠军得主，以其舞蹈实力和创新精神引领街舞文化。位于广州海珠智汇创意园顶楼，空间开阔无柱，为舞者提供无限自由。设计灵感源自舞者的力量与决断，以巨石元素为核心，将稳固与重量感融入空间，可视化舞者的能量。外立面设计借鉴巨石的稳固与力量，内部结构灵活多变，适应不同规模的舞蹈课程和排练，最大可容纳100人。每个角落都能感受到舞者的力量和舞蹈的热情，激励每个人追求卓越。Killer舞室的设计语言，将力量感与创新精神融入每一个角落，塑造了一个激发灵感和释放个性的空间，成为街舞爱好者的专业训练场所，同时推动华南地区街舞文化发展。
+      `,
+      images: [
+        'https://i.ibb.co/TtCXxTn/1.png',
+        'https://i.ibb.co/CP8Z7Zw/2.jpg',
+        'https://i.ibb.co/KLTWkmy/3.jpg',
+        'https://i.ibb.co/WPm6yR3/4.jpg',
+        'https://i.ibb.co/TmMcxXC/5.jpg',
+        'https://i.ibb.co/Ln9G554/6.jpg',
+        'https://i.ibb.co/X852R2B/7.jpg',
+        'https://i.ibb.co/PQ82FKv/8.jpg',
+        'https://i.ibb.co/3pJR07K/9.jpg',
+        'https://i.ibb.co/DMb2T9x/10.jpg',
+        'https://i.ibb.co/dJcmpJs/11.jpg',
+        'https://i.ibb.co/0j3vm3g/12.jpg',
+        'https://i.ibb.co/jTgLQQk/13.jpg',
+        'https://i.ibb.co/mckHb2q/14.jpg',
+        'https://i.ibb.co/5jsdLtv/15.jpg',
+        'https://i.ibb.co/tQgNZrY/16.jpg',
+        'https://i.ibb.co/zJPgsQM/17.jpg',
+        'https://i.ibb.co/JFLDb5r/18.jpg',
+        'https://i.ibb.co/XtNf0JR/19.jpg',
+        'https://i.ibb.co/vmkHCfx/20.jpg',
+        'https://i.ibb.co/JnHgBB0/21.jpg'
+      ]
+    },
+    'fusheng-jewelry': {
+      title: '福升玉器珠宝店',
+      text: `
+        项目业主：珠海福升玉器珠宝
+        项目名称：福升玉器珠宝店
+        项目类型：珠宝商业空间
+        项目地点：中国珠海市融德广场
+        完成时间：2024.10
+
+        福升玉器珠宝店以其精致的内部装修和匠心独运的设计，为顾客提供了一个高端的珠宝购物体验。店内的灯光与陈列设计巧妙结合，使每件珠宝都散发出独特的光彩。我们精心挑选的玉器和珠宝，不仅展现了传统文化的魅力，也融入了现代设计的创新。
+      `,
+      images: [
+        'https://i.ibb.co/hDfFkY8/1.png',
+        'https://i.ibb.co/Dr6cr7X/2.png',
+        'https://i.ibb.co/tc6s1YZ/3.png',
+        'https://i.ibb.co/7bpWN9K/4.png',
+        'https://i.ibb.co/pfBXJP8/5.png',
+        'https://i.ibb.co/99hvjqh/6.png',
+        'https://i.ibb.co/NLGCR6C/7.png',
+        'https://i.ibb.co/LpnPsfm/8.png',
+        'https://i.ibb.co/z86RqK9/9.png',
+        'https://i.ibb.co/Fhf4qbL/10.jpg'
+      ]
+    }
+  };
+
+  // Update the project details in the modal
+  function showProjectModal(projectId, title, mainImage) {
+    const modal = document.getElementById('projectDetailModal');
+    const titleElement = document.getElementById('modalProjectTitle');
+    const textElement = document.getElementById('modalProjectText');
+    const gallery = document.querySelector('.project-gallery');
+    
+    // Set content based on project ID
+    const content = projectContent[projectId];
+    
+    titleElement.textContent = content.title;
+    textElement.textContent = content.text;
+    
+    // Populate gallery
+    gallery.innerHTML = content.images
+      .map(img => `<img src="${img}" alt="Project detail image">`)
+      .join('');
+      
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Initialize lightbox after populating gallery
+    initializeLightbox();
+  }
+
+  // Initialize lightbox functionality
+  function initializeLightbox() {
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = lightbox.querySelector('.lightbox-image');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const prevBtn = lightbox.querySelector('.lightbox-prev');
+    const nextBtn = lightbox.querySelector('.lightbox-next');
+    let currentImageIndex = 0;
+    let images = [];
+
+    // Setup gallery image click handlers
+    document.querySelectorAll('.project-gallery img').forEach((img, index) => {
+      img.addEventListener('click', () => {
+        images = Array.from(document.querySelectorAll('.project-gallery img')).map(img => img.src);
+        currentImageIndex = index;
+        showImage(currentImageIndex);
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function showImage(index) {
+      const lightboxImage = document.querySelector('.lightbox-image');
+      lightboxImage.style.opacity = '0';
+      lightboxImage.src = images[index];
+      
+      lightboxImage.onload = function() {
+        lightboxImage.style.opacity = '1';
+        updateNavButtons();
+      };
+    }
+
+    function updateNavButtons() {
+      prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+      nextBtn.style.display = currentImageIndex < images.length - 1 ? 'block' : 'none';
+    }
+
+    // Navigation handlers
+    prevBtn.addEventListener('click', () => {
+      if (currentImageIndex > 0) {
+        currentImageIndex--;
+        showImage(currentImageIndex);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentImageIndex < images.length - 1) {
+        currentImageIndex++;
+        showImage(currentImageIndex);
+      }
+    });
+
+    // Close handler
+    closeBtn.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      } else if (e.key === 'ArrowLeft' && currentImageIndex > 0) {
+        currentImageIndex--;
+        showImage(currentImageIndex);
+      } else if (e.key === 'ArrowRight' && currentImageIndex < images.length - 1) {
+        currentImageIndex++;
+        showImage(currentImageIndex);
+      }
+    });
+
+    // Touch swipe handling
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    lightbox.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const swipeLength = touchEndX - touchStartX;
+      
+      if (Math.abs(swipeLength) > swipeThreshold) {
+        if (swipeLength > 0 && currentImageIndex > 0) {
+          // Swipe right - show previous
+          currentImageIndex--;
+          showImage(currentImageIndex);
+        } else if (swipeLength < 0 && currentImageIndex < images.length - 1) {
+          // Swipe left - show next
+          currentImageIndex++;
+          showImage(currentImageIndex);
+        }
+      }
+    }
+  }
+
+  // Close project modal functionality
+  document.querySelector('#projectDetailModal .close-button').addEventListener('click', function() {
+    document.getElementById('projectDetailModal').classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  document.getElementById('projectDetailModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Smooth scrolling for navigation links
+  projectLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const projectsGrid = document.querySelector('.projects-grid');
+    projectsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  contactLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    const contactSection = document.querySelector('.contact-section');
+    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  // Add scroll animations for metrics
+  const observeMetrics = () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal');
+          
+          // Animate numbers
+          if (entry.target.querySelector('.metric-value')) {
+            const value = entry.target.querySelector('.metric-value');
+            const endValue = parseInt(value.textContent.replace(/,/g, ''));
+            animateNumber(value, 0, endValue, 2000);
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.metric').forEach(metric => {
+      observer.observe(metric);
+    });
+  };
+
+  const animateNumber = (element, start, end, duration) => {
+    let current = start;
+    const range = end - start;
+    const increment = end > start ? 1 : -1;
+    const stepTime = Math.abs(Math.floor(duration / range));
+    
+    const timer = setInterval(() => {
+      current += increment;
+      element.textContent = current.toLocaleString(); // Format number with commas
+      if (current === end) {
+        clearInterval(timer);
+      }
+    }, stepTime);
+  };
+
+  // Call observe metrics when admin panel is shown
+  function initializeAnalytics() {
+    observeMetrics();
+  }
+
+  // Initialize heatmap visualization
+  function initializeHeatmap() {
+    const chinaMapContainer = document.createElement('div');
+    chinaMapContainer.id = 'chinaHeatmap';
+    chinaMapContainer.style.height = '400px';
+    
+    // Replace the geographic metrics with heatmap
+    const geoCard = document.querySelector('.analytics-card:last-child');
+    geoCard.innerHTML = '<h3>地域分布热力图</h3>';
+    geoCard.appendChild(chinaMapContainer);
+
+    // Initialize ECharts heatmap
+    const chart = echarts.init(chinaMapContainer);
+    const option = {
+      visualMap: {
+        min: 0,
+        max: 100,
+        calculable: true,
+        inRange: {
+          color: ['#50a3ba', '#eac736', '#d94e5d']
+        }
+      },
+      series: [{
+        type: 'map',
+        map: 'china',
+        data: [
+          {name: '北京', value: 35},
+          {name: '上海', value: 25},
+          {name: '广州', value: 20},
+          // Add more regions as needed
+        ],
+        label: {
+          show: true
+        }
+      }]
+    };
+    chart.setOption(option);
+  }
+});
+</script>
+
+</body></html>
