@@ -586,6 +586,24 @@
     color: #ccc;
   }
 
+  .contact-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .contact-item:hover {
+    transform: translateY(-2px);
+  }
+
   @media (max-width: 768px) {
     .contact-section {
       padding: 2rem 1rem;
@@ -1096,37 +1114,53 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-    padding: 0 4rem; /* Match description padding */
-    max-width: 1440px;
-    margin: 0 auto;
+    padding: 0; /* Remove padding */
+    max-width: 100%; /* Full width */
+    margin: 0;
   }
 
   .project-gallery img {
     width: 100%;
     height: auto;
     display: block;
-    object-fit: contain;
-    border-radius: 8px;
-    max-width: 100%;
+    object-fit: cover;
+    border-radius: 0; /* Remove border radius */
+  }
+  
+  .payment-terms {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  /* Update lightbox styles to maintain image quality */
-  .lightbox-content {
-    position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    margin: auto;
+  .payment-item {
+    background: rgba(26, 26, 26, 0.03);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
   }
 
-  .lightbox-image {
-    max-width: 100%;
-    max-height: 90vh;
-    object-fit: contain;
+  .payment-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .payment-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
     display: block;
-    margin: 0 auto;
+  }
+
+  .payment-item p {
+    margin: 0;
+    color: #666;
+    line-height: 1.6;
   }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/china.js"></script>
 </head>
@@ -1217,11 +1251,19 @@
 
     <div class="modal-section">
       <h2>我的工作流程</h2>
-      <ul>
-        <li>深入沟通：与您深入交流，全面了解您的商业目标和品牌理念。</li>
-        <li>创意构思：基于您的愿景，提出创新的设计方案，赋予空间新的生命。</li>
-        <li>细节执行：精心规划每一个细节，确保设计从概念到实现的完美过渡。</li>
-        <li>项目管理：全程监督项目进度，确保按时按预算完成，达到预期效果。</li>
+      <ul class="payment-terms">
+        <li class="payment-item">
+          <span class="payment-title">定金支付</span>
+          <p>在合同签订之际，甲方需向乙方支付设计费用总额的20%作为定金，以确立双方的合作意向。</p>
+        </li>
+        <li class="payment-item">
+          <span class="payment-title">首期款项</span>
+          <p>待平面方案获得双方确认后，甲方应支付设计费用总额的40%作为首期款项，以启动后续的设计深化工作。</p>
+        </li>
+        <li class="payment-item">
+          <span class="payment-title">二期款项</span>
+          <p>在效果方案得到双方确认之后，甲方需支付设计费用总额的40%作为二期款项，以确保设计工作的顺利进行至施工图阶段。</p>
+        </li>
       </ul>
     </div>
   </div>
@@ -1383,16 +1425,19 @@
     <h2 class="contact-title">联系方式</h2>
     <div class="contact-info">
       <div class="contact-item">
+        <i class="fas fa-envelope contact-icon"></i>
         <span class="contact-label">邮箱</span>
         <a href="mailto:1014852873@qq.com" class="contact-value">1014852873@qq.com</a>
       </div>
       <div class="contact-item">
+        <i class="fas fa-phone contact-icon"></i>
         <span class="contact-label">电话</span>
         <a href="tel:+8613229362048" class="contact-value">+86 13229362048</a>
       </div>
       <div class="contact-item">
+        <i class="fab fa-instagram contact-icon"></i>
         <span class="contact-label">INS</span>
-        <span class="contact-value">101485king</span>
+        <a href="https://www.instagram.com/101485king" target="_blank" class="contact-value">101485king</a>
       </div>
     </div>
   </div>
