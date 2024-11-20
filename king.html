@@ -19,7 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1rem 0; /* Reduced from 2rem */
     position: fixed;
     width: 100%;
     top: 0;
@@ -39,7 +39,7 @@
     font-weight: 700;
     letter-spacing: 4px;
     text-align: center;
-    padding: 1rem 0;
+    padding: 1rem 0; /* Reduced from 1.5rem */
     line-height: 1.3;
   }
 
@@ -47,7 +47,7 @@
     display: flex;
     gap: 3rem;
     justify-content: center;
-    margin-top: 0.5rem;
+    margin-top: 0.5rem; /* Reduced from 1rem */
   }
 
   .nav-links a {
@@ -59,8 +59,8 @@
     display: inline-block;
     width: 60px;
     text-align: center;
-    height: 24px;
-    line-height: 24px;
+    height: 24px; /* Adjusted to match text height */
+    line-height: 24px; /* Added to align text vertically */
   }
 
   .nav-links a span {
@@ -69,8 +69,8 @@
     position: absolute;
     width: 100%;
     left: 0;
-    height: 24px;
-    line-height: 24px;
+    height: 24px; /* Match container height */
+    line-height: 24px; /* Match container line-height */
   }
 
   .nav-links a .en {
@@ -79,7 +79,7 @@
   }
 
   .nav-links a .cn {
-    top: 0;
+    top: 0; /* Positioned at same height */
     transform: translateY(100%);
   }
 
@@ -112,7 +112,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 2rem; /* Reduced from 4rem */
   }
 
   .hero-content {
@@ -180,18 +180,18 @@
 
     .logo {
       font-size: 2.2rem;
-      padding: 0.5rem 0;
+      padding: 0.5rem 0; /* Reduced padding further for mobile */
     }
 
     .projects-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr; /* Single column for mobile */
       padding: 1rem;
       gap: 1.5rem;
     }
 
     .hero {
       padding: 2rem 1rem;
-      margin-top: 4rem;
+      margin-top: 4rem; /* Adjusted for mobile */
     }
 
     .project-filters {
@@ -226,7 +226,7 @@
   .search-container {
     display: flex;
     justify-content: center;
-    margin-top: 4rem;
+    margin-top: 4rem; /* Reduced from 6rem */
   }
 
   .search-box {
@@ -287,140 +287,314 @@
     transform: scale(1);
   }
 
-  #aboutModal .modal-content {
-    max-width: 800px; /* Reduce from full width */
-    width: 90%;
-    margin: 5% auto;
-    border-radius: 12px;
-    height: auto; /* Remove fixed height */
-    min-height: 60vh;
-    max-height: 90vh;
-    background: white;
-    padding: 3rem;
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically */
+    padding: 4rem 0; /* Add some vertical padding */
     position: relative;
+    background-color: #f5f5f3;
+    margin: 0; /* Remove margins */
+    padding: 0; /* Remove padding */
+    width: 100%; /* Full width */
+    height: 100vh; /* Full height */
+    max-width: none; /* Remove max-width constraint */
+    max-height: none; /* Remove max-height constraint */
+    border-radius: 0; /* Remove border radius */
     overflow-y: auto;
   }
 
-  #aboutModal .close-button,
-  #projectDetailModal .close-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: rgba(0, 0, 0, 0.1);
-    font-size: 28px;
-    cursor: pointer;
+  .modal-section {
+    margin-bottom: 2rem; /* Reduced from 3rem */
+    padding: 0 20%;
+    text-align: center; /* Center align all text */
+  }
+
+  .modal-section h2 {
+    font-size: 1.8rem; /* Reduced from 2.4rem */
+    margin-bottom: 1.5rem; /* Reduced from 2rem */
+    font-weight: 400; /* Lighter weight */
     color: #1a1a1a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-    transition: all 0.3s ease;
-    border-radius: 50%;
-    font-weight: 700;
-  }
-
-  #aboutModal .close-button:hover,
-  #projectDetailModal .close-button:hover {
-    background: rgba(0, 0, 0, 0.2);
-    transform: rotate(90deg);
-  }
-
-  #aboutModal .modal-section {
-    margin-bottom: 3.5rem;
-    padding: 0 2rem;
-    text-align: left;
-  }
-
-  #aboutModal .modal-section h2 {
-    font-size: 2.4rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    color: #1a1a1a;
-    letter-spacing: 0.05em;
     position: relative;
+    padding-bottom: 0.8rem; /* Reduced padding */
+    text-align: center; /* Center align headings */
   }
 
-  #aboutModal .modal-section h2:after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 60px;
-    height: 2px;
-    background: #1a1a1a;
-  }
-
-  #aboutModal .modal-section p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #4a4a4a;
-    margin-bottom: 2rem;
-    letter-spacing: 0.02em;
-  }
-
-  #aboutModal .payment-terms {
-    list-style: none;
+  .payment-terms {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; /* Reduced from 2rem */
+    margin: 2rem auto; /* Center the grid horizontally */
     padding: 0;
-    margin: 0;
+    list-style: none;
+    max-width: 1200px; /* Limit maximum width */
   }
 
-  #aboutModal .payment-item {
-    margin-bottom: 2.5rem;
-    padding-left: 0;
-    position: relative;
+  .payment-item {
+    background: #fff;
+    padding: 1.8rem; /* Reduced from 2rem */
+    border-radius: 10px; /* Slightly reduced */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s ease;
+    text-align: center; /* Center align payment item content */
   }
 
-  #aboutModal .payment-title {
-    display: block;
-    font-size: 1.2rem;
+  .payment-title {
+    font-size: 1rem; /* Reduced from 1.2rem */
     font-weight: 500;
     color: #1a1a1a;
-    margin-bottom: 1rem;
-    letter-spacing: 0.05em;
+    margin-bottom: 0.8rem; /* Reduced from 1rem */
+    position: relative;
+    padding-bottom: 0.4rem;
+    text-align: center; /* Center align payment titles */
   }
 
-  #aboutModal .payment-item p {
-    font-size: 1rem;
-    line-height: 1.8;
+  .payment-item p {
     color: #666;
+    line-height: 1.5; /* Reduced from 1.6 */
     margin: 0;
-    padding-left: 1rem;
-    border-left: 2px solid #eee;
-  }
-
-  #aboutModal.active .modal-content {
-    animation: modalSlideIn 0.4s ease-out forwards;
-  }
-
-  @keyframes modalSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    font-size: 0.9rem; /* Added smaller font size */
   }
 
   @media (max-width: 768px) {
-    #aboutModal .modal-content {
-      width: 95%;
-      padding: 2rem;
+    .modal-section {
+      padding: 0 10%;
     }
     
-    #aboutModal .modal-section {
-      padding: 0 1rem;
+    .modal-section h2 {
+      font-size: 1.5rem;
     }
     
-    #aboutModal .modal-section h2 {
-      font-size: 1.8rem;
+    .payment-terms {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
     }
   }
 
+  /* Add new styles for project filters */
+  .project-filters {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem; /* Adjust if needed */
+    margin-bottom: 1rem; /* Add bottom margin to get closer to projects */
+    flex-wrap: wrap;
+  }
+
+  .filter-button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .filter-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(26, 26, 26, 0.05);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+
+  .filter-button:hover::before {
+    width: 150px;
+    height: 150px;
+  }
+
+  .filter-button:hover {
+    color: #1a1a1a;
+  }
+
+  .filter-button:hover::after {
+    width: 80%;
+  }
+
+  .filter-button.active {
+    color: #1a1a1a;
+    font-weight: 500;
+  }
+
+  .filter-button.active::after {
+    width: 80%;
+  }
+
+  /* Add these styles for the project showcase */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Increase from 300px */
+    gap: 2.5rem; /* Slightly increase gap for better spacing */
+    padding: 2.5rem;
+    margin-top: 0.5rem; /* Reduced from previous value to bring it closer to filters */
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    visibility: visible !important; /* Force visibility */
+  }
+
+  .project-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Remove fixed aspect ratio */
+    aspect-ratio: auto; 
+  }
+
+  .project-image {
+    width: 100%;
+    height: auto; /* Let height adjust automatically */
+    display: block; /* Remove any extra spacing */
+    object-fit: contain; /* Ensure image maintains its proportions */
+  }
+
+  .project-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover .project-title {
+    transform: translateY(-5px);
+  }
+
+  /* Add an overlay effect on hover */
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+  }
+
+  .project-card:hover::after {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  /* Add new styles for contact section */
+  .contact-section {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 4rem 2rem;
+    margin-top: 4rem;
+  }
+
+  .contact-content {
+    max-width: 1200px; /* Limit maximum width */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-info {
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    gap: 5rem; /* Increase gap between items */
+    margin: 0 auto; /* Center the contact info */
+    flex-wrap: wrap;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+    min-width: 150px; /* Set minimum width for each item */
+  }
+
+  .contact-label {
+    font-size: 0.9rem;
+    color: #999;
+  }
+
+  .contact-value {
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .contact-value:hover {
+    color: #ccc;
+  }
+
+  .contact-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  .contact-item:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .contact-section {
+      padding: 2rem 1rem;
+    }
+
+    .contact-content {
+      width: 100%;
+    }
+
+    .contact-info {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-item {
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+
+    .contact-title {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* Add scroll padding for fixed header */
+  html {
+    scroll-padding-top: 120px; /* Accounts for fixed header */
+    scroll-behavior: smooth;
+  }
+
+  /* Add these styles */
   .admin-modal {
     display: none;
     position: fixed;
@@ -579,6 +753,7 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
 
+  /* New styles for project creation form */
   .admin-modal {
     max-height: 90vh;
     overflow-y: auto;
@@ -652,6 +827,7 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   }
 
+  /* Add these styles for multiple photo previews */
   .photos-preview-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -659,6 +835,7 @@
     margin-top: 10px;
   }
 
+  /* Add these styles for the photo input section */
   .photo-input-group {
     display: flex;
     gap: 1rem;
@@ -723,6 +900,7 @@
     justify-content: center;
   }
 
+  /* Add styles for the analytics section */
   .analytics-section {
     padding: 2rem;
     margin-top: 2rem;
@@ -800,6 +978,7 @@
     margin-bottom: 0.5rem;
   }
 
+  /* Add these styles for the select dropdown */
   .form-group select {
     width: 100%;
     padding: 0.8rem;
@@ -830,300 +1009,6 @@
 
   .form-group select option {
     padding: 0.8rem;
-  }
-
-  .back-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: rgba(26, 26, 26, 0.8);
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 99;
-    border: none;
-    backdrop-filter: blur(5px);
-  }
-
-  .back-to-top.visible {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .back-to-top:hover {
-    background-color: rgba(26, 26, 26, 1);
-    transform: translateY(-3px);
-  }
-
-  .back-to-top svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-  }
-
-  .project-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0;
-    width: 100%;
-    min-height: 100vh;
-  }
-
-  .project-description {
-    text-align: left;
-    white-space: pre-line;
-    width: 100%;
-    padding: 4rem 8%;
-    margin: 0;
-    background: white;
-  }
-
-  .project-gallery {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-
-  .lightbox-nav,
-  .lightbox-close {
-    display: none !important;
-  }
-
-  .lightbox-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Add new styles for project filters */
-  .project-filters {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-button {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    background: transparent;
-    color: #666;
-    font-size: 1rem;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-  }
-
-  .filter-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(26, 26, 26, 0.05);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-
-  .filter-button:hover::before {
-    width: 150px;
-    height: 150px;
-  }
-
-  .filter-button:hover {
-    color: #1a1a1a;
-  }
-
-  .filter-button:hover::after {
-    width: 80%;
-  }
-
-  .filter-button.active {
-    color: #1a1a1a;
-    font-weight: 500;
-  }
-
-  .filter-button.active::after {
-    width: 80%;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: 2.5rem;
-    padding: 2.5rem;
-    margin-top: 0.5rem;
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
-    visibility: visible !important;
-  }
-
-  .project-card {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    aspect-ratio: auto; 
-  }
-
-  .project-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-  }
-
-  .project-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.5rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 500;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
-  }
-
-  .project-card:hover .project-title {
-    transform: translateY(-5px);
-  }
-
-  .project-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background 0.3s ease;
-  }
-
-  .project-card:hover::after {
-    background: rgba(0, 0, 0, 0.2);
-  }
-
-  .contact-section {
-    background-color: #1a1a1a;
-    color: #fff;
-    padding: 4rem 2rem;
-    margin-top: 4rem;
-  }
-
-  .contact-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .contact-info {
-    display: flex;
-    justify-content: center;
-    gap: 5rem;
-    margin: 0 auto;
-    flex-wrap: wrap;
-  }
-
-  .contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-    min-width: 150px;
-  }
-
-  .contact-label {
-    font-size: 0.9rem;
-    color: #999;
-  }
-
-  .contact-value {
-    font-size: 1.1rem;
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .contact-value:hover {
-    color: #ccc;
-  }
-
-  .contact-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #fff;
-  }
-
-  .contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-  }
-
-  .contact-item:hover {
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    .contact-section {
-      padding: 2rem 1rem;
-    }
-
-    .contact-content {
-      width: 100%;
-    }
-
-    .contact-info {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .contact-item {
-      width: 100%;
-      text-align: center;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-    }
-
-    .contact-title {
-      font-size: 1.6rem;
-    }
-  }
-
-  html {
-    scroll-padding-top: 120px;
-    scroll-behavior: smooth;
   }
 
   /* Back to top button styles */
@@ -1164,60 +1049,65 @@
     fill: currentColor;
   }
 
-  /* Project Detail Modal */
-  #projectDetailModal .modal-content {
-    padding: 2rem;
-  }
-
-  /* Lightbox for image preview */
-  .lightbox {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-  }
-
-  .lightbox-content {
+  /* New styles for project detail modal */
+  .project-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0; /* Remove padding */
     width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 100vh;
   }
 
-  /* Update the close button styles in the project detail modal */
-  #projectDetailModal .close-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
+  .project-description {
+    text-align: left;
+    white-space: pre-line;
+    width: 100%;
+    padding: 4rem 8%;
+    margin: 0;
+    background: white;
+  }
+
+  .project-gallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0; /* Remove gap */
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Remove these styles from the CSS */
+  .lightbox-nav,
+  .lightbox-close {
+    display: none !important; /* Hide all navigation buttons and close button */
+  }
+
+  /* Update the close button styles */
+  .close-button {
+    position: fixed; /* Change to fixed positioning */
+    top: 20px; /* Position from top */
+    right: 20px; /* Position from right */
+    width: 40px; /* Increase size */
+    height: 40px; /* Increase size */
+    background: rgba(0, 0, 0, 0.5); /* Add semi-transparent background */
     border: none;
-    background: rgba(0, 0, 0, 0.1);
-    font-size: 28px;
+    border-radius: 50%; /* Make it circular */
+    color: white; /* White text color */
+    font-size: 24px; /* Increase font size */
     cursor: pointer;
-    color: #1a1a1a;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1001;
+    z-index: 1001; /* Ensure it's above other content */
     transition: all 0.3s ease;
-    border-radius: 50%;
-    font-weight: 700;
   }
 
-  #projectDetailModal .close-button:hover {
-    background: rgba(0, 0, 0, 0.2);
-    transform: rotate(90deg);
+  .close-button:hover {
+    background: rgba(0, 0, 0, 0.8); /* Darker on hover */
+    transform: scale(1.1); /* Slight scale up on hover */
   }
 
-  #projectDetailModal .modal-content {
-    position: relative; /* Ensure the close button positions relative to modal content */
-  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -1302,24 +1192,15 @@
 
     <div class="modal-section">
       <h2>我的专业服务</h2>
-      <ul class="payment-terms">
-        <li class="payment-item">
-          <span class="payment-title">空间规划与优化</span>
-          <p>我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</p>
-        </li>
-        <li class="payment-item">
-          <span class="payment-title">品牌故事融入</span>
-          <p>我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</p>
-        </li>
-        <li class="payment-item">
-          <span class="payment-title">材料与技术创新</span>
-          <p>我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</p>
-        </li>
+      <ul>
+        <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</li>
+        <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</li>
+        <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</li>
       </ul>
     </div>
 
     <div class="modal-section">
-      <h2>我的工作流程</h2>
+      <h2>合作流程</h2>
       <ul class="payment-terms">
         <li class="payment-item">
           <span class="payment-title">定金支付</span>
@@ -1665,9 +1546,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('logoutAdmin').addEventListener('click', function() {
     adminPanel.style.display = 'none';
     adminModal.style.display = 'none';
-    document.querySelector('.projects-grid').style.display = 'grid';
-    document.querySelector('.hero').style.display = 'flex';
-    document.querySelector('.contact-section').style.display = 'block';
+    document.querySelector('.projects-grid').style.display = 'grid'; // Force grid display
+    document.querySelector('.hero').style.display = 'flex'; // Show hero section
+    document.querySelector('.contact-section').style.display = 'block'; // Show contact section
     
     // Restore all project cards visibility
     document.querySelectorAll('.project-card').forEach(card => {
@@ -1708,9 +1589,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize analytics when admin panel is shown
     initializeAnalytics();
-    initializeHeatmap();
+    initializeHeatmap(); // Initialize heatmap
   }
 
+  // Also modify the deleteProject function to handle both admin and main view
   function deleteProject(index) {
     if(confirm('确定要删除这个项目吗？')) {
       const projects = document.querySelectorAll('.project-card');
@@ -1727,6 +1609,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // Handle editing and deleting projects
   function editProject(index) {
     const project = document.querySelectorAll('.project-card')[index];
     const projectTitle = project.querySelector('.project-title').textContent;
@@ -1743,6 +1626,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('newProjectForm').dataset.editIndex = index;
   }
 
+  // Modify the newProjectForm submit handler to handle both new and edited projects
   let currentFormHandler = newProjectForm.onsubmit;
   newProjectForm.onsubmit = function(e) {
     e.preventDefault();
@@ -1771,9 +1655,10 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProjects();
   };
 
+  // New Project Modal
   function showNewProjectModal() {
     newProjectModal.style.display = 'block';
-    initializePhotoManager();
+    initializePhotoManager(); // Initialize photo manager when modal opens
   }
 
   function closeNewProjectModal() {
@@ -1784,6 +1669,7 @@ document.addEventListener('DOMContentLoaded', function() {
     showNewProjectModal();
   });
 
+  // Add preview functionality for images
   document.getElementById('projectCover').addEventListener('input', function(e) {
     const preview = document.getElementById('coverPreview');
     if (e.target.value) {
@@ -1797,6 +1683,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const preview = document.getElementById('photosPreview');
     const urls = e.target.value.split(',').map(url => url.trim()).filter(url => url);
     
+    // Create preview grid for multiple photos
     preview.innerHTML = `
       <div class="photos-preview-grid">
         ${urls.map(url => `<img src="${url}" alt="Project photo preview">`).join('')}
@@ -1827,6 +1714,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `).join('');
 
+      // Add remove button handlers
       document.querySelectorAll('.remove-photo-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const index = parseInt(btn.dataset.index);
@@ -1836,6 +1724,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
+    // Color extraction from cover image
     const coverInput = document.querySelector('#projectCover');
     coverInput.addEventListener('change', async () => {
       const url = coverInput.value;
@@ -1864,6 +1753,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
         const colors = {};
         
+        // Sample pixels to find dominant color
         for (let i = 0; i < imageData.length; i += 16) {
           const r = imageData[i];
           const g = imageData[i + 1];
@@ -1872,6 +1762,7 @@ document.addEventListener('DOMContentLoaded', function() {
           colors[rgb] = (colors[rgb] || 0) + 1;
         }
         
+        // Find the most common color
         let dominantColor = Object.entries(colors)
           .sort((a, b) => b[1] - a[1])[0][0];
         
@@ -1882,12 +1773,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Project filter handling
   const filterButtons = document.querySelectorAll('.filter-button');
   const projectCards = document.querySelectorAll('.project-card');
   
   filterButtons.forEach(button => {
     button.addEventListener('click', function() {
+      // Remove active class from all buttons
       filterButtons.forEach(btn => btn.classList.remove('active'));
+      // Add active class to clicked button
       this.classList.add('active');
       
       const filterValue = this.textContent.trim();
@@ -1895,6 +1789,7 @@ document.addEventListener('DOMContentLoaded', function() {
       projectCards.forEach(card => {
         if (filterValue === '全部项目' || card.dataset.projectType === filterValue) {
           card.style.display = 'block';
+          // Add fade in animation
           card.style.opacity = '0';
           setTimeout(() => {
             card.style.opacity = '1';
@@ -1909,8 +1804,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  // Update project card click behavior to show modal
   document.querySelectorAll('.project-card').forEach(card => {
-    card.style.cursor = 'pointer';
+    card.style.cursor = 'pointer'; // Change cursor back to pointer
     card.addEventListener('click', function(e) {
       e.preventDefault();
       const projectId = this.dataset.projectId;
@@ -1918,28 +1814,34 @@ document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('projectDetailModal');
         const content = projectContent[projectId];
         
+        // Update modal content
         document.getElementById('modalProjectTitle').textContent = content.title;
         document.getElementById('modalProjectText').textContent = content.text;
         
+        // Update gallery
         const gallery = modal.querySelector('.project-gallery');
         gallery.innerHTML = content.images.map(img => 
           `<img src="${img}" alt="${content.title}" style="width: 100%; height: auto;">`
         ).join('');
         
+        // Show modal
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         
+        // Initialize lightbox
         initializeLightbox();
       }
     });
   });
 
+  // Update project links to prevent default behavior
   projectLink.addEventListener('click', function(e) {
     e.preventDefault();
     const projectsSection = document.querySelector('.projects-grid');
     projectsSection.scrollIntoView({ behavior: 'smooth' });
   });
 
+  // Update the project content in the projectContent object
   const projectContent = {
     'killers-dance': {
       title: 'killers舞蹈工作室',
@@ -2002,6 +1904,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
+  // Update the project details in the modal
   function showProjectModal(projectId) {
     if (!projectContent[projectId]) {
       console.error('Project content not found:', projectId);
@@ -2011,9 +1914,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('projectDetailModal');
     const content = projectContent[projectId];
     
+    // Update modal content
     modal.querySelector('#modalProjectTitle').textContent = content.title;
     modal.querySelector('#modalProjectText').textContent = content.text;
     
+    // Update gallery with proper image handling
     const gallery = modal.querySelector('.project-gallery');
     gallery.innerHTML = content.images.map(img => 
       `<img src="${img}" alt="${content.title}" style="width: 100%; height: auto;">`
@@ -2031,6 +1936,7 @@ function initializeLightbox() {
   let currentImageIndex = 0;
   let images = [];
 
+  // Setup gallery image click handlers
   document.querySelectorAll('.project-gallery img').forEach((img, index) => {
     img.addEventListener('click', () => {
       images = Array.from(document.querySelectorAll('.project-gallery img')).map(img => img.src);
@@ -2051,11 +1957,13 @@ function initializeLightbox() {
     };
   }
 
+  // Click anywhere to close
   lightbox.addEventListener('click', () => {
     lightbox.classList.remove('active');
     document.body.style.overflow = '';
   });
 
+  // Keyboard navigation - only keep Escape key
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
     
