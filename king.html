@@ -32,7 +32,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding-top: 2rem; /* Added padding at top */
   }
 
   .logo {
@@ -40,7 +39,7 @@
     font-weight: 700;
     letter-spacing: 4px;
     text-align: center;
-    padding: 1.5rem 0; /* Increased padding */
+    padding: 1rem 0; /* Reduced from 1.5rem */
     line-height: 1.3;
   }
 
@@ -113,19 +112,17 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    margin-top: 8rem; /* Increased from 2rem to 8rem to move content down */
-    padding-bottom: 4rem; /* Added padding at bottom */
+    margin-top: 2rem; /* Reduced from 4rem */
   }
 
   .hero-content {
     max-width: 800px;
-    padding-top: 4rem; /* Added padding at top */
   }
 
   .hero h1 {
     font-size: 4rem;
     font-weight: 300;
-    margin-bottom: 3rem; /* Increased from 2rem to 3rem */
+    margin-bottom: 2rem;
     line-height: 1.2;
     opacity: 0;
     animation: fadeInTyping 2s ease-out forwards;
@@ -169,19 +166,10 @@
     font-size: 1.2rem;
     line-height: 1.6;
     color: #666;
-    margin-bottom: 4rem; /* Increased from 3rem to 4rem */
+    margin-bottom: 3rem;
   }
 
   @media (max-width: 768px) {    
-    .hero {
-      margin-top: 6rem; /* Slightly less margin on mobile */
-      padding: 2rem 1rem;
-    }
-    
-    .hero-content {
-      padding-top: 2rem; /* Less padding on mobile */
-    }
-
     .hero h1 {
       font-size: 2.5rem;
     }
@@ -199,6 +187,11 @@
       grid-template-columns: 1fr; /* Single column for mobile */
       padding: 1rem;
       gap: 1.5rem;
+    }
+
+    .hero {
+      padding: 2rem 1rem;
+      margin-top: 4rem; /* Adjusted for mobile */
     }
 
     .project-filters {
@@ -233,7 +226,7 @@
   .search-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 3rem; /* Added margin at bottom */
+    margin-top: 4rem; /* Reduced from 6rem */
   }
 
   .search-box {
@@ -384,8 +377,8 @@
     display: flex;
     justify-content: center;
     gap: 2rem;
-    margin-top: 2rem; /* Increased margin */
-    margin-bottom: 2rem; /* Added margin at bottom */
+    margin-top: 1.5rem; /* Adjust if needed */
+    margin-bottom: 1rem; /* Add bottom margin to get closer to projects */
     flex-wrap: wrap;
   }
 
@@ -1181,6 +1174,16 @@
     >
     <div class="project-title">福升玉器珠宝店</div>
   </div>
+  <div class="project-card" data-project-type="商业设计" data-project-id="wild-cake">
+    <img 
+      class="project-image" 
+      src="https://i.ibb.co/HntNys5/2.png" 
+      alt="野望蛋糕店 - 甜品烘焙店空间" 
+      width="600" 
+      height="400"
+    >
+    <div class="project-title">野望蛋糕店</div>
+  </div>
 </div>
 
 <div id="aboutModal" class="modal">
@@ -1654,7 +1657,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Create new project with type
       const newProject = document.createElement('div');
       newProject.className = 'project-card';
-      newProject.dataset.projectType = projectType;
+      newProject.dataset.projectType = projectType; // Set project type
       // ... rest of new project creation code
     }
     
@@ -1863,26 +1866,47 @@ document.addEventListener('DOMContentLoaded', function() {
       `,
       images: [
         'https://i.ibb.co/TtCXxTn/1.png',
-        'https://i.ibb.co/CP8Z7Zw/2.jpg',
-        'https://i.ibb.co/KLTWkmy/3.jpg',
-        'https://i.ibb.co/WPm6yR3/4.jpg',
-        'https://i.ibb.co/TmMcxXC/5.jpg',
-        'https://i.ibb.co/Ln9G554/6.jpg',
-        'https://i.ibb.co/X852R2B/7.jpg',
-        'https://i.ibb.co/PQ82FKv/8.jpg',
-        'https://i.ibb.co/3pJR07K/9.jpg',
-        'https://i.ibb.co/DMb2T9x/10.jpg',
-        'https://i.ibb.co/dJcmpJs/11.jpg',
-        'https://i.ibb.co/0j3vm3g/12.jpg',
-        'https://i.ibb.co/jTgLQQk/13.jpg',
-        'https://i.ibb.co/mckHb2q/14.jpg',
-        'https://i.ibb.co/5jsdLtv/15.jpg',
-        'https://i.ibb.co/tQgNZrY/16.jpg',
-        'https://i.ibb.co/zJPgsQM/17.jpg',
-        'https://i.ibb.co/JFLDb5r/18.jpg',
-        'https://i.ibb.co/XtNf0JR/19.jpg',
-        'https://i.ibb.co/vmkHCfx/20.jpg',
-        'https://i.ibb.co/JnHgBB0/21.jpg'
+        'https://i.ibb.co/gmbnpXg/2.png',
+        'https://i.ibb.co/2kZZsHj/3.png',
+        'https://i.ibb.co/n3hZ7KV/4.png',
+        'https://i.ibb.co/wWm5cDt/5.png',
+        'https://i.ibb.co/zRWdTQS/6.png',
+        'https://i.ibb.co/qYxS4rM/7.png',
+        'https://i.ibb.co/wLdgH90/8.png',
+        'https://i.ibb.co/LNnHq4M/9.png',
+        'https://i.ibb.co/DYL1nDj/10.png',
+        'https://i.ibb.co/2nj21dq/11.png',
+        'https://i.ibb.co/cYZQ6WN/12.png',
+        'https://i.ibb.co/f90ZXxd/13-1.png',
+        'https://i.ibb.co/X2q4w71/13.png',
+        'https://i.ibb.co/m4zxCnH/14-1.png',
+        'https://i.ibb.co/WzKVbzC/14.png',
+        'https://i.ibb.co/vjnvVd3/15.png',
+        'https://i.ibb.co/wrHzSgF/16.png',
+        'https://i.ibb.co/PMYhwxn/17.png',
+        'https://i.ibb.co/ZhPc0Tp/18.png',
+        'https://i.ibb.co/nkd59Kp/20-1.png',
+        'https://i.ibb.co/zNW7Ggr/20-4.png',
+        'https://i.ibb.co/zh6pFtm/21.png',
+        'https://i.ibb.co/FxRBz93/22-1.png',
+        'https://i.ibb.co/ysSSrc9/22-2.png',
+        'https://i.ibb.co/2YDFGMG/22.png',
+        'https://i.ibb.co/SftGJVv/23.png',
+        'https://i.ibb.co/fGJqC1M/24-1.png',
+        'https://i.ibb.co/dJ9y8v6/24.png',
+        'https://i.ibb.co/h8vpH69/25.png',
+        'https://i.ibb.co/hYDD4K7/26.png',
+        'https://i.ibb.co/2MfrZ70/27.png',
+        'https://i.ibb.co/G2T40bW/28.png',
+        'https://i.ibb.co/tPBcdBb/29-1.png',
+        'https://i.ibb.co/XFLdy06/30.png',
+        'https://i.ibb.co/M22xMHj/31-1.png',
+        'https://i.ibb.co/vhqx1rK/31.png',
+        'https://i.ibb.co/xfnFjqh/32.png',
+        'https://i.ibb.co/ZYvDjFL/33.png',
+        'https://i.ibb.co/XD0ZBSr/34.png',
+        'https://i.ibb.co/cDsD8SH/35.jpg',
+        'https://i.ibb.co/vZ4x6Xf/36.jpg'
       ]
     },
     'fusheng-jewelry': {
@@ -1907,6 +1931,32 @@ document.addEventListener('DOMContentLoaded', function() {
         'https://i.ibb.co/LpnPsfm/8.png',
         'https://i.ibb.co/z86RqK9/9.png',
         'https://i.ibb.co/Fhf4qbL/10.jpg'
+      ]
+    },
+    'wild-cake': {
+      title: '野望蛋糕店',
+      text: `
+        项目名称：野望蛋糕店
+        项目类型：蛋糕商业空间
+        项目地点：中国广州市体育东路
+        完成时间：2024.08
+
+        作为设计师，我将这家蛋糕店的空间设计成一场视觉与味觉的盛宴。店内布局以"花与蛋糕的和谐"为核心理念，每个设计细节都旨在创造一个既现代又温馨的环境。墙面采用淡雅色彩，与精心挑选的鲜花装饰相映成趣，而蛋糕展示区则以简洁线条和明亮灯光突出每一款蛋糕的独特性。空间规划考虑到顾客的流动和互动，确保每位顾客都能享受到舒适而愉悦的购物体验。无论是选择特别的礼物，还是享受一段宁静的下午茶时光，这里的空间设计都旨在提升感官享受，让顾客在每一个细节中感受到精致与关怀。
+      `,
+      images: [
+        'https://i.ibb.co/HntNys5/2.png',
+        'https://i.ibb.co/GM9pTN4/1.png',
+        'https://i.ibb.co/P5fN9dh/3.png',
+        'https://i.ibb.co/RPmbJZK/4-1.png',
+        'https://i.ibb.co/ccWNF3P/7-1.png',
+        'https://i.ibb.co/b74z3jP/8-1.png',
+        'https://i.ibb.co/Ns2kMpk/9-1.png',
+        'https://i.ibb.co/DRTGFKj/11.png',
+        'https://i.ibb.co/cFbqJBt/13.png',
+        'https://i.ibb.co/jw2ZNDG/15.png',
+        'https://i.ibb.co/HdxS22M/16.png',
+        'https://i.ibb.co/sK02dCH/image.png',
+        'https://i.ibb.co/3WhJwgP/image.png'
       ]
     }
   };
