@@ -1108,6 +1108,47 @@
     transform: scale(1.1); /* Slight scale up on hover */
   }
 
+  /* Add these styles for the new project form */
+  .photo-preview-item {
+    position: relative;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .photo-preview-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .remove-photo-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+
+  .remove-photo-btn:hover {
+    background: rgba(0,0,0,0.8);
+  }
+
+  .photos-preview-container {
+    margin-top: 1rem;
+  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -1183,6 +1224,16 @@
       height="400"
     >
     <div class="project-title">野望蛋糕店</div>
+  </div>
+  <div class="project-card" data-project-type="商业设计" data-project-id="drum-island-music">
+    <img 
+      class="project-image" 
+      src="https://i.ibb.co/LYtFNqL/1.png" 
+      alt="鼓屿音乐工作室 - 音乐商业空间" 
+      width="600" 
+      height="400"
+    >
+    <div class="project-title">鼓屿音乐工作室</div>
   </div>
 </div>
 
@@ -1572,216 +1623,140 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectManagement = document.getElementById('projectManagement');
     const projects = document.querySelectorAll('.project-card');
     
-    // Store the projects grid content before modifying for admin panel
-    const projectsGridContent = document.querySelector('.projects-grid').innerHTML;
+    // Clear existing content first
+    projectManagement.innerHTML = '';
     
-    projectManagement.innerHTML = Array.from(projects).map((project, index) => `
-      <div class="project-item">
-        <span>${project.querySelector('.project-title').textContent}</span>
+    // Add projects to management panel
+    projects.forEach((project, index) => {
+      const projectTitle = project.querySelector('.project-title').textContent;
+      const projectDiv = document.createElement('div');
+      projectDiv.className = 'project-item';
+      projectDiv.innerHTML = `
+        <span>${projectTitle}</span>
         <div class="button-group">
           <button class="edit-btn" data-index="${index}">编辑</button>
           <button class="delete-btn" data-index="${index}">删除</button>
         </div>
-      </div>
-    `).join('');
+      `;
+      projectManagement.appendChild(projectDiv);
+    });
 
-    // Add event listeners for edit and delete buttons
-    document.querySelectorAll('.edit-btn').forEach(btn => {
+    // Add event listeners
+    projectManagement.querySelectorAll('.edit-btn').forEach(btn => {
       btn.addEventListener('click', () => editProject(parseInt(btn.dataset.index)));
     });
 
-    document.querySelectorAll('.delete-btn').forEach(btn => {
+    projectManagement.querySelectorAll('.delete-btn').forEach(btn => {
       btn.addEventListener('click', () => deleteProject(parseInt(btn.dataset.index)));
     });
 
-    // Ensure projects are still visible in main view
-    document.querySelector('.projects-grid').innerHTML = projectsGridContent;
-
-    // Initialize analytics when admin panel is shown
+    // Initialize analytics
     initializeAnalytics();
-    initializeHeatmap(); // Initialize heatmap
+    initializeHeatmap();
   }
 
-  // Also modify the deleteProject function to handle both admin and main view
+  // Update the delete project functionality
   function deleteProject(index) {
     if(confirm('确定要删除这个项目吗？')) {
       const projects = document.querySelectorAll('.project-card');
-      const projectsGrid = document.querySelector('.projects-grid');
-      
-      // Remove from both admin panel and main view
-      projects[index].remove();
-      const mainViewProjects = projectsGrid.querySelectorAll('.project-card');
-      if(mainViewProjects[index]) {
-          mainViewProjects[index].remove();
+      if(projects[index]) {
+        projects[index].remove();
+        // Refresh projects in admin panel
+        loadProjects();
       }
-      
-      loadProjects(); // Refresh the project list
     }
   }
 
-  // Handle editing and deleting projects
-  function editProject(index) {
-    const project = document.querySelectorAll('.project-card')[index];
-    const projectTitle = project.querySelector('.project-title').textContent;
-    const projectImage = project.querySelector('.project-image').src;
-    const projectType = project.dataset.projectType;
-    
-    // Show new project modal with existing data
-    document.getElementById('newProjectModal').style.display = 'block';
-    document.getElementById('projectTitle').value = projectTitle;
-    document.getElementById('projectCover').value = projectImage;
-    document.getElementById('projectType').value = projectType || '';
-    
-    // Add data-edit-index to form to know which project we're editing
-    document.getElementById('newProjectForm').dataset.editIndex = index;
-  }
-
-  // Modify the newProjectForm submit handler to handle both new and edited projects
-  let currentFormHandler = newProjectForm.onsubmit;
-  newProjectForm.onsubmit = function(e) {
+  // Add new project functionality
+  document.getElementById('newProjectForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const projectType = document.getElementById('projectType').value;
-    
-    if(this.dataset.editIndex !== undefined) {
-      // Update existing project
-      const projects = document.querySelectorAll('.project-card');
-      const project = projects[this.dataset.editIndex];
-      
-      project.querySelector('.project-title').textContent = document.getElementById('projectTitle').value;
-      project.querySelector('.project-image').src = document.getElementById('projectCover').value;
-      project.dataset.projectType = projectType; // Add project type to dataset
-      
-      delete this.dataset.editIndex;
-    } else {
-      // Create new project with type
-      const newProject = document.createElement('div');
-      newProject.className = 'project-card';
-      newProject.dataset.projectType = projectType; // Set project type
-      // ... rest of new project creation code
+    const title = document.getElementById('projectTitle').value;
+    const coverImage = document.getElementById('projectCover').value;
+    const description = document.getElementById('projectDescription').value;
+    const type = document.getElementById('projectType').value;
+    const photos = Array.from(document.querySelectorAll('.photo-preview-item img')).map(img => img.src);
+
+    if(!title || !coverImage || !type) {
+      alert('请填写必要的项目信息');
+      return;
     }
+
+    // Create project ID from title
+    const projectId = title.toLowerCase().replace(/\s+/g, '-');
+
+    // Create new project card
+    const projectCard = document.createElement('div');
+    projectCard.className = 'project-card';
+    projectCard.dataset.projectType = type;
+    projectCard.dataset.projectId = projectId;
     
-    closeNewProjectModal();
-    loadProjects();
-  };
-
-  // New Project Modal
-  function showNewProjectModal() {
-    newProjectModal.style.display = 'block';
-    initializePhotoManager(); // Initialize photo manager when modal opens
-  }
-
-  function closeNewProjectModal() {
-    newProjectModal.style.display = 'none';
-  }
-
-  document.getElementById('addNewProject').addEventListener('click', function() {
-    showNewProjectModal();
-  });
-
-  // Add preview functionality for images
-  document.getElementById('projectCover').addEventListener('input', function(e) {
-    const preview = document.getElementById('coverPreview');
-    if (e.target.value) {
-      preview.innerHTML = `<img src="${e.target.value}" alt="Cover preview">`;
-    } else {
-      preview.innerHTML = '';
-    }
-  });
-
-  document.getElementById('projectPhotos').addEventListener('input', function(e) {
-    const preview = document.getElementById('photosPreview');
-    const urls = e.target.value.split(',').map(url => url.trim()).filter(url => url);
-    
-    // Create preview grid for multiple photos
-    preview.innerHTML = `
-      <div class="photos-preview-grid">
-        ${urls.map(url => `<img src="${url}" alt="Project photo preview">`).join('')}
-      </div>
+    projectCard.innerHTML = `
+      <img class="project-image" src="${coverImage}" alt="${title}" width="600" height="400">
+      <div class="project-title">${title}</div>
     `;
+
+    // Add project content
+    window.projectContent = window.projectContent || {};
+    window.projectContent[projectId] = {
+      title: title,
+      text: description,
+      images: [coverImage, ...photos]
+    };
+
+    // Add to projects grid
+    const projectsGrid = document.querySelector('.projects-grid');
+    projectsGrid.appendChild(projectCard);
+
+    // Refresh admin panel
+    loadProjects();
+
+    // Close modal and reset form
+    document.getElementById('newProjectModal').style.display = 'none';
+    this.reset();
   });
 
-  function initializePhotoManager() {
-    const photoUrls = [];
-    const photosContainer = document.querySelector('.photos-preview-container');
-    const addPhotoBtn = document.querySelector('.add-photo-btn');
-    const photoInput = document.querySelector('#projectPhotos');
-
-    addPhotoBtn.addEventListener('click', () => {
-      const url = photoInput.value.trim();
-      if (url) {
-        photoUrls.push(url);
-        updatePhotosPreviews();
-        photoInput.value = '';
+  // Fix modal closing
+  document.querySelectorAll('.close-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const modal = this.closest('.modal');
+      if(modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
       }
     });
+  });
 
-    function updatePhotosPreviews() {
-      photosContainer.innerHTML = photoUrls.map((url, index) => `
-        <div class="photo-preview-item">
-          <img src="${url}" alt="Project photo ${index + 1}">
-          <button class="remove-photo-btn" data-index="${index}">×</button>
-        </div>
-      `).join('');
+  // Fix photo preview functionality
+  document.querySelector('.add-photo-btn').addEventListener('click', function() {
+    const photoUrl = document.getElementById('projectPhotos').value.trim();
+    if (photoUrl) {
+      const container = document.querySelector('.photos-preview-container');
+      const photoDiv = document.createElement('div');
+      photoDiv.className = 'photo-preview-item';
+      
+      const img = new Image();
+      img.src = photoUrl;
+      img.onerror = () => {
+        alert('图片加载失败，请检查URL是否正确');
+        photoDiv.remove();
+      };
+      
+      photoDiv.innerHTML = `
+        <img src="${photoUrl}" alt="Project photo">
+        <button type="button" class="remove-photo-btn">×</button>
+      `;
+      
+      container.appendChild(photoDiv);
+      document.getElementById('projectPhotos').value = '';
 
-      // Add remove button handlers
-      document.querySelectorAll('.remove-photo-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const index = parseInt(btn.dataset.index);
-          photoUrls.splice(index, 1);
-          updatePhotosPreviews();
-        });
+      // Add remove functionality
+      photoDiv.querySelector('.remove-photo-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        photoDiv.remove();
       });
     }
-
-    // Color extraction from cover image
-    const coverInput = document.querySelector('#projectCover');
-    coverInput.addEventListener('change', async () => {
-      const url = coverInput.value;
-      if (url) {
-        try {
-          const color = await extractDominantColor(url);
-          document.querySelector('#projectColor').value = color;
-        } catch (err) {
-          console.error('Error extracting color:', err);
-        }
-      }
-    });
-  }
-
-  async function extractDominantColor(imageUrl) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-        
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-        const colors = {};
-        
-        // Sample pixels to find dominant color
-        for (let i = 0; i < imageData.length; i += 16) {
-          const r = imageData[i];
-          const g = imageData[i + 1];
-          const b = imageData[i + 2];
-          const rgb = `rgb(${r},${g},${b})`;
-          colors[rgb] = (colors[rgb] || 0) + 1;
-        }
-        
-        // Find the most common color
-        let dominantColor = Object.entries(colors)
-          .sort((a, b) => b[1] - a[1])[0][0];
-        
-        resolve(dominantColor);
-      };
-      img.onerror = reject;
-      img.src = imageUrl;
-    });
-  }
+  });
 
   // Project filter handling
   const filterButtons = document.querySelectorAll('.filter-button');
@@ -1957,6 +1932,21 @@ document.addEventListener('DOMContentLoaded', function() {
         'https://i.ibb.co/HdxS22M/16.png',
         'https://i.ibb.co/sK02dCH/image.png',
         'https://i.ibb.co/3WhJwgP/image.png'
+      ]
+    },
+    'drum-island-music': {
+      title: '鼓屿音乐工作室',
+      text: `
+项目名称：鼓屿音乐工作室
+项目类型：音乐商业空间
+项目地点：中国广州市番禺区
+完成时间：2024.06
+
+欢迎来到鼓屿音乐，一个将音乐元素与教培空间完美融合的创新设计。在这里，音乐不仅仅是教学的内容，更是环境设计的灵魂。作为一名设计师，我将音乐的精髓融入到鼓屿音乐的每一个角落。前台设计巧妙地将音响设备整合其中，不仅作为空间的声音源泉，也是视觉焦点，展现音乐的力量和动感。休息区的茶几，由架子鼓的鼓架创意改造，为等待的家长和学生提供了一个既实用又充满节奏感的休息场所。墙上的壁灯和休息区的吊灯，采用镲片改造而成，光影之间，仿佛能听到金属的清脆回响，为空间增添了一抹独特的音乐色彩。而挂钥匙的挂杆，则是利用架子鼓的鼓棒精心打造，既实用又具有装饰性，体现了音乐与日常生活的紧密联系。鼓屿音乐的设计，是对音乐教培空间的一次革新。我们不仅教授音乐，更通过环境设计，让音乐的韵律和节奏渗透到每一个细节，让每一位踏入鼓屿音乐的人都能感受到音乐的魅力。
+      `,
+      images: [
+        'https://i.ibb.co/LYtFNqL/1.png'
+        // Add more images if available
       ]
     }
   };
