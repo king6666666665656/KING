@@ -1,2138 +1,1065 @@
-<html><head><base href="/">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KING-DESIGN | Independent Designer</title>
+<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>KING-DESIGN</title>
+<!-- 引入Tailwind CSS和必需的JavaScript库 -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+  :root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #333;
+    --accent-color: #gold;
+  }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
   }
 
   body {
-    background-color: #f5f5f3;
-    color: #1a1a1a;
+    background-color: #fafafa;
+    color: var(--primary-color);
   }
 
-  nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem 0; /* Reduced from 2rem */
-    position: fixed;
-    width: 100%;
+  .nav-item {
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .nav-item::after {
+    content: attr(data-cn);
+    position: absolute;
     top: 0;
-    background-color: rgba(245, 245, 243, 0.95);
-    z-index: 100;
-  }
-
-  .nav-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    left: 0;
     width: 100%;
-  }
-
-  .logo {
-    font-size: 3.2rem;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-align: center;
-    padding: 1rem 0; /* Reduced from 1.5rem */
-    line-height: 1.3;
-  }
-
-  .nav-links {
+    height: 100%;
     display: flex;
-    gap: 3rem;
+    align-items: center;
     justify-content: center;
-    margin-top: 0.5rem; /* Reduced from 1rem */
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
-  .nav-links a {
-    text-decoration: none;
-    color: #1a1a1a;
-    font-size: 1rem;
+  .nav-item:hover .en {
+    opacity: 0;
+  }
+
+  .nav-item:hover::after {
+    opacity: 1;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .project-card {
     position: relative;
     overflow: hidden;
-    display: inline-block;
-    width: 60px;
-    text-align: center;
-    height: 24px; /* Adjusted to match text height */
-    line-height: 24px; /* Added to align text vertically */
+    border-radius: 8px;
+    transition: transform 0.3s ease;
   }
 
-  .nav-links a span {
-    display: block;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    position: absolute;
-    width: 100%;
-    left: 0;
-    height: 24px; /* Match container height */
-    line-height: 24px; /* Match container line-height */
-  }
-
-  .nav-links a .en {
-    top: 0;
-    transform: translateY(0);
-  }
-
-  .nav-links a .cn {
-    top: 0; /* Positioned at same height */
-    transform: translateY(100%);
-  }
-
-  .nav-links a:hover .en {
-    transform: translateY(-100%);
-  }
-
-  .nav-links a:hover .cn {
-    transform: translateY(0);
-  }
-
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: 0;
-    left: 0;
-    background-color: #1a1a1a;
-    transition: width 0.3s ease;
-  }
-
-  .nav-links a:hover::after {
-    width: 100%;
-  }
-
-  .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-top: 2rem; /* Reduced from 4rem */
-  }
-
-  .hero-content {
-    max-width: 800px;
-  }
-
-  .hero h1 {
-    font-size: 4rem;
-    font-weight: 300;
-    margin-bottom: 2rem;
-    line-height: 1.2;
-    opacity: 0;
-    animation: fadeInTyping 2s ease-out forwards;
-    position: relative;
-  }
-
-  @keyframes fadeInTyping {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-      clip-path: inset(0 100% 0 0);
-    }
-    20% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-      clip-path: inset(0 0 0 0);
-    }
-  }
-
-  .hero h1:hover {
-    animation: glowPulse 2s infinite;
-  }
-
-  @keyframes glowPulse {
-    0% {
-      text-shadow: 0 0 0 rgba(26, 26, 26, 0);
-    }
-    50% {
-      text-shadow: 0 0 20px rgba(26, 26, 26, 0.2);
-    }
-    100% {
-      text-shadow: 0 0 0 rgba(26, 26, 26, 0);
-    }
-  }
-
-  .hero p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #666;
-    margin-bottom: 3rem;
-  }
-
-  @media (max-width: 768px) {    
-    .hero h1 {
-      font-size: 2.5rem;
-    }
-    
-    .nav-links {
-      display: none;
-    }
-
-    .logo {
-      font-size: 2.2rem;
-      padding: 0.5rem 0; /* Reduced padding further for mobile */
-    }
-
-    .projects-grid {
-      grid-template-columns: 1fr; /* Single column for mobile */
-      padding: 1rem;
-      gap: 1.5rem;
-    }
-
-    .hero {
-      padding: 2rem 1rem;
-      margin-top: 4rem; /* Adjusted for mobile */
-    }
-
-    .project-filters {
-      gap: 0.8rem;
-      padding: 0 1rem;
-    }
-
-    .filter-button {
-      font-size: 0.9rem;
-      padding: 0.6rem 1rem;
-      white-space: nowrap;
-    }
-
-    .project-card {
-      width: 100%;
-    }
-
-    .project-image {
-      width: 100%;
-      height: auto;
-    }
-
-    .search-box {
-      padding: 0.8rem;
-    }
-
-    .analytics-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .search-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 4rem; /* Reduced from 6rem */
+  .project-card:hover {
+    transform: translateY(-10px);
   }
 
   .search-box {
-    width: 100%;
-    max-width: 500px;
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
-    border: 1px solid rgba(26, 26, 26, 0.1);
-    border-radius: 30px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    color: #1a1a1a;
-  }
-
-  .search-box:focus {
-    outline: none;
-    border-color: rgba(26, 26, 26, 0.3);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
-  }
-
-  .search-box::placeholder {
-    color: #999;
-    font-weight: 300;
-  }
-
-  .search-box:focus::placeholder {
-    color: #666;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
   }
 
   @media (max-width: 768px) {
+    .project-grid {
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .modal-content {
+      margin: 1rem;
+      padding: 1.5rem;
+      max-width: 95vw;
+    }
+
+    .hero-text {
+      font-size: 2rem;
+    }
+
     .search-box {
-      max-width: 90%;
-      font-size: 1rem;
-      padding: 0.8rem 1.2rem;
+      margin: 0 1rem;
+    }
+
+    .nav-item {
+      padding: 0.25rem 0.5rem;
     }
   }
 
   .modal {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
     z-index: 1000;
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(8px);
-    transform: scale(0.95);
-  }
-
-  .modal.active {
-    display: block;
-    opacity: 1;
-    transform: scale(1);
   }
 
   .modal-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    justify-content: center; /* Center content vertically */
-    padding: 4rem 0; /* Add some vertical padding */
     position: relative;
-    background-color: #f5f5f3;
-    margin: 0; /* Remove margins */
-    padding: 0; /* Remove padding */
-    width: 100%; /* Full width */
-    height: 100vh; /* Full height */
-    max-width: none; /* Remove max-width constraint */
-    max-height: none; /* Remove max-height constraint */
-    border-radius: 0; /* Remove border radius */
-    overflow-y: auto;
-  }
-
-  .modal-section {
-    margin-bottom: 2rem; /* Reduced from 3rem */
-    padding: 0 20%;
-    text-align: center; /* Center align all text */
-  }
-
-  .modal-section h2 {
-    font-size: 1.8rem; /* Reduced from 2.4rem */
-    margin-bottom: 1.5rem; /* Reduced from 2rem */
-    font-weight: 400; /* Lighter weight */
-    color: #1a1a1a;
-    position: relative;
-    padding-bottom: 0.8rem; /* Reduced padding */
-    text-align: center; /* Center align headings */
-  }
-
-  .payment-terms {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem; /* Reduced from 2rem */
-    margin: 2rem auto; /* Center the grid horizontally */
-    padding: 0;
-    list-style: none;
-    max-width: 1200px; /* Limit maximum width */
-  }
-
-  .payment-item {
-    background: #fff;
-    padding: 1.8rem; /* Reduced from 2rem */
-    border-radius: 10px; /* Slightly reduced */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    transition: transform 0.3s ease;
-    text-align: center; /* Center align payment item content */
-  }
-
-  .payment-title {
-    font-size: 1rem; /* Reduced from 1.2rem */
-    font-weight: 500;
-    color: #1a1a1a;
-    margin-bottom: 0.8rem; /* Reduced from 1rem */
-    position: relative;
-    padding-bottom: 0.4rem;
-    text-align: center; /* Center align payment titles */
-  }
-
-  .payment-item p {
-    color: #666;
-    line-height: 1.5; /* Reduced from 1.6 */
-    margin: 0;
-    font-size: 0.9rem; /* Added smaller font size */
-  }
-
-  @media (max-width: 768px) {
-    .modal-section {
-      padding: 0 10%;
-    }
-    
-    .modal-section h2 {
-      font-size: 1.5rem;
-    }
-    
-    .payment-terms {
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
-    }
-  }
-
-  /* Add new styles for project filters */
-  .project-filters {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1.5rem; /* Adjust if needed */
-    margin-bottom: 1rem; /* Add bottom margin to get closer to projects */
-    flex-wrap: wrap;
-  }
-
-  .filter-button {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    background: transparent;
-    color: #666;
-    font-size: 1rem;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-  }
-
-  .filter-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(26, 26, 26, 0.05);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-  }
-
-  .filter-button:hover::before {
-    width: 150px;
-    height: 150px;
-  }
-
-  .filter-button:hover {
-    color: #1a1a1a;
-  }
-
-  .filter-button:hover::after {
-    width: 80%;
-  }
-
-  .filter-button.active {
-    color: #1a1a1a;
-    font-weight: 500;
-  }
-
-  .filter-button.active::after {
-    width: 80%;
-  }
-
-  /* Add these styles for the project showcase */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Increase from 300px */
-    gap: 2.5rem; /* Slightly increase gap for better spacing */
-    padding: 2.5rem;
-    margin-top: 0.5rem; /* Reduced from previous value to bring it closer to filters */
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
-    visibility: visible !important; /* Force visibility */
-  }
-
-  .project-card {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
     background: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    /* Remove fixed aspect ratio */
-    aspect-ratio: auto; 
-  }
-
-  .project-image {
-    width: 100%;
-    height: auto; /* Let height adjust automatically */
-    display: block; /* Remove any extra spacing */
-    object-fit: contain; /* Ensure image maintains its proportions */
-  }
-
-  .project-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.5rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 500;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
-  }
-
-  .project-card:hover .project-title {
-    transform: translateY(-5px);
-  }
-
-  /* Add an overlay effect on hover */
-  .project-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background 0.3s ease;
-  }
-
-  .project-card:hover::after {
-    background: rgba(0, 0, 0, 0.2);
-  }
-
-  /* Add new styles for contact section */
-  .contact-section {
-    background-color: #1a1a1a;
-    color: #fff;
-    padding: 4rem 2rem;
-    margin-top: 4rem;
-  }
-
-  .contact-content {
-    max-width: 1200px; /* Limit maximum width */
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .contact-info {
-    display: flex;
-    justify-content: center; /* Center items horizontally */
-    gap: 5rem; /* Increase gap between items */
-    margin: 0 auto; /* Center the contact info */
-    flex-wrap: wrap;
-  }
-
-  .contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-    min-width: 150px; /* Set minimum width for each item */
-  }
-
-  .contact-label {
-    font-size: 0.9rem;
-    color: #999;
-  }
-
-  .contact-value {
-    font-size: 1.1rem;
-    color: #fff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .contact-value:hover {
-    color: #ccc;
-  }
-
-  .contact-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: #fff;
-  }
-
-  .contact-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-  }
-
-  .contact-item:hover {
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    .contact-section {
-      padding: 2rem 1rem;
-    }
-
-    .contact-content {
-      width: 100%;
-    }
-
-    .contact-info {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .contact-item {
-      width: 100%;
-      text-align: center;
-      padding: 1rem;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-    }
-
-    .contact-title {
-      font-size: 1.6rem;
-    }
-  }
-
-  /* Add scroll padding for fixed header */
-  html {
-    scroll-padding-top: 120px; /* Accounts for fixed header */
-    scroll-behavior: smooth;
-  }
-
-  /* Add these styles */
-  .admin-modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    z-index: 1000;
-    width: 90%;
-    max-width: 400px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .admin-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .admin-form input {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-  }
-
-  .admin-form button {
-    padding: 0.8rem;
-    background: #1a1a1a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .admin-panel {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #f8f9fa;
-    z-index: 1000;
-    padding: 3rem;
-    overflow-y: auto;
-  }
-
-  .admin-panel h2 {
-    font-size: 2.4rem;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    color: #1a1a1a;
-    text-align: center;
-  }
-
-  #addNewProject {
-    display: block;
-    margin: 0 auto 2rem;
-    padding: 1rem 2rem;
-    background: #1a1a1a;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  #addNewProject:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-
-  .project-management {
-    display: grid;
-    gap: 1.5rem;
+    max-width: 90vw;
     margin: 2rem auto;
-    max-width: 900px;
-    padding: 2rem;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  }
-
-  .project-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    background: #ffffff;
+    padding: 2.5rem;
     border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-  }
-
-  .project-item:hover {
-    transform: translateX(5px);
-    border-color: rgba(0,0,0,0.15);
-  }
-
-  .project-item span {
-    font-size: 1.1rem;
-    color: #1a1a1a;
-    font-weight: 500;
-  }
-
-  .project-item .button-group {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .project-item button {
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .project-item button.edit-btn {
-    background: #f0f0f0;
-    color: #1a1a1a;
-  }
-
-  .project-item button.delete-btn {
-    background: #ff4d4d;
-    color: white;
-  }
-
-  .project-item button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-
-  #logoutAdmin {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    padding: 1rem 2rem;
-    background: #1a1a1a;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  #logoutAdmin:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-
-  /* New styles for project creation form */
-  .admin-modal {
-    max-height: 90vh;
+    max-height: 95vh;
     overflow-y: auto;
   }
 
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-
-  .form-group textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-
-  .image-preview {
-    margin-top: 0.5rem;
-    max-width: 200px;
-    max-height: 200px;
-    overflow: hidden;
-    border-radius: 6px;
-  }
-
-  .image-preview img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-
-  .button-group {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-    margin-top: 2rem;
-  }
-
-  .button-group button {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .button-group button[type="submit"] {
-    background: #1a1a1a;
-    color: white;
-  }
-
-  .button-group button[type="button"] {
-    background: #f0f0f0;
-    color: #1a1a1a;
-  }
-
-  .button-group button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-
-  /* Add these styles for multiple photo previews */
-  .photos-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  /* Add these styles for the photo input section */
-  .photo-input-group {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-
-  .photo-input-group input {
-    flex: 1;
-  }
-
-  .add-photo-btn {
-    padding: 0.8rem 1.2rem;
-    background: #1a1a1a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .add-photo-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  }
-
-  .photos-preview-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  .photo-preview-item {
-    position: relative;
-    padding: 1rem;
-    background: #f8f8f8;
-    border-radius: 8px;
-  }
-
-  .photo-preview-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-
-  .remove-photo-btn {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    padding: 0.5rem;
-    background: rgba(255, 0, 0, 0.8);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Add styles for the analytics section */
-  .analytics-section {
-    padding: 2rem;
-    margin-top: 2rem;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  }
-
-  .analytics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-
-  .analytics-card {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  }
-
-  .analytics-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    color: #1a1a1a;
-  }
-
-  .analytics-metrics {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .metric {
-    text-align: center;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .metric.reveal {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .metric-value {
-    display: block;
-    font-size: 2rem;
+  .hero-text {
+    font-size: 3rem;
     font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 8s ease infinite;
   }
 
-  .metric-label {
-    font-size: 0.9rem;
-    color: #666;
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
-  .source-list {
-    margin-top: 1rem;
-  }
-
-  .source-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-  }
-
-  /* Add these styles for the select dropdown */
-  .form-group select {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.8rem center;
-    background-size: 1rem;
-  }
-
-  .form-group select:hover {
-    border-color: #999;
-  }
-
-  .form-group select:focus {
-    outline: none;
-    border-color: #1a1a1a;
-    box-shadow: 0 0 0 2px rgba(26, 26, 26, 0.1);
-  }
-
-  .form-group select option {
-    padding: 0.8rem;
-  }
-
-  /* Back to top button styles */
-  .back-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: rgba(26, 26, 26, 0.8);
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 99;
-    border: none;
-    backdrop-filter: blur(5px);
-  }
-
-  .back-to-top.visible {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .back-to-top:hover {
-    background-color: rgba(26, 26, 26, 1);
-    transform: translateY(-3px);
-  }
-
-  .back-to-top svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-  }
-
-  /* New styles for project detail modal */
-  .project-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0; /* Remove padding */
-    width: 100%;
-    min-height: 100vh;
-  }
-
-  .project-description {
-    text-align: left;
-    white-space: pre-line;
-    width: 100%;
-    padding: 4rem 8%;
-    margin: 0;
-    background: white;
-  }
-
-  .project-gallery {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0; /* Remove gap */
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-
-  /* Remove these styles from the CSS */
-  .lightbox-nav,
-  .lightbox-close {
-    display: none !important; /* Hide all navigation buttons and close button */
-  }
-
-  /* Update the close button styles */
-  .close-button {
-    position: fixed; /* Change to fixed positioning */
-    top: 20px; /* Position from top */
-    right: 20px; /* Position from right */
-    width: 40px; /* Increase size */
-    height: 40px; /* Increase size */
-    background: rgba(0, 0, 0, 0.5); /* Add semi-transparent background */
-    border: none;
-    border-radius: 50%; /* Make it circular */
-    color: white; /* White text color */
-    font-size: 24px; /* Increase font size */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001; /* Ensure it's above other content */
-    transition: all 0.3s ease;
-  }
-
-  .close-button:hover {
-    background: rgba(0, 0, 0, 0.8); /* Darker on hover */
-    transform: scale(1.1); /* Slight scale up on hover */
-  }
-
-  /* Add these styles for the new project form */
-  .photo-preview-item {
+  .aspect-w-16 {
     position: relative;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding-bottom: 56.25%;
+    margin-bottom: 2rem;
   }
 
-  .photo-preview-item img {
+  .project-card img {
     width: 100%;
-    height: 200px;
+    aspect-ratio: 4/3;
     object-fit: cover;
-    display: block;
   }
 
-  .remove-photo-btn {
+  .aspect-w-16 img {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .aspect-w-16:hover img {
+    transform: scale(1.02);
+  }
+
+  /* Add this CSS to increase spacing between category buttons */
+  .flex.flex-wrap.justify-center.gap-4.mt-8 {
+    gap: 1.5rem !important; /* Increase gap between buttons */
+  }
+
+  .category-btn {
+    padding: 0.75rem 1.5rem; /* Add more padding to buttons */
+    margin: 0.5rem;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .category-btn:hover {
+    background-color: #e5e7eb;
+  }
+
+  .category-btn.active {
+    background-color: #1a1a1a;
     color: white;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    transition: background 0.3s;
   }
 
-  .remove-photo-btn:hover {
-    background: rgba(0,0,0,0.8);
-  }
-
-  .photos-preview-container {
-    margin-top: 1rem;
+  img {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
   }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/map/js/china.js"></script>
 </head>
 <body>
 
-<nav>
-  <div class="nav-container">
-    <div class="logo">KING-DESIGN</div>
-    <div class="nav-links">
-      <a href="#about">
-        <span class="en">About</span>
-        <span class="cn">关于</span>
-      </a>
-      <a href="#projects">
-        <span class="en">Project</span>
-        <span class="cn">项目</span>
-      </a>
-      <a href="#contact">
-        <span class="en">Contact</span>
-        <span class="cn">联系</span>
-      </a>
-    </div>
+<nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 p-4 md:p-6 flex justify-between items-center">
+  <div class="text-xl md:text-2xl font-bold">KING-DESIGN</div>
+  <div class="flex gap-4 md:gap-8">
+    <div class="nav-item" data-cn="关于"><span class="en">About</span></div>
+    <div class="nav-item" data-cn="项目"><span class="en">Project</span></div>
+    <div class="nav-item" data-cn="联系"><span class="en">Contact</span></div>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-content">
-    <h1>DESIGN FOR THE FUTURE, CRAFTED FOR TODAY</h1>
-    <p>Independent designer creating sustainable, timeless pieces that challenge conventional fashion boundaries while embracing individual expression.</p>
-    <div class="search-container">
-      <input type="search" class="search-box" placeholder="搜索项目关键词" aria-label="Search projects">
+<main class="pt-24">
+  <section class="hero min-h-screen flex flex-col justify-center items-center text-center p-4">
+    <h1 class="hero-text mb-8">DESIGN FOR THE FUTURE,<br>CRAFTED FOR TODAY</h1>
+    <p class="max-w-2xl mx-auto text-gray-600 mb-12">
+      Independent designer creating sustainable, timeless pieces that challenge conventional fashion boundaries while embracing individual expression.
+    </p>
+    
+    <div class="search-box w-full max-w-xl mx-auto">
+      <input type="text" placeholder="搜索项目..." class="w-full p-4 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400">
     </div>
-    <div class="project-filters">
-      <button class="filter-button active">全部项目</button>
-      <button class="filter-button">建筑设计</button>
-      <button class="filter-button">商业设计</button>
-      <button class="filter-button">私宅设计</button>
-      <button class="filter-button">产品设计</button>
-    </div>
-  </div>
-</section>
 
-<div class="projects-grid">
-  <div class="project-card" data-project-type="商业设计" data-project-id="killers-dance">
-    <img 
-      class="project-image" 
-    src="https://i.ibb.co/L8pp7N8/20241121180019.jpg" 
-      alt="killers舞蹈工作室 - 现代舞蹈工作室空间" 
-      width="1600" 
-      height="900"
-    >
-    <div class="project-title">killers舞蹈工作室</div>
+    <div class="flex flex-wrap justify-center gap-8 mt-8">
+      <button class="category-btn active">全部项目</button>
+      <button class="category-btn">规划设计</button>
+      <button class="category-btn">建筑设计</button>
+      <button class="category-btn">商业设计</button>
+      <button class="category-btn">展览设计</button>
+      <button class="category-btn">私宅设计</button>
+      <button class="category-btn">产品设计</button>
+    </div>
+  </section>
+
+  <section id="projects" class="project-grid">
+    <!-- 项目将通过JavaScript动态生成 -->
+  </section>
+</main>
+
+<footer class="bg-gray-900 text-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-8 md:mb-0">
+        <h3 class="text-2xl font-bold mb-4">联系方式</h3>
+        <p>邮箱：1014852873@qq.com</p>
+        <p>电话：13229362048</p>
+        <p>INS：101485king</p>
+      </div>
+    </div>
   </div>
-  <div class="project-card" data-project-type="商业设计" data-project-id="fusheng-jewelry">
-    <img 
-      class="project-image" 
-      src="https://i.ibb.co/Qd3ND5J/2.png" 
-      alt="福升玉器珠宝店 - 珠宝店空间" 
-      width="1600" 
-      height="900"
-    >
-    <div class="project-title">福升玉器珠宝店</div>
-  </div>
-  <div class="project-card" data-project-type="商业设计" data-project-id="wild-cake">
-    <img 
-      class="project-image" 
-      src="https://i.ibb.co/HntNys5/2.png" 
-       alt="野望蛋糕店 - 甜品烘焙店空间" 
-    width="1600" 
-    height="900"
-  >
-  <div class="project-title">野望蛋糕店</div></div><div class="project-card" data-project-type="商业设计" data-project-id="drum-island-music">
-  <img 
-    class="project-image" 
-    src="https://i.ibb.co/r2BZq8Q/3.png"    
-    alt="鼓屿音乐工作室 - 音乐商业空间" 
-    width="1600" 
-    height="900"
-  >
-  <div class="project-title">鼓屿音乐工作室</div></div><div class="project-card" data-project-type="建筑设计" data-project-id="jinshan-pan-ancestral-home">
-  <img 
-    class="project-image" 
-    src="https://i.ibb.co/dQ7Zj8Q/1-1.png"     
-    alt="金山村潘府祖宅 - 建筑设计" 
-    width="1600" 
-    height="900"
-  >
-  <div class="project-title">金山村潘府祖宅</div></div><div class="project-card" data-project-type="私宅设计" data-project-id="feicui-year-private-residence">
-  <img 
-    class="project-image" 
-    src="https://i.ibb.co/PrH5Hhc/4.png"     
-    alt="翡翠年华私宅 - 私宅设计" 
-    width="1600" 
-    height="900"
-  >
-  <div class="project-title">翡翠年华私宅</div></div>
+</footer>
+
 <div id="aboutModal" class="modal">
   <div class="modal-content">
-    <button class="close-button">×</button>
+    <h2 class="text-2xl font-bold mb-6">关于我</h2>
+    <p class="mb-4">您好，我是king，一名热情的独立商业空间设计师。我坚信创新设计赋能无限可能，致力于通过前沿的设计思维和技术，为客户打造既实用又富有创意的商业空间。</p>
     
-    <div class="modal-section">
-      <h2>关于我</h2>
-      <p>您好，我是king，一名热情的独立商业空间设计师。我坚信创新设计赋能无限可能，致力于通过前沿的设计思维和技术，为客户打造既实用又富有创意的商业空间。</p>
-    </div>
+    <h3 class="text-xl font-bold mt-6 mb-4">我的设计理念</h3>
+    <p class="mb-4">在我的设计实践中，我将创新作为核心驱动力，探索设计的边界，以实现空间的最大潜能。我相信，通过创新的设计，我们不仅能够提升商业价值，还能够激发人们的想象力和创造力。</p>
+    
+    <h3 class="text-xl font-bold mt-6 mb-4">我的专业服务</h3>
+    <ul class="list-disc pl-6 mb-4">
+      <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</li>
+      <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</li>
+      <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</li>
+    </ul>
 
-    <div class="modal-section">
-      <h2>我的设计理念</h2>
-      <p>在我的设计实践中，我将创新作为核心驱动力，探索设计的边界，以实现空间的最大潜能。我相信，通过创新的设计，我们不仅能够提升商业价值，还能够激发人们的想象力和创造力。</p>
-    </div>
-
-    <div class="modal-section">
-      <h2>我的专业服务</h2>
-      <ul>
-        <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</li>
-        <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</li>
-        <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</li>
-      </ul>
-    </div>
-
-    <div class="modal-section">
-      <h2>合作流程</h2>
-      <ul class="payment-terms">
-        <li class="payment-item">
-          <span class="payment-title">定金支付</span>
-          <p>在合同签订之际，甲方需向乙方支付设计费用总额的20%作为定金，以确立双方的合作意向。</p>
-        </li>
-        <li class="payment-item">
-          <span class="payment-title">首期款项</span>
-          <p>待平面方案获得双方确认后，甲方应支付设计费用总额的40%作为首期款项，以启动后续的设计深化工作。</p>
-        </li>
-        <li class="payment-item">
-          <span class="payment-title">二期款项</span>
-          <p>在效果方案得到双方确认之后，甲方需支付设计费用总额的40%作为二期款项，以确保设计工作的顺利进行至施工图阶段。</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<div class="admin-modal" id="adminModal">
-  <form class="admin-form" id="adminForm">
-    <h2>管理员登录</h2>
-    <input type="password" id="adminPassword" placeholder="请输入密码">
-    <button type="submit">登录</button>
-  </form>
-</div>
-
-<div class="admin-panel" id="adminPanel">
-  <h2>项目管理后台</h2>
-  <button id="addNewProject">添加新项目</button>
-  <div class="project-management" id="projectManagement">
-    <!-- Projects will be loaded here -->
-  </div>
-
-  <div class="analytics-section">
-    <h2>数据统计</h2>
-    <div class="analytics-grid">
-      <div class="analytics-card">
-        <h3>访问统计</h3>
-        <div class="analytics-metrics">
-          <div class="metric">
-            <span class="metric-value">1,234</span>
-            <span class="metric-label">本月访问量</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">+12.5%</span>
-            <span class="metric-label">环比增长</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">15,678</span>
-            <span class="metric-label">累计访问量</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">89%</span>
-            <span class="metric-label">新访客占比</span>
-          </div>
-        </div>
+    <h3 class="text-xl font-bold mt-6 mb-4">合作流程</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="p-4 bg-gray-100 rounded">
+        <h4 class="font-bold mb-2">定金支付</h4>
+        <p>在合同签订之际，甲方需向乙方支付设计费用总额的20%作为定金。</p>
       </div>
-      
-      <div class="analytics-card">
-        <h3>用户行为</h3>
-        <div class="analytics-metrics">
-          <div class="metric">
-            <span class="metric-value">2.5分钟</span>
-            <span class="metric-label">平均停留时间</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">3.2</span>
-            <span class="metric-label">平均浏览页数</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">56%</span>
-            <span class="metric-label">跳出率</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">78%</span>
-            <span class="metric-label">移动端占比</span>
-          </div>
-        </div>
+      <div class="p-4 bg-gray-100 rounded">
+        <h4 class="font-bold mb-2">首期款项</h4>
+        <p>待平面方案获得双方确认后，甲方应支付设计费用总额的40%。</p>
       </div>
-      
-      <div class="analytics-card">
-        <h3>访问来源</h3>
-        <div class="analytics-metrics">
-          <div class="metric">
-            <span class="metric-value">45%</span>
-            <span class="metric-label">直接访问</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">30%</span>
-            <span class="metric-label">社交媒体</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">25%</span>
-            <span class="metric-label">搜索引擎</span>
-          </div>
-          <div class="metric">
-            <span class="metric-value">10%</span>
-            <span class="metric-label">外部链接</span>
-          </div>
-        </div>
+      <div class="p-4 bg-gray-100 rounded">
+        <h4 class="font-bold mb-2">二期款项</h4>
+        <p>在效果方案确认后，甲方需支付设计费用总额的40%。</p>
       </div>
-      
-      <div class="analytics-card">
-        <h3>地域分布热力图</h3>
-        <div id="chinaHeatmap" style="height: 400px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <button id="logoutAdmin">退出登录</button>
-</div>
-
-<!-- New Project Modal -->
-<div id="newProjectModal" class="admin-modal" style="display: none; max-width: 600px;">
-  <form class="admin-form" id="newProjectForm">
-    <h2 style="text-align: center; margin-bottom: 2rem;">添加新项目</h2>
-    <div class="form-group">
-      <label for="projectTitle">项目标题</label>
-      <input type="text" id="projectTitle" required placeholder="输入项目标题">
     </div>
     
-    <div class="form-group">
-      <label for="projectCover">封面图片URL</label>
-      <input type="url" id="projectCover" required placeholder="输入封面图片URL">
-      <div class="image-preview" id="coverPreview"></div>
-    </div>
-    
-    <div class="form-group">
-      <label for="projectDescription">项目描述</label>
-      <textarea id="projectDescription" required placeholder="输入项目描述"></textarea>
-    </div>
-    
-    <div class="form-group">
-      <label for="projectPhotos">项目照片URL</label>
-      <div class="photo-input-group">
-        <input type="text" id="projectPhotos" placeholder="输入图片URL">
-        <button type="button" class="add-photo-btn">添加</button>
-      </div>
-      <div class="photos-preview-container"></div>
-    </div>
-    
-    <div class="form-group">
-      <label for="projectColor">项目主题色</label>
-      <input type="color" id="projectColor" value="#ffffff">
-    </div>
-
-    <div class="form-group">
-      <label for="projectTags">项目标签</label>
-      <input type="text" id="projectTags" placeholder="输入标签，用逗号分隔">
-    </div>
-
-    <div class="form-group">
-      <label for="projectType">项目类型</label>
-      <select id="projectType" required>
-        <option value="">请选择项目类型</option>
-        <option value="建筑设计">建筑设计</option>
-        <option value="商业设计">商业设计</option>
-        <option value="私宅设计">私宅设计</option>
-        <option value="产品设计">产品设计</option>
-      </select>
-    </div>
-    
-    <div class="button-group">
-      <button type="submit">保存</button>
-      <button type="button" onclick="closeNewProjectModal()">取消</button>
-    </div>
-  </form>
-</div>
-
-<section class="contact-section">
-  <div class="contact-content">
-    <div class="contact-info">
-      <div class="contact-item">
-        <i class="fas fa-envelope contact-icon"></i>
-        <span class="contact-label">邮箱</span>
-        <a href="mailto:1014852873@qq.com" class="contact-value">1014852873@qq.com</a>
-      </div>
-      <div class="contact-item">
-        <i class="fas fa-phone contact-icon"></i>
-        <span class="contact-label">电话</span>
-        <a href="tel:+8613229362048" class="contact-value">+86 13229362048</a>
-      </div>
-      <div class="contact-item">
-        <i class="fab fa-instagram contact-icon"></i>
-        <span class="contact-label">INS</span>
-        <a href="https://www.instagram.com/101485king" target="_blank" class="contact-value">101485king</a>
-      </div>
-    </div>
-  </div></section>
-<button class="back-to-top" aria-label="Back to top">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-    <path d="M12 4l-8 8h6v8h4v-8h6z"/>
-  </svg></button>
-<!-- Project Detail Modal --><div id="projectDetailModal" class="modal">
-  <div class="modal-content">
-    <button class="close-button">×</button>
-    <div class="project-details">
-      <div class="project-description">
-        <h2 id="modalProjectTitle"></h2>
-        <p id="modalProjectText"></p>
-      </div>
-      <div class="project-gallery">
-        <!-- Images will be inserted here -->
-      </div>
-    </div>
-  </div></div>
-
-<!-- Lightbox for image preview -->
-<div class="lightbox">
-  <div class="lightbox-content">
-    <img class="lightbox-image" src="" alt="">
+    <button class="absolute top-4 right-4 text-2xl close-modal">&times;</button>
   </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const nav = document.querySelector('nav');
-  const aboutLink = document.querySelector('a[href="#about"]');
-  const projectLink = document.querySelector('a[href="#projects"]');
-  const contactLink = document.querySelector('a[href="#contact"]');
-  const modal = document.getElementById('aboutModal');
-  const closeButton = modal.querySelector('.close-button');
-  const searchBox = document.querySelector('.search-box');
-  const adminModal = document.getElementById('adminModal');
-  const adminForm = document.getElementById('adminForm');
-  const adminPanel = document.getElementById('adminPanel');
-  const newProjectModal = document.getElementById('newProjectModal');
-  const newProjectForm = document.getElementById('newProjectForm');
-  const backToTopButton = document.querySelector('.back-to-top');
-  let lastScroll = 0;
-
-  // Scroll handling
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll <= 0) {
-      nav.style.transform = 'translateY(0)';
-      backToTopButton.classList.remove('visible');
-      return;
-    }
-    
-    if (currentScroll > lastScroll && !nav.classList.contains('scroll-down')) {
-      nav.style.transform = 'translateY(-100%)';
-    } else if (currentScroll < lastScroll && nav.classList.contains('scroll-down')) {
-      nav.style.transform = 'translateY(0)';
-    }
-
-    if (currentScroll > 300) {
-      backToTopButton.classList.add('visible');
-    } else {
-      backToTopButton.classList.remove('visible');
-    }
-
-    lastScroll = currentScroll;
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-
-  // Modal handling
-  aboutLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  });
-
-  closeButton.addEventListener('click', function() {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  });
-
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
+  // Disable right click on images
+  document.addEventListener('contextmenu', function(e) {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+      return false;
     }
   });
 
-  // Add smooth scrolling to the contact section when clicking the contact link
-  contactLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    const contactSection = document.querySelector('.contact-section');
-    contactSection.scrollIntoView({ behavior: 'smooth' });
+  // Disable keyboard shortcuts for saving
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      return false;
+    }
   });
 
-  // Admin functionality
-  searchBox.addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase();
-    
-    // Check for admin login
-    if (searchTerm === '管理员') {
-      adminModal.style.display = 'block';
-      e.target.value = '';
-      return;
+  // Disable drag and drop of images
+  document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+      return false;
     }
-    
-    // Filter projects based on search term
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    projectCards.forEach(card => {
-      const title = card.querySelector('.project-title').textContent.toLowerCase();
-      const shouldShow = searchTerm === '' || title.includes(searchTerm);
-      
-      // Animate the filtering
-      if (shouldShow) {
-        card.style.display = 'block';
-        card.style.opacity = '0';
-        setTimeout(() => {
-          card.style.opacity = '1';
-        }, 300);
-      } else {
-        card.style.opacity = '0';
-        setTimeout(() => {
-          card.style.display = 'none';
-        }, 300);
+  });
+
+  // 导航交互
+  const navItems = document.querySelectorAll('.nav-item');
+  
+  navItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const type = this.querySelector('.en').textContent;
+      if (type === 'About') {
+        document.getElementById('aboutModal').style.display = 'block';
+      } else if (type === 'Project') {
+        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+      } else if (type === 'Contact') {
+        document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
       }
     });
   });
 
-  adminForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const password = document.getElementById('adminPassword').value;
-    
-    if (password === 'kk2256390') {
-      adminModal.style.display = 'none';
-      adminPanel.style.display = 'block';
-      loadProjects();
-    } else {
-      alert('密码错误');
+  // 关闭模态框
+  document.querySelector('.close-modal').addEventListener('click', function() {
+    document.getElementById('aboutModal').style.display = 'none';
+  });
+
+  // 项目数据
+  const projects = Array(30).fill().map((_, i) => {
+    if (i === 0) {
+      return {
+        id: 1,
+        title: 'killers巨石舞室',
+        category: '商业设计',
+        image: 'https://i.ibb.co/gdKPGYk/386a58cf9007dd85bd3a3e491d14f2a.jpg',
+        description: `
+Killer舞蹈工作室，中国街舞界的翘楚，2024年WOD中国区冠军得主，以其舞蹈实力和创新精神引领街舞文化。位于广州海珠智汇创意园顶楼，空间开阔无柱，为舞者提供无限自由。设计灵感源自舞者的力量与决断，以巨石元素为核心，将稳固与重量感融入空间，可视化舞者的能量。外立面设计借鉴巨石的稳固与力量，内部结构灵活多变，适应不同规模的舞蹈课程和排练，最大可容纳100人。每个角落都能感受到舞者的力量和舞蹈的热情，激励每个人追求卓越。Killer舞室的设计语言，将力量感与创新精神融入每一个角落，塑造了一个激发灵感和释放个性的空间，成为街舞爱好者的专业训练场所，同时推动华南地区街舞文化发展。
+
+
+`,
+      images: [
+  'https://i.ibb.co/TtCXxTn/1.png',
+  'https://i.ibb.co/gmbnpXg/2.png',
+  'https://i.ibb.co/2kZZsHj/3.png',
+  'https://i.ibb.co/n3hZ7KV/4.png',
+  'https://i.ibb.co/wWm5cDt/5.png',
+  'https://i.ibb.co/zRWdTQS/6.png',
+  'https://i.ibb.co/qYxS4rM/7.png',
+  'https://i.ibb.co/wLdgH90/8.png',
+  'https://i.ibb.co/LNnHq4M/9.png',
+  'https://i.ibb.co/DYL1nDj/10.png',
+  'https://i.ibb.co/2nj21dq/11.png',
+  'https://i.ibb.co/cYZQ6WN/12.png',
+  'https://i.ibb.co/f90ZXxd/13-1.png',
+  'https://i.ibb.co/X2q4w71/13.png',
+  'https://i.ibb.co/m4zxCnH/14-1.png',
+  'https://i.ibb.co/WzKVbzC/14.png',
+  'https://i.ibb.co/vjnvVd3/15.png',
+  'https://i.ibb.co/wrHzSgF/16.png',
+  'https://i.ibb.co/PMYhwxn/17.png',
+  'https://i.ibb.co/ZhPc0Tp/18.png',
+  'https://i.ibb.co/nkd59Kp/20-1.png',
+  'https://i.ibb.co/zNW7Ggr/20-4.png',
+  'https://i.ibb.co/zh6pFtm/21.png',
+  'https://i.ibb.co/FxRBz93/22-1.png',
+  'https://i.ibb.co/ysSSrc9/22-2.png',
+  'https://i.ibb.co/2YDFGMG/22.png',
+  'https://i.ibb.co/SftGJVv/23.png',
+  'https://i.ibb.co/fGJqC1M/24-1.png',
+  'https://i.ibb.co/dJ9y8v6/24.png',
+  'https://i.ibb.co/h8vpH69/25.png',
+  'https://i.ibb.co/hYDD4K7/26.png',
+  'https://i.ibb.co/2MfrZ70/27.png',
+  'https://i.ibb.co/G2T40bW/28.png',
+  'https://i.ibb.co/tPBcdBb/29-1.png',
+  'https://i.ibb.co/XFLdy06/30.png',
+  'https://i.ibb.co/M22xMHj/31-1.png',
+  'https://i.ibb.co/vhqx1rK/31.png',
+  'https://i.ibb.co/xfnFjqh/32.png',
+  'https://i.ibb.co/ZYvDjFL/33.png',
+  'https://i.ibb.co/XD0ZBSr/34.png',
+  'https://i.ibb.co/cDsD8SH/35.jpg',
+  'https://i.ibb.co/vZ4x6Xf/36.jpg'
+]
+      };
     }
+    if (i === 1) {
+      return {
+        id: 2,
+        title: '福升玉器珠宝',
+        category: '商业设计',
+        image: 'https://i.ibb.co/qFdgMMF/1.png',
+        description: `福升玉器珠宝店以其精致的内部装修和匠心独运的设计，为顾客提供了一个高端的珠宝购物体验。店内的灯光与陈列设计巧妙结合，使每件珠宝都散发出独特的光彩。我们精心挑选的玉器和珠宝，不仅展现了传统文化的魅力，也融入了现代设计的创新。`,
+        images: [
+  'https://i.ibb.co/hDfFkY8/1.png',
+  'https://i.ibb.co/Dr6cr7X/2.png',
+  'https://i.ibb.co/tc6s1YZ/3.png',
+  'https://i.ibb.co/7bpWN9K/4.png',
+  'https://i.ibb.co/pfBXJP8/5.png',
+  'https://i.ibb.co/99hvjqh/6.png',
+  'https://i.ibb.co/NLGCR6C/7.png',
+  'https://i.ibb.co/LpnPsfm/8.png',
+  'https://i.ibb.co/z86RqK9/9.png',
+  'https://i.ibb.co/Fhf4qbL/10.jpg'
+]
+      };
+    }
+    if (i === 2) {
+      return {
+        id: 3,
+        title: '野望蛋糕店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/QPMP7m5/2.png',
+        description: `作为设计师，我将这家蛋糕店的空间设计成一场视觉与味觉的盛宴。店内布局以“花与蛋糕的和谐”为核心理念，每个设计细节都旨在创造一个既现代又温馨的环境。墙面采用淡雅色彩，与精心挑选的鲜花装饰相映成趣，而蛋糕展示区则以简洁线条和明亮灯光突出每一款蛋糕的独特性。空间规划考虑到顾客的流动和互动，确保每位顾客都能享受到舒适而愉悦的购物体验。无论是选择特别的礼物，还是享受一段宁静的下午茶时光，这里的空间设计都旨在提升感官享受，让顾客在每一个细节中感受到精致与关怀。`,
+       images: [
+  'https://i.ibb.co/GM9pTN4/1.png',
+  'https://i.ibb.co/HntNys5/2.png',
+  'https://i.ibb.co/P5fN9dh/3.png',
+  'https://i.ibb.co/RPmbJZK/4-1.png',
+  'https://i.ibb.co/ccWNF3P/7-1.png',
+  'https://i.ibb.co/b74z3jP/8-1.png',
+  'https://i.ibb.co/Ns2kMpk/9-1.png',
+  'https://i.ibb.co/DRTGFKj/11.png',
+  'https://i.ibb.co/cFbqJBt/13.png',
+  'https://i.ibb.co/jw2ZNDG/15.png',
+  'https://i.ibb.co/HdxS22M/16.png',
+  'https://i.ibb.co/sK02dCH/image.png',
+  'https://i.ibb.co/3WhJwgP/image.png'
+]
+      };
+    }
+    if (i === 3) {
+      return {
+        id: 4,
+        title: '鼓屿音乐工作室',
+        category: '商业设计',
+        image: 'https://i.ibb.co/HFDMK57/1-1.png',
+        description: `欢迎来到鼓屿音乐，一个将音乐元素与教培空间完美融合的创新设计。在这里，音乐不仅仅是教学的内容，更是环境设计的灵魂。作为一名设计师，我将音乐的精髓融入到鼓屿音乐的每一个角落。前台设计巧妙地将音响设备整合其中，不仅作为空间的声音源泉，也是视觉焦点，展现音乐的力量和动感。休息区的茶几，由架子鼓的鼓架创意改造，为等待的家长和学生提供了一个既实用又充满节奏感的休息场所。墙上的壁灯和休息区的吊灯，采用镲片改造而成，光影之间，仿佛能听到金属的清脆回响，为空间增添了一抹独特的音乐色彩。而挂钥匙的挂杆，则是利用架子鼓的鼓棒精心打造，既实用又具有装饰性，体现了音乐与日常生活的紧密联系。鼓屿音乐的设计，是对音乐教培空间的一次革新。我们不仅教授音乐，更通过环境设计，让音乐的韵律和节奏渗透到每一个细节，让每一位踏入鼓屿音乐的人都能感受到音乐的魅力。`,
+       images: [
+  'https://i.ibb.co/xHQr7KZ/2-1.png',
+  'https://i.ibb.co/LYtFNqL/1.png',
+  'https://i.ibb.co/XVd8vZW/3-1.png',
+  'https://i.ibb.co/xCGyh4P/4-1.png',
+  'https://i.ibb.co/g45xWCR/5-1.png',
+  'https://i.ibb.co/LCTVYqX/6-1.png',
+  'https://i.ibb.co/Z2hNRhy/7.png',
+  'https://i.ibb.co/pv5Ys3s/8.png',
+  'https://i.ibb.co/17Nk967/9.png',
+  'https://i.ibb.co/nLc3rv6/10.png',
+  'https://i.ibb.co/gPtfvtX/11.png',
+  'https://i.ibb.co/C28b5fh/12-1.png'
+]
+      };
+    }
+    if (i === 4) {
+      return {
+        id: 5,
+        title: '潘府金山村',
+        category: '建筑设计',
+        image: 'https://i.ibb.co/VD1v6sm/1-1.png',
+        description: `探索极简主义的纯粹美学，我们为您呈现这座白色自建房设计。以白色为主调，融合现代与自然元素，这座建筑不仅是居所，更是艺术的体现。简洁的线条勾勒出空间的流畅感，每一处细节都透露着精致与考究。为您的兄伯俩打造一个既现代又温馨的家，让生活回归本质，享受宁静与和谐。欢迎浏览我们的官网，了解更多关于这座白色极简风格建筑的设计理念与细节。`,
+       images: [
+  'https://i.ibb.co/h27hHqZ/2.jpg',
+  'https://i.ibb.co/RzC5hKZ/image.jpg',
+  'https://i.ibb.co/dQ7Zj8Q/1-1.png',
+  'https://i.ibb.co/0FWmNP6/2-2.png',
+  'https://i.ibb.co/GTPbRTh/3-2.png',
+  'https://i.ibb.co/cTcQc6W/4-2.png',
+  'https://i.ibb.co/xGTMgyh/5-2.png',
+  'https://i.ibb.co/0tH2g85/6-2.png',
+  'https://i.ibb.co/MhMzZVx/7-2.png',
+  'https://i.ibb.co/0fp65PH/8-2.png',
+  'https://i.ibb.co/nCbMGXB/9-2.png',
+  'https://i.ibb.co/Jyzxngy/11-2.png',
+  'https://i.ibb.co/qF1hrSP/12-2.png',
+  'https://i.ibb.co/NpGz4Jj/2.png',
+  'https://i.ibb.co/1RBqRV8/1-2.png',
+  'https://i.ibb.co/3R3H8KV/2-2.png',
+  'https://i.ibb.co/KFKjCvp/3-2.jpg',
+  'https://i.ibb.co/gyYTr0P/4-2.jpg',
+  'https://i.ibb.co/kg4jcYp/5-2.jpg'
+]
+      };
+    }
+    if (i === 5) {
+      return {
+        id: 6, 
+        title: '翡翠年华',
+        category: '私宅设计',
+        image: 'https://i.ibb.co/2grxFHh/image28.png',
+        description: `为90后夫妻打造的侘寂风家居，以简约自然为核心。空间内，质朴的木质与柔和的光线交织，营造出宁静而温馨的氛围。墙面保留原始质感，家具简约实用，每件物品都诉说着时间的故事。在这里，不完美被欣然接受，生活回归本真，让心灵在静谧中找到归属。`,
+        images: [
+  'https://i.ibb.co/4FR2kPY/image17.png',
+  'https://i.ibb.co/gy5wsNv/image16.png',
+  'https://i.ibb.co/9c0TzHQ/image18.png',
+  'https://i.ibb.co/c15cZ5p/image19.png',
+  'https://i.ibb.co/RbGsqcQ/image20.png',
+  'https://i.ibb.co/1frH1RF/image21.png',
+  'https://i.ibb.co/mBGF69f/image22.png',
+  'https://i.ibb.co/gzcgWFT/image23.png',
+  'https://i.ibb.co/6Zr5Bmd/image24.png',
+  'https://i.ibb.co/v4Tb1pL/image25.png',
+  'https://i.ibb.co/fq38G63/image26.png',
+  'https://i.ibb.co/RSzZVpc/image27.png',
+  'https://i.ibb.co/wrMV0tH/image28.png',
+  'https://i.ibb.co/55NjhKL/image29.png',
+  'https://i.ibb.co/N3rPTDz/image30.png',
+  'https://i.ibb.co/PT4JkCm/image32.png',
+  'https://i.ibb.co/6N544sk/image33.png',
+  'https://i.ibb.co/WsM4P9j/image34.png',
+  'https://i.ibb.co/XYwp4nD/image35.png',
+  'https://i.ibb.co/Khx40Kw/image36.png',
+  'https://i.ibb.co/Lv4Qj8M/image37.png',
+  'https://i.ibb.co/0YyPQy2/image38.png',
+  'https://i.ibb.co/pZkTtj0/image39.png',
+  'https://i.ibb.co/BZNR2tQ/image40.png',
+  'https://i.ibb.co/GpGYN3b/image41.png',
+  'https://i.ibb.co/KqyrYZF/image42.png',
+  'https://i.ibb.co/sqwSWNm/image43.png',
+  'https://i.ibb.co/JQc97F5/image44.png',
+  'https://i.ibb.co/R0H10St/image45.png',
+  'https://i.ibb.co/D9gPLn2/image46.png',
+  'https://i.ibb.co/0cgcN4g/image47.png',
+  'https://i.ibb.co/GsBdFDZ/image48.png',
+  'https://i.ibb.co/Nrq8mGT/image49.png',
+  'https://i.ibb.co/JcktwQp/image50.png',
+  'https://i.ibb.co/8xDbMQW/image52.png',
+  'https://i.ibb.co/WGnkqmW/image54.jpg'
+]
+      };
+    }
+    if (i === 6) {
+      return {
+        id: 7,
+        title: '茉沏概念方案',
+        category: '商业设计',
+        image: 'https://i.ibb.co/WchyZ4R/Enscape-2024-06-06-13-15-14.png',
+        description: `“入画茶沏”灵感源自于江南的独特文化和优秀国画。江南自古以来就是中国国画的重要发源地之一，其山水风光常常成为画家笔下的主题。我们希望通过“入画茶沏”的概念，让顾客在品茶的过程中感受到与江南国画相融合的情境，成为画中的一部分，与画中的山水相互映衬，感受到自然与艺术的奇妙交融。`,
+       images: [
+  'https://i.ibb.co/C8ZCP6X/Enscape-2024-06-06-13-15-14.png',
+  'https://i.ibb.co/jyfzcRK/Enscape-2024-06-06-13-16-48.png',
+  'https://i.ibb.co/hgwdLfB/Enscape-2024-06-06-13-18-03.png',
+  'https://i.ibb.co/PrnFJ3Y/Enscape-2024-06-06-13-18-28.png'
+]
+      };
+    }
+    if (i === 7) {
+      return {
+        id: 8,
+        title: '上海南山嘉定售楼处展墙',
+        category: '展览设计',
+        image: 'https://i.ibb.co/nj5SbjK/Enscape-2024-09-01-21-48-31.png',
+        description: `这个展览设计项目展现了创新的售楼处展示空间设计理念。我们通过独特的空间布局和灯光设计，为地产项目创造最佳的展示效果。空间动线规划流畅，让访客能够自然地了解项目信息。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，成功打造出一个专业而富有吸引力的售楼处展示空间。`,
+       images: [
+  'https://i.ibb.co/1bp806Q/Enscape-2024-09-01-21-43-24.png',
+  'https://i.ibb.co/6ZrJ8C8/Enscape-2024-09-01-21-48-31.png',
+  'https://i.ibb.co/0Q0S7J4/Enscape-2024-09-01-22-45-47.png',
+  'https://i.ibb.co/6yK8Bzm/Enscape-2024-09-01-22-47-57.png'
+]
+      };
+    }
+    if (i === 8) {
+      return {
+        id: 9,
+        title: '济高保利·云上璟誉',
+        category: '展览设计',
+        image: 'https://i.ibb.co/JKfm6w1/Enscape-2024-08-22-20-43-27-Enscape-3.png',
+        description: `这个展览设计项目展现了创新的售楼处展示空间设计理念。我们通过独特的空间布局和灯光设计，为地产项目创造最佳的展示效果。空间动线规划流畅，让访客能够自然地了解项目信息。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，成功打造出一个专业而富有吸引力的售楼处展示空间。`,
+       images: [
+  'https://i.ibb.co/PcVbnQY/Enscape-2024-08-22-20-43-27-Enscape-3.png',
+  'https://i.ibb.co/0CZpQ0D/Enscape-2024-08-22-20-56-23.png',
+  'https://i.ibb.co/9wWRT3p/Enscape-2024-08-22-20-58-08.png'
+]
+      };
+    }
+    if (i === 9) {
+      return {
+        id: 10,
+        title: '羲皇.颐和云境',
+        category: '展览设计',
+        image: 'https://i.ibb.co/cyj4RHR/17004731214643826.jpg',
+        description: `这个展览设计项目展现了创新的售楼处展示空间设计理念。我们通过独特的空间布局和灯光设计，为地产项目创造最佳的展示效果。空间动线规划流畅，让访客能够自然地了解项目信息。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，成功打造出一个专业而富有吸引力的售楼处展示空间。`,
+        images: [
+          'https://i.ibb.co/cyj4RHR/17004731214643826.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 10) {
+      return {
+        id: 11,
+        title: '茂华星河颂展',
+        category: '展览设计',
+        image: 'https://i.ibb.co/nch1cR2/1.png',
+        description: `这个展览设计项目展现了创新的售楼处展示空间设计理念。我们通过独特的空间布局和灯光设计，为地产项目创造最佳的展示效果。空间动线规划流畅，让访客能够自然地了解项目信息。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，成功打造出一个专业而富有吸引力的售楼处展示空间。`,
+        images: [
+          'https://i.ibb.co/nch1cR2/1.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 11) {
+      return {
+        id: 12,
+        title: '流形鱼缸',
+        category: '产品设计',  
+        image: 'https://i.ibb.co/Np2H2mS/DSC01511.jpg',
+        description: `这是一个极具创新性的产品设计项目。产品设计注重人机交互体验，采用环保材料和创新工艺，既确保了产品的实用性，又展现了独特的美学价值。我们在设计过程中特别关注细节处理，通过精良的工艺和严格的品控，确保每个产品都能达到最高品质标准。产品外观简约现代，功能设计人性化，获得了市场的广泛认可。`,
+        images: [
+          'https://i.ibb.co/Np2H2mS/DSC01511.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 12) {
+      return {
+        id: 13,
+        title: '骨椅',
+        category: '产品设计',  
+        image: 'https://i.ibb.co/ZTHJF3f/de14f28e34826c89484507762938600.jpg',
+        description: `这是一个极具创新性的产品设计项目。产品设计注重人机交互体验，采用环保材料和创新工艺，既确保了产品的实用性，又展现了独特的美学价值。我们在设计过程中特别关注细节处理，通过精良的工艺和严格的品控，确保每个产品都能达到最高品质标准。产品外观简约现代，功能设计人性化，获得了市场的广泛认可。`,
+        images: [
+          'https://i.ibb.co/ZTHJF3f/de14f28e34826c89484507762938600.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 13) {
+      return {
+        id: 14,
+        title: '海珠新城南岸',
+        category: '规划设计',
+        image: 'https://i.ibb.co/41ZGHhT/202206231041322.jpg',
+        description: `这是一个创新的规划设计项目。项目注重城市空间规划的整体性和前瞻性，通过科学的分析和规划，打造可持续发展的城市空间。我们运用先进的规划理念和技术手段，结合当地实际情况，提出了具有前瞻性的解决方案。项目既考虑了城市发展需求，又注重生态环境保护，成功实现了经济效益与社会效益的统一。`,
+        images: [
+          'https://i.ibb.co/41ZGHhT/202206231041322.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 14) {
+      return {
+        id: 15,
+        title: 'MODE时装周',
+        category: '展览设计',
+        image: 'https://i.ibb.co/gMWdyhx/Enscape-2022-03-07-18-34-02.png',
+        description: `这个展览设计项目展现了创新的展示空间设计理念。我们通过独特的空间布局和灯光设计，为展品创造最佳的展示效果。空间动线规划流畅，让参观者能够轻松地欣赏每件展品。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出展品特色，又营造出令人印象深刻的空间氛围。`,
+        images: [
+          'https://i.ibb.co/gMWdyhx/Enscape-2022-03-07-18-34-02.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 15) {
+      return {
+        id: 16,
+        title: '莲塘村第一食堂',
+        category: '建筑设计',
+        image: 'https://i.ibb.co/CK4BDC3/Enscape-2022-07-13-20-38-44.png',
+        description: `这是一个充满现代感的建筑设计项目。我们在设计过程中特别注重建筑与环境的和谐统一，采用了大量环保材料和智能化设施。项目整体风格简约大气，通过传统元素与现代设计的完美结合，打造出既有传统韵味又富有现代感的建筑空间。建筑内部的功能分区经过精心规划，既保证了实用性，又创造出独特的视觉体验。我们还特别注重与周边自然环境的融合，打造出一个与自然共生的空间。`,
+        images: [
+          'https://i.ibb.co/CK4BDC3/Enscape-2022-07-13-20-38-44.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 16) {
+      return {
+        id: 17,
+        title: '潮宏基花丝概念店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/H4PJyck/Enscape-2022-09-19-16-51-52.png',
+        description: `这个商业设计项目展现了高端珠宝概念店的优雅与创新。我们通过独特的空间布局和灯光设计，为珠宝展示创造最佳的视觉效果。空间运用了传统花丝工艺元素与现代设计语言的融合，营造出既传统又前卫的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计既彰显品牌格调，又传承了传统工艺的精髓。`,
+        images: [
+          'https://i.ibb.co/H4PJyck/Enscape-2022-09-19-16-51-52.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 17) {
+      return {
+        id: 18,
+        title: '潮宏基花丝复制店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/T8kpJTR/Enscape-2022-08-10-20-47-15.png',
+        description: `这个商业设计项目展现了高端珠宝专卖店的优雅与创新。我们通过独特的空间布局和灯光设计，为珠宝展示创造最佳的视觉效果。空间运用了传统花丝工艺元素与现代设计语言的融合，营造出既传统又前卫的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计既彰显品牌格调，又传承了传统工艺的精髓。`,
+        images: [
+          'https://i.ibb.co/T8kpJTR/Enscape-2022-08-10-20-47-15.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 18) {
+      return {
+        id: 19,
+        title: '星期六鞋店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/M1QK747/Enscape-2022-10-27-11-59-52.png',
+        description: `这个商业设计项目展现了现代鞋店的时尚与实用性。我们通过独特的空间布局和灯光设计，为鞋品展示创造最佳的视觉效果。空间规划注重顾客体验，设计了舒适的试鞋区域和充足的展示空间。现代简约的装修风格配合精心设计的照明系统，突出产品特色的同时也为顾客营造出轻松愉悦的购物氛围。整体设计既彰显品牌形象，又确保了商业空间的实用性。`,
+        images: [
+          'https://i.ibb.co/M1QK747/Enscape-2022-10-27-11-59-52.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 19) {
+      return {
+        id: 20,
+        title: '潮宏基成都万象城店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/2KYY2dY/Enscape-2022-10-18-15-04-13.png',
+        description: `这个商业设计项目展现了高端珠宝专卖店的优雅与创新。我们通过独特的空间布局和灯光设计，为珠宝展示创造最佳的视觉效果。空间运用了现代设计语言，营造出时尚前卫的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计彰显品牌格调，并突出了商业空间的豪华感。`,
+        images: [
+          'https://i.ibb.co/2KYY2dY/Enscape-2022-10-18-15-04-13.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 20) {
+      return {
+        id: 21,
+        title: 'X-BEAUTY迪拜店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/12BV2rz/Enscape-2023-01-14-12-09-31.png',
+        description: `这个商业设计项目展现了高端美容店的奢华与创新。我们通过独特的空间布局和灯光设计，为美容服务创造最佳的环境体验。空间运用了现代设计语言，营造出时尚前卫的环境。精心设计的服务区域既确保了私密性，又为顾客打造了舒适的体验空间。整体设计彰显品牌格调，并突出了商业空间的国际化特色。`,
+        images: [
+          'https://i.ibb.co/12BV2rz/Enscape-2023-01-14-12-09-31.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 21) {
+      return {
+        id: 22,
+        title: '不息潮牌买手店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/mbtJN4d/Enscape-2022-03-16-21-40-58.png',
+        description: `这个商业设计项目展现了潮流买手店的时尚与创新。我们通过独特的空间布局和灯光设计，为服装展示创造最佳的视觉效果。空间运用了现代设计语言，营造出时尚前卫的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计彰显品牌个性，并突出了商业空间的潮流气质。`,
+        images: [
+          'https://i.ibb.co/mbtJN4d/Enscape-2022-03-16-21-40-58.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 22) {
+      return {
+        id: 23,
+        title: '花西子旗舰店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/bmsdX0y/Enscape-2021-11-25-17-04-25-Enscape-scene-9.png',
+        description: `这个商业设计项目展现了高端美妆品牌旗舰店的奢华与创新。我们通过独特的空间布局和灯光设计，为化妆品展示创造最佳的视觉效果。空间运用了现代设计语言，营造出时尚前卫的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计彰显品牌格调，并突出了商业空间的优雅气质。`,
+        images: [
+          'https://i.ibb.co/bmsdX0y/Enscape-2021-11-25-17-04-25-Enscape-scene-9.png',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 23) {
+      return {
+        id: 24,
+        title: '蚂蚁集团官方礼品店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/ZKNGPvw/20220130115021.jpg',
+        description: `这个商业设计项目展现了企业礼品店的现代感与品牌调性。我们通过独特的空间布局和灯光设计，为礼品展示创造最佳的视觉效果。空间运用了现代简约的设计语言，营造出专业且富有科技感的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计彰显企业文化，并突出了商业空间的科技创新特色。`,
+        images: [
+          'https://i.ibb.co/ZKNGPvw/20220130115021.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 24) {
+      return {
+        id: 25,
+        title: '越秀地产城市展厅',
+        category: '商业设计',
+        image: 'https://i.ibb.co/4PKXRxL/6183b12c69e751b24f3a643ef5cf9aa.jpg',
+        description: `这个商业设计项目展现了创新的城市展厅空间设计理念。我们通过独特的空间布局和灯光设计，为城市规划和房地产项目创造最佳的展示效果。空间动线规划流畅，让参观者能够直观地了解城市发展愿景。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围。`,
+        images: [
+          'https://i.ibb.co/4PKXRxL/6183b12c69e751b24f3a643ef5cf9aa.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 25) {
+      return {
+        id: 26,
+        title: 'ST&SAT鞋店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/GHYXXwy/Enscape-2021-02-04-15-00-49.jpg',
+        description: `这个商业设计项目展现了现代鞋店的时尚与创新。我们通过独特的空间布局和灯光设计，为鞋品展示创造最佳的视觉效果。空间运用了现代设计语言，营造出时尚前卫的购物环境。精心设计的展示区域既确保了产品的完美呈现，又为顾客打造了舒适的购物体验。整体设计彰显品牌格调，并突出了商业空间的潮流气质。`,
+        images: [
+          'https://i.ibb.co/GHYXXwy/Enscape-2021-02-04-15-00-49.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 26) {
+      return {
+        id: 27,
+        title: '世贸深港国际中心主题街区',
+        category: '规划设计',
+        image: 'https://i.ibb.co/QHj2gCq/Enscape-2020-12-29-18-36-50.jpg',
+        description: `这是一个创新的规划设计项目。项目注重城市空间规划的整体性和前瞻性，通过科学的分析和规划，打造可持续发展的城市空间。我们运用先进的规划理念和技术手段，结合当地实际情况，提出了具有前瞻性的解决方案。项目既考虑了城市发展需求，又注重生态环境保护，成功实现了经济效益与社会效益的统一。`,
+        images: [
+          'https://i.ibb.co/QHj2gCq/Enscape-2020-12-29-18-36-50.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 27) {
+      return {
+        id: 28,
+        title: 'PARK CAFE南宁店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/4KgcdvG/4.jpg',
+        description: `这个商业设计项目展现了现代咖啡店的时尚与创新。我们通过独特的空间布局和灯光设计，为咖啡店创造最佳的用餐环境。空间运用了现代设计语言，营造出时尚舒适的用餐氛围。精心设计的座位区域既确保了就餐舒适性，又为顾客打造了愉悦的用餐体验。整体设计彰显品牌格调，并突出了商业空间的休闲气质。`,
+        images: [
+          'https://i.ibb.co/4KgcdvG/4.jpg',
+          `https://picsum.photos/800/600?random=${i}_2`,
+          `https://picsum.photos/800/600?random=${i}_3`,
+        ]
+      };
+    }
+    if (i === 28) {
+      return {
+        id: 29,
+        title: '东莞水乡招商展示中心',
+        category: '建筑设计',
+        image: 'https://i.ibb.co/Mp2hbfz/10.jpg',
+        description: `这是一个充满现代感的建筑设计项目。我们在设计过程中特别注重建筑与环境的和谐统一，采用了大量环保材料和智能化设施。项目整体风格简约大气，通过传统元素与现代设计的完美结合，打造出既有传统韵味又富有现代感的建筑空间。建筑内部的功能分区经过精心规划，既保证了实用性，又创造出独特的视觉体验。我们还特别注重与周边自然环境的融合，打造出一个与自然共生的空间。`,
+        images: [
+          'https://i.ibb.co/Mp2hbfz/10.jpg',
+          `https://picsum.photos/800/600?random=29_2`,
+          `https://picsum.photos/800/600?random=29_3`,
+        ]
+      };
+    }
+    if (i === 29) {
+      return {
+        id: 30,
+        title: '喜茶上海迪士尼白日梦店',
+        category: '商业设计',
+        image: 'https://i.ibb.co/WFWxJDx/T5-A6926-HDR.jpg',
+        description: `这个商业设计项目展现了喜茶品牌在迪士尼的创新店铺设计。我们通过独特的空间布局和灯光设计，为这个特色茶饮店创造了一个充满梦幻和想象力的环境。设计灵感源于白日梦的概念，融合了迪士尼的童话元素和喜茶的现代风格。空间运用了富有创意的装置和色彩，营造出一个既时尚又充满童趣的用餐体验。精心设计的座位区和展示区域不仅确保了功能性，还为顾客提供了独特的视觉和情感体验。`,
+        images: [
+          'https://i.ibb.co/WFWxJDx/T5-A6926-HDR.jpg',
+          `https://picsum.photos/800/600?random=30_2`,
+          `https://picsum.photos/800/600?random=30_3`,
+        ]
+      };
+    }
+    
+    // Return null for any projects beyond 30
+    return null;
+  }).filter(project => project !== null);
+
+  // Add the new project
+  const lastIndex = projects.length - 1;
+  projects.push({
+    id: projects[lastIndex].id + 1,
+    title: '海珠创新湾城市展厅',
+    category: '商业设计',
+    image: 'https://i.ibb.co/5jQDmz4/2.png',
+    description: `这个商业设计项目展现了创新的城市展厅空间设计理念。我们通过独特的空间布局和灯光设计，为城市规划和创新发展创造最佳的展示效果。空间动线规划流畅，让参观者能够直观地了解城市发展愿景和创新潜力。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，充分展现了海珠创新湾的发展潜力和城市魅力。`,
+    images: [
+      'https://i.ibb.co/5jQDmz4/2.png',
+      `https://picsum.photos/800/600?random=${projects.length}_2`,
+      `https://picsum.photos/800/600?random=${projects.length}_3`,
+    ]
   });
 
-  document.getElementById('logoutAdmin').addEventListener('click', function() {
-    adminPanel.style.display = 'none';
-    adminModal.style.display = 'none';
-    document.querySelector('.projects-grid').style.display = 'grid'; // Force grid display
-    document.querySelector('.hero').style.display = 'flex'; // Show hero section
-    document.querySelector('.contact-section').style.display = 'block'; // Show contact section
+  // 渲染项目
+  function renderProjects(filteredProjects) {
+    const projectsContainer = document.getElementById('projects');
+    projectsContainer.innerHTML = '';
     
-    // Restore all project cards visibility
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.style.display = 'block';
-      card.style.opacity = '1';
-    });
-  });
-
-  // Load and display existing projects in admin panel
-  function loadProjects() {
-    const projectManagement = document.getElementById('projectManagement');
-    const projects = document.querySelectorAll('.project-card');
-    
-    // Clear existing content first
-    projectManagement.innerHTML = '';
-    
-    // Add projects to management panel
-    projects.forEach((project, index) => {
-      const projectTitle = project.querySelector('.project-title').textContent;
-      const projectDiv = document.createElement('div');
-      projectDiv.className = 'project-item';
-      projectDiv.innerHTML = `
-        <span>${projectTitle}</span>
-        <div class="button-group">
-          <button class="edit-btn" data-index="${index}">编辑</button>
-          <button class="delete-btn" data-index="${index}">删除</button>
+    filteredProjects.forEach(project => {
+      const projectCard = document.createElement('div');
+      projectCard.className = 'project-card';
+      projectCard.innerHTML = `
+        <div style="aspect-ratio: 4/3; overflow: hidden;">
+          <img src="${project.image}" alt="Project ${project.id}" class="w-full h-full object-cover">
+        </div>
+        <div class="p-4">
+          <h3 class="text-xl font-bold">${project.title}</h3>
+          <p class="text-gray-600">${project.category}</p>
         </div>
       `;
-      projectManagement.appendChild(projectDiv);
+      
+      projectCard.addEventListener('click', () => showProjectDetail(project));
+      projectsContainer.appendChild(projectCard);
     });
-
-    // Add event listeners
-    projectManagement.querySelectorAll('.edit-btn').forEach(btn => {
-      btn.addEventListener('click', () => editProject(parseInt(btn.dataset.index)));
-    });
-
-    projectManagement.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', () => deleteProject(parseInt(btn.dataset.index)));
-    });
-
-    // Initialize analytics
-    initializeAnalytics();
-    initializeHeatmap();
   }
 
-  // Update the delete project functionality
-  function deleteProject(index) {
-    if(confirm('确定要删除这个项目吗？')) {
-      const projects = document.querySelectorAll('.project-card');
-      if(projects[index]) {
-        projects[index].remove();
-        // Refresh projects in admin panel
-        loadProjects();
-      }
-    }
-  }
+  // 初始渲染
+  renderProjects(projects);
 
-  // Add new project functionality
-  document.getElementById('newProjectForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const title = document.getElementById('projectTitle').value;
-    const coverImage = document.getElementById('projectCover').value;
-    const description = document.getElementById('projectDescription').value;
-    const type = document.getElementById('projectType').value;
-    const photos = Array.from(document.querySelectorAll('.photo-preview-item img')).map(img => img.src);
+  // 搜索功能
+  const searchInput = document.querySelector('input[type="text"]');
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const filteredProjects = projects.filter(project => 
+      project.title.toLowerCase().includes(searchTerm) || 
+      project.category.toLowerCase().includes(searchTerm)
+    );
+    renderProjects(filteredProjects);
+  });
 
-    if(!title || !coverImage || !type) {
-      alert('请填写必要的项目信息');
-      return;
-    }
+  // 分类功能
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  categoryBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const category = this.textContent;
+      const filteredProjects = category === '全部项目' 
+        ? projects 
+        : projects.filter(project => project.category === category);
+      renderProjects(filteredProjects);
+      
+      // 更新按钮状态
+      categoryBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
 
-    // Create project ID from title
-    const projectId = title.toLowerCase().replace(/\s+/g, '-');
-
-    // Create new project card
-    const projectCard = document.createElement('div');
-    projectCard.className = 'project-card';
-    projectCard.dataset.projectType = type;
-    projectCard.dataset.projectId = projectId;
-    
-    projectCard.innerHTML = `
-      <img class="project-image" src="${coverImage}" alt="${title}" width="600" height="400">
-      <div class="project-title">${title}</div>
+  // 显示项目详情
+  function showProjectDetail(project) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center overflow-y-auto';
+    modal.innerHTML = `
+      <div class="bg-white w-full max-w-7xl mx-4 my-8 rounded-lg overflow-hidden relative">
+        <button class="absolute top-6 right-6 text-gray-800 text-4xl z-10 hover:text-gray-600 transition-colors duration-300" 
+                style="width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center">
+          &times;
+        </button>
+        
+        <!-- Added a container with max-height and scrolling -->
+        <div class="max-h-[90vh] overflow-y-auto">
+          <div class="p-6 md:p-10">
+            <!-- Project title and description -->
+            <div class="mb-10">
+              <h2 class="text-3xl md:text-4xl font-bold mb-6">${project.title}</h2>
+              <p class="text-gray-600 text-lg">${project.description}</p>
+            </div>
+            
+            <!-- Images container -->
+            <div class="space-y-8"> 
+              ${project.images.map(img => `
+                <div class="w-full">
+                  <img src="${img}" alt="Project detail" class="w-full rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
     `;
 
-    // Add project content
-    window.projectContent = window.projectContent || {};
-    window.projectContent[projectId] = {
-      title: title,
-      text: description,
-      images: [coverImage, ...photos]
-    };
+    // The rest of the showProjectDetail function remains the same...
+    
+    // Add image preview modal
+    const imagePreviewModal = document.createElement('div');
+    imagePreviewModal.className = 'fixed inset-0 bg-black bg-opacity-95 z-[60] items-center justify-center hidden';
+    imagePreviewModal.innerHTML = `
+      <button class="absolute top-6 right-6 text-white text-4xl z-10 hover:text-gray-300 transition-colors duration-300">
+        &times;
+      </button>
+      <img src="" alt="Preview" class="max-h-[90vh] max-w-[90vw] object-contain">
+    `;
+    document.body.appendChild(imagePreviewModal);
 
-    // Add to projects grid
-    const projectsGrid = document.querySelector('.projects-grid');
-    projectsGrid.appendChild(projectCard);
+    // Add click handlers for images
+    modal.querySelectorAll('img').forEach(img => {
+        img.addEventListener('click', () => {
+            imagePreviewModal.querySelector('img').src = img.src;
+            imagePreviewModal.style.display = 'flex';
+        });
+    });
 
-    // Refresh admin panel
-    loadProjects();
+    // Close preview modal
+    imagePreviewModal.addEventListener('click', () => {
+        imagePreviewModal.style.display = 'none';
+    });
+    
+    imagePreviewModal.querySelector('button').addEventListener('click', (e) => {
+        e.stopPropagation();
+        imagePreviewModal.style.display = 'none';
+    });
 
-    // Close modal and reset form
-    document.getElementById('newProjectModal').style.display = 'none';
-    this.reset();
-  });
-
-  // Fix modal closing
-  document.querySelectorAll('.close-button').forEach(button => {
-    button.addEventListener('click', function() {
-      const modal = this.closest('.modal');
-      if(modal) {
-        modal.classList.remove('active');
+    // Function to properly close modal and restore scroll
+    const closeModal = () => {
+        modal.classList.add('opacity-0');
         document.body.style.overflow = '';
-      }
-    });
-  });
-
-  // Fix photo preview functionality
-  document.querySelector('.add-photo-btn').addEventListener('click', function() {
-    const photoUrl = document.getElementById('projectPhotos').value.trim();
-    if (photoUrl) {
-      const container = document.querySelector('.photos-preview-container');
-      const photoDiv = document.createElement('div');
-      photoDiv.className = 'photo-preview-item';
-      
-      const img = new Image();
-      img.src = photoUrl;
-      img.onerror = () => {
-        alert('图片加载失败，请检查URL是否正确');
-        photoDiv.remove();
-      };
-      
-      photoDiv.innerHTML = `
-        <img src="${photoUrl}" alt="Project photo">
-        <button type="button" class="remove-photo-btn">×</button>
-      `;
-      
-      container.appendChild(photoDiv);
-      document.getElementById('projectPhotos').value = '';
-
-      // Add remove functionality
-      photoDiv.querySelector('.remove-photo-btn').addEventListener('click', function(e) {
-        e.preventDefault();
-        photoDiv.remove();
-      });
-    }
-  });
-
-  // Project filter handling
-  const filterButtons = document.querySelectorAll('.filter-button');
-  const projectCards = document.querySelectorAll('.project-card');
-  
-  filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Remove active class from all buttons
-      filterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
-      this.classList.add('active');
-      
-      const filterValue = this.textContent.trim();
-      
-      projectCards.forEach(card => {
-        if (filterValue === '全部项目' || card.dataset.projectType === filterValue) {
-          card.style.display = 'block';
-          // Add fade in animation
-          card.style.opacity = '0';
-          setTimeout(() => {
-            card.style.opacity = '1';
-          }, 300);
-        } else {
-          card.style.opacity = '0';
-          setTimeout(() => {
-            card.style.display = 'none';
-          }, 300);
-        }
-      });
-    });
-  });
-
-  // Update project card click behavior to show modal
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.style.cursor = 'pointer'; // Change cursor back to pointer
-    card.addEventListener('click', function(e) {
-      e.preventDefault();
-      const projectId = this.dataset.projectId;
-      if (projectId && projectContent[projectId]) {
-        const modal = document.getElementById('projectDetailModal');
-        const content = projectContent[projectId];
-        
-        // Update modal content
-        document.getElementById('modalProjectTitle').textContent = content.title;
-        document.getElementById('modalProjectText').textContent = content.text;
-        
-        // Update gallery
-        const gallery = modal.querySelector('.project-gallery');
-        gallery.innerHTML = content.images.map(img => 
-          `<img src="${img}" alt="${content.title}" style="width: 100%; height: auto;">`
-        ).join('');
-        
-        // Show modal
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        // Initialize lightbox
-        initializeLightbox();
-      }
-    });
-  });
-
-  // Update project links to prevent default behavior
-  projectLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    const projectsSection = document.querySelector('.projects-grid');
-    projectsSection.scrollIntoView({ behavior: 'smooth' });
-  });
-
-  // Update the project content in the projectContent object
-  const projectContent = {
-    'killers-dance': {
-      title: 'killers舞蹈工作室',
-      text: `
-        目业主：广州奇乐思文化传播有限公司
-        项目名称：killers舞蹈工作室
-        项目类型：舞房设计商业空间设计
-        项目地点：中国广州市海珠区海珠智汇
-        完成时间：2024.11
-
-        Killer舞蹈工作室，中国街舞界的翘楚，2024年WOD中国区冠军得主，以其舞蹈实力和创新精神引领街舞文化。位于广州海珠智汇创意园顶楼，空间开阔无柱，为舞者提供无限自由。设计灵感源自舞者的力量与决断，以巨石元素为核心，将稳固与重量感融入空间，可视化舞者的能量。外立面设计借鉴巨石的稳固与力量，内部结构灵活多变，适应不同规模的舞蹈课程和排练，最大可容纳100人。每个角落都能感受到舞者的力量和舞蹈的热情，激励每个人追求卓越。Killer舞室的设计语言，将力量感与创新精神融入每一个角落，塑造了一个激发灵感和释放个性的空间，成为街舞爱好者的专业训练场所，同时推动华南地区街舞文化发展。
-      `,
-      images: [
-        'https://i.ibb.co/TtCXxTn/1.png',
-        'https://i.ibb.co/gmbnpXg/2.png',
-        'https://i.ibb.co/2kZZsHj/3.png',
-        'https://i.ibb.co/n3hZ7KV/4.png',
-        'https://i.ibb.co/wWm5cDt/5.png',
-        'https://i.ibb.co/zRWdTQS/6.png',
-        'https://i.ibb.co/qYxS4rM/7.png',
-        'https://i.ibb.co/wLdgH90/8.png',
-        'https://i.ibb.co/LNnHq4M/9.png',
-        'https://i.ibb.co/DYL1nDj/10.png',
-        'https://i.ibb.co/2nj21dq/11.png',
-        'https://i.ibb.co/cYZQ6WN/12.png',
-        'https://i.ibb.co/f90ZXxd/13-1.png',
-        'https://i.ibb.co/X2q4w71/13.png',
-        'https://i.ibb.co/m4zxCnH/14-1.png',
-        'https://i.ibb.co/WzKVbzC/14.png',
-        'https://i.ibb.co/vjnvVd3/15.png',
-        'https://i.ibb.co/wrHzSgF/16.png',
-        'https://i.ibb.co/PMYhwxn/17.png',
-        'https://i.ibb.co/ZhPc0Tp/18.png',
-        'https://i.ibb.co/nkd59Kp/20-1.png',
-        'https://i.ibb.co/zNW7Ggr/20-4.png',
-        'https://i.ibb.co/zh6pFtm/21.png',
-        'https://i.ibb.co/FxRBz93/22-1.png',
-        'https://i.ibb.co/ysSSrc9/22-2.png',
-        'https://i.ibb.co/2YDFGMG/22.png',
-        'https://i.ibb.co/SftGJVv/23.png',
-        'https://i.ibb.co/fGJqC1M/24-1.png',
-        'https://i.ibb.co/dJ9y8v6/24.png',
-        'https://i.ibb.co/h8vpH69/25.png',
-        'https://i.ibb.co/hYDD4K7/26.png',
-        'https://i.ibb.co/2MfrZ70/27.png',
-        'https://i.ibb.co/G2T40bW/28.png',
-        'https://i.ibb.co/tPBcdBb/29-1.png',
-        'https://i.ibb.co/XFLdy06/30.png',
-        'https://i.ibb.co/M22xMHj/31-1.png',
-        'https://i.ibb.co/vhqx1rK/31.png',
-        'https://i.ibb.co/xfnFjqh/32.png',
-        'https://i.ibb.co/ZYvDjFL/33.png',
-        'https://i.ibb.co/XD0ZBSr/34.png',
-        'https://i.ibb.co/cDsD8SH/35.jpg',
-        'https://i.ibb.co/vZ4x6Xf/36.jpg'
-      ]
-    },
-    'fusheng-jewelry': {
-      title: '福升玉器珠宝店',
-      text: `
-        项目业主：珠海福升玉器珠宝
-        项目名称：福升玉器珠宝店
-        项目类型：珠宝商业空间
-        项目地点：中国珠海市融德广场
-        完成时间：2024.10
-
-        福升玉器珠宝店以其精致的内部装修和匠心独运的设计，为顾客提供了一个高端的珠宝购物体验。店内的灯光与陈列设计巧妙结合，使每件珠宝都散发出独特的光彩。我们精心挑选的玉器和珠宝，不仅展现了传统文化的魅力，也融入了现代设计的创新。
-      `,
-      images: [
-        'https://i.ibb.co/hDfFkY8/1.png',
-        'https://i.ibb.co/Dr6cr7X/2.png',
-        'https://i.ibb.co/tc6s1YZ/3.png',
-        'https://i.ibb.co/7bpWN9K/4.png',
-        'https://i.ibb.co/pfBXJP8/5.png',
-        'https://i.ibb.co/99hvjqh/6.png',
-        'https://i.ibb.co/NLGCR6C/7.png',
-        'https://i.ibb.co/LpnPsfm/8.png',
-        'https://i.ibb.co/z86RqK9/9.png',
-        'https://i.ibb.co/Fhf4qbL/10.jpg'
-      ]
-    },
-    'wild-cake': {
-      title: '野望蛋糕店',
-    text: `
-      项目名称：野望蛋糕店
-      项目类型：蛋糕商业空间
-      项目地点：中国广州市体育东路
-      完成时间：2024.08
-
-      作为设计师，我将这家蛋糕店的空间设计成一场视觉与味觉的盛宴。店内布局以“花与蛋糕的和谐”为核心理念，每个设计细节都旨在创造一个既现代又温馨的环境。墙面采用淡雅色彩，与精心挑选的鲜花装饰相映成趣，而蛋糕展示区则以简洁线条和明亮灯光突出每一款蛋糕的独特性。空间规划考虑到顾客的流动和互动，确保每位顾客都能享受到舒适而愉悦的购物体验。无论是选择特别的礼物，还是享受一段宁静的下午茶时光，这里的空间设计都旨在提升感官享受，让顾客在每一个细节中感受到精致与关怀。
-    `,
-    images: [
-      'https://i.ibb.co/HntNys5/2.png', 
-      'https://i.ibb.co/GM9pTN4/1.png', 
-      'https://i.ibb.co/P5fN9dh/3.png', 
-      'https://i.ibb.co/RPmbJZK/4-1.png', 
-      'https://i.ibb.co/ccWNF3P/7-1.png', 
-      'https://i.ibb.co/b74z3jP/8-1.png', 
-      'https://i.ibb.co/Ns2kMpk/9-1.png', 
-      'https://i.ibb.co/DRTGFKj/11.png', 
-      'https://i.ibb.co/cFbqJBt/13.png', 
-      'https://i.ibb.co/jw2ZNDG/15.png', 
-      'https://i.ibb.co/HdxS22M/16.png', 
-      'https://i.ibb.co/sK02dCH/image.png', 
-      'https://i.ibb.co/3WhJwgP/image.png' 
-    ]
-  },
-  'drum-island-music': {
-    title: '鼓屿音乐工作室',
-    text: `
-      项目名称：鼓屿音乐工作室
-      项目类型：音乐商业空间
-      项目地点：中国广州市番禺区
-      完成时间：2024.06
-
-      欢迎来到鼓屿音乐，一个将音乐元素与教培空间完美融合的创新设计。在这里，音乐不仅仅是教学的内容，更是环境设计的灵魂。作为一名设计师，我将音乐的精髓融入到鼓屿音乐的每一个角落。前台设计巧妙地将音响设备整合其中，不仅作为空间的声音源泉，也是视觉焦点，展现音乐的力量和动感。休息区的茶几，由架子鼓的鼓架创意改造，为等待的家长和学生提供了一个既实用又充满节奏感的休息场所。墙上的壁灯和休息区的吊灯，采用镲片改造而成，光影之间，仿佛能听到金属的清脆回响，为空间增添了一抹独特的音乐色彩。而挂钥匙的挂杆，则是利用架子鼓的鼓棒精心打造，既实用又具有装饰性，体现了音乐与日常生活的紧密联系。鼓屿音乐的设计，是对音乐教培空间的一次革新。我们不仅教授音乐，更通过环境设计，让音乐的韵律和节奏渗透到每一个细节，让每一位踏入鼓屿音乐的人都能感受到音乐的魅力。
-    `,
-    images: [
-      'https://i.ibb.co/xHQr7KZ/2-1.png', 
-      'https://i.ibb.co/XVd8vZW/3-1.png', 
-      'https://i.ibb.co/xCGyh4P/4-1.png', 
-      'https://i.ibb.co/g45xWCR/5-1.png', 
-      'https://i.ibb.co/LCTVYqX/6-1.png', 
-      'https://i.ibb.co/Z2hNRhy/7.png', 
-      'https://i.ibb.co/pv5Ys3s/8.png', 
-      'https://i.ibb.co/17Nk967/9.png', 
-      'https://i.ibb.co/nLc3rv6/10.png', 
-      'https://i.ibb.co/gPtfvtX/11.png', 
-      'https://i.ibb.co/C28b5fh/12-1.png'
-    ]
-  },
-  'jinshan-pan-ancestral-home': {
-    title: '金山村潘府祖宅',
-    text: `
-      项目名称：金山村潘府祖宅
-    项目类型：建筑设计
-    项目地点：中国韶关市新丰县
-    完成时间：2024.05
-
-    探索极简主义的纯粹美学，我们为您呈现这座白色自建房设计。以白色为主调，融合现代与自然元素，这座建筑不仅是居所，更是艺术的体现。简洁的线条勾勒出空间的流畅感，每一处细节都透露着精致与考究。为您的兄伯俩打造一个既现代又温馨的家，让生活回归本质，享受宁静与和谐。欢迎浏览我们的官网，了解更多关于这座白色极简风格建筑的设计理念与细节。
-    `,
-    images: [
-      "https://i.ibb.co/h27hHqZ/2.jpg",
-      "https://i.ibb.co/RzC5hKZ/image.jpg",
-      "https://i.ibb.co/dQ7Zj8Q/1-1.png",
-      "https://i.ibb.co/0FWmNP6/2-2.png",
-      "https://i.ibb.co/GTPbRTh/3-2.png",
-      "https://i.ibb.co/cTcQc6W/4-2.png",
-      "https://i.ibb.co/xGTMgyh/5-2.png",
-      "https://i.ibb.co/0tH2g85/6-2.png",
-      "https://i.ibb.co/MhMzZVx/7-2.png",
-      "https://i.ibb.co/0fp65PH/8-2.png",
-      "https://i.ibb.co/nCbMGXB/9-2.png",
-      "https://i.ibb.co/Jyzxngy/11-2.png",
-      "https://i.ibb.co/qF1hrSP/12-2.png",
-      "https://i.ibb.co/NpGz4Jj/2.png",
-      "https://i.ibb.co/1RBqRV8/1-2.png",
-      "https://i.ibb.co/3R3H8KV/2-2.png",
-      "https://i.ibb.co/KFKjCvp/3-2.jpg",
-      "https://i.ibb.co/gyYTr0P/4-2.jpg",
-      "https://i.ibb.co/kg4jcYp/5-2.jpg"
-    ]
-  },
-  'feicui-year-private-residence': {
-    title: '翡翠年华私宅',
-    text: `
-      项目名称：翡翠年华私宅
-      项目类型：建筑设计
-      项目地点：中国长沙市宁乡市
-      完成时间：2024.03
-
-      为90后夫妻打造的侘寂风家居，以简约自然为核心。空间内，质朴的木质与柔和的光线交织，营造出宁静而温馨的氛围。墙面保留原始质感，家具简约实用，每件物品都诉说着时间的故事。在这里，不完美被欣然接受，生活回归本真，让心灵在静谧中找到归属。
-    `,
-    images: [
-      "https://i.ibb.co/gy5wsNv/image16.png",
-      "https://i.ibb.co/4FR2kPY/image17.png",
-      "https://i.ibb.co/9c0TzHQ/image18.png",
-      "https://i.ibb.co/c15cZ5p/image19.png",
-      "https://i.ibb.co/RbGsqcQ/image20.png",
-      "https://i.ibb.co/1frH1RF/image21.png",
-      "https://i.ibb.co/mBGF69f/image22.png",
-      "https://i.ibb.co/gzcgWFT/image23.png",
-      "https://i.ibb.co/6Zr5Bmd/image24.png",
-      "https://i.ibb.co/v4Tb1pL/image25.png",
-      "https://i.ibb.co/fq38G63/image26.png",
-      "https://i.ibb.co/RSzZVpc/image27.png",
-      "https://i.ibb.co/wrMV0tH/image28.png",
-      "https://i.ibb.co/55NjhKL/image29.png",
-      "https://i.ibb.co/N3rPTDz/image30.png",
-      "https://i.ibb.co/PT4JkCm/image32.png",
-      "https://i.ibb.co/6N544sk/image33.png",
-      "https://i.ibb.co/WsM4P9j/image34.png",
-      "https://i.ibb.co/XYwp4nD/image35.png",
-      "https://i.ibb.co/Khx40Kw/image36.png",
-      "https://i.ibb.co/Lv4Qj8M/image37.png",
-      "https://i.ibb.co/0YyPQy2/image38.png",
-      "https://i.ibb.co/pZkTtj0/image39.png",
-      "https://i.ibb.co/BZNR2tQ/image40.png",
-      "https://i.ibb.co/GpGYN3b/image41.png",
-      "https://i.ibb.co/KqyrYZF/image42.png",
-      "https://i.ibb.co/sqwSWNm/image43.png",
-      "https://i.ibb.co/JQc97F5/image44.png",
-      "https://i.ibb.co/R0H10St/image45.png",
-      "https://i.ibb.co/D9gPLn2/image46.png",
-      "https://i.ibb.co/0cgcN4g/image47.png",
-      "https://i.ibb.co/GsBdFDZ/image48.png",
-      "https://i.ibb.co/Nrq8mGT/image49.png",
-      "https://i.ibb.co/JcktwQp/image50.png",
-      "https://i.ibb.co/8xDbMQW/image52.png",
-      "https://i.ibb.co/WGnkqmW/image54.jpg"
-    ]
- } };
-// Update the project details in the modalfunction showProjectModal(projectId)
- {
-    if (!projectContent[projectId]) {
-      console.error('Project content not found:', projectId);
-      return;
-    }
-    
-    const modal = document.getElementById('projectDetailModal');
-    const content = projectContent[projectId];
-    
-    // Update modal content
-    modal.querySelector('#modalProjectTitle').textContent = content.title;
-    modal.querySelector('#modalProjectText').textContent = content.text;
-    
-    // Update gallery with proper image handling
-    const gallery = modal.querySelector('.project-gallery');
-    gallery.innerHTML = content.images.map(img => 
-      `<img src="${img}" alt="${content.title}" style="width: 100%; height: auto;">`
-    ).join('');
-    
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-});
-
-// Initialize lightbox functionality
-function initializeLightbox() {
-  const lightbox = document.querySelector('.lightbox');
-  const lightboxImage = lightbox.querySelector('.lightbox-image');
-  let currentImageIndex = 0;
-  let images = [];
-
-  // Setup gallery image click handlers
-  document.querySelectorAll('.project-gallery img').forEach((img, index) => {
-    img.addEventListener('click', () => {
-      images = Array.from(document.querySelectorAll('.project-gallery img')).map(img => img.src);
-      currentImageIndex = index;
-      showImage(currentImageIndex);
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
-  });
-
-  function showImage(index) {
-    lightboxImage.style.opacity = '0';
-    lightboxImage.src = images[index];
-    lightboxImage.alt = '';
-    
-    lightboxImage.onload = function() {
-      lightboxImage.style.opacity = '1';
+        imagePreviewModal.remove();
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
     };
-  }
 
-  // Click anywhere to close
-  lightbox.addEventListener('click', () => {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
-  });
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 
-  // Keyboard navigation - only keep Escape key
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('active')) return;
+    // Close button functionality
+    modal.querySelector('button').addEventListener('click', () => {
+        closeModal();
+    });
+
+    // Add transition for smooth appearance
+    modal.style.transition = 'opacity 0.3s ease';
+    document.body.appendChild(modal);
     
-    if (e.key === 'Escape') {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-}
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
 
-// Close project modal functionality
-document.querySelector('#projectDetailModal .close-button').addEventListener('click', function() {
-  document.getElementById('projectDetailModal').classList.remove('active');
-  document.body.style.overflow = '';
-});
-
-document.getElementById('projectDetailModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    this.classList.remove('active');
-    document.body.style.overflow = '';
+    // Add keyboard support for closing (Escape key)
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            if (imagePreviewModal.style.display === 'flex') {
+                imagePreviewModal.style.display = 'none';
+            } else {
+                closeModal();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
   }
-});
-
-// Smooth scrolling for navigation links
-document.querySelector('a[href="#projects"]').addEventListener('click', function(e) {
-  e.preventDefault();
-  const projectsGrid = document.querySelector('.projects-grid');
-  projectsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 </script>
-</body>
-</html>
+
+</body></html>
