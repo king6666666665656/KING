@@ -1,1458 +1,904 @@
-<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>KING-DESIGN</title>
-<!-- 引入Tailwind CSS和必需的JavaScript库 -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
-
-  :root {
-    --primary-color: #1a1a1a;
-    --secondary-color: #333;
-    --accent-color: #gold;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-  }
-
-  body {
-    background-color: #fafafa;
-    color: var(--primary-color);
-  }
-
-  .nav-item {
-    position: relative;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-  }
-
-  .nav-item::after {
-    content: attr(data-cn);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .nav-item:hover .en {
-    opacity: 0;
-  }
-
-  .nav-item:hover::after {
-    opacity: 1;
-  }
-
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-  }
-
-  .project-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-  }
-
-  .project-card:hover {
-    transform: translateY(-10px);
-  }
-
-  .search-box {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 1rem;
-    border-radius: 8px;
-  }
-
-  @media (max-width: 768px) {
-    .project-grid {
-      padding: 1rem;
-      gap: 1rem;
-    }
-
-    .modal-content {
-      margin: 1rem;
-      padding: 1.5rem;
-      max-width: 95vw;
-    }
-
-    .hero-text {
-      font-size: 2rem;
-    }
-
-    .search-box {
-      margin: 0 1rem;
-    }
-
-    .nav-item {
-      padding: 0.25rem 0.5rem;
-    }
-  }
-
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    z-index: 1000;
-  }
-
-  .modal-content {
-    position: relative;
-    background: white;
-    max-width: 90vw;
-    margin: 2rem auto;
-    padding: 2.5rem;
-    border-radius: 12px;
-    max-height: 95vh;
-    overflow-y: auto;
-  }
-
-  .hero-text {
-    font-size: 3rem;
-    font-weight: 600;
-    background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradientMove 8s ease infinite;
-  }
-
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .aspect-w-16 {
-    position: relative;
-    padding-bottom: 56.25%;
-    margin-bottom: 2rem;
-  }
-
-  .project-card img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-  }
-
-  .aspect-w-16 img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  .aspect-w-16:hover img {
-    transform: scale(1.02);
-  }
-
-  /* Add this CSS to increase spacing between category buttons */
-  .flex.flex-wrap.justify-center.gap-4.mt-8 {
-    gap: 1.5rem !important; /* Increase gap between buttons */
-  }
-
-  .category-btn {
-    padding: 0.75rem 1.5rem; /* Add more padding to buttons */
-    margin: 0.5rem;
-    background-color: #f3f4f6;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .category-btn:hover {
-    background-color: #e5e7eb;
-  }
-
-  .category-btn.active {
-    background-color: #1a1a1a;
-    color: white;
-  }
-
-  img {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-    user-drag: none;
-    pointer-events: none;
-  }
-</style>
-</head>
-<body>
-
-<nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 p-4 md:p-6 flex justify-between items-center">
-  <div class="text-xl md:text-2xl font-bold">KING-DESIGN</div>
-  <div class="flex gap-4 md:gap-8">
-    <div class="nav-item" data-cn="关于"><span class="en">About</span></div>
-    <div class="nav-item" data-cn="项目"><span class="en">Project</span></div>
-    <div class="nav-item" data-cn="联系"><span class="en">Contact</span></div>
-  </div>
-</nav>
-
-<main class="pt-24">
-  <section class="hero min-h-screen flex flex-col justify-center items-center text-center p-4">
-    <h1 class="hero-text mb-8">DESIGN FOR THE FUTURE,<br>CRAFTED FOR TODAY</h1>
-    <p class="max-w-2xl mx-auto text-gray-600 mb-12">
-      Independent designer creating sustainable, timeless pieces that challenge conventional fashion boundaries while embracing individual expression.
-    </p>
-    
-    <div class="search-box w-full max-w-xl mx-auto">
-      <input type="text" placeholder="搜索项目..." class="w-full p-4 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400">
-    </div>
-
-    <div class="flex flex-wrap justify-center gap-8 mt-8">
-      <button class="category-btn active">全部项目</button>
-      <button class="category-btn">规划设计</button>
-      <button class="category-btn">建筑设计</button>
-      <button class="category-btn">商业设计</button>
-      <button class="category-btn">展览设计</button>
-      <button class="category-btn">私宅设计</button>
-      <button class="category-btn">产品设计</button>
-    </div>
-  </section>
-
-  <section id="projects" class="project-grid">
-    <!-- 项目将通过JavaScript动态生成 -->
-  </section>
-</main>
-
-<footer class="bg-gray-900 text-white py-12">
-  <div class="container mx-auto px-4">
-    <div class="flex flex-col md:flex-row justify-between items-center">
-      <div class="mb-8 md:mb-0">
-        <h3 class="text-2xl font-bold mb-4">联系方式</h3>
-        <p>邮箱：king1014852873@gmail.com</p>
-        <p>电话：13229362048</p>
-        <p>INS：101485king</p>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<div id="aboutModal" class="modal">
-  <div class="modal-content">
-    <h2 class="text-2xl font-bold mb-6">关于我</h2>
-    <p class="mb-4">您好，我是king，一名热情的独立商业空间设计师。我坚信创新设计赋能无限可能，致力于通过前沿的设计思维和技术，为客户打造既实用又富有创意的商业空间。</p>
-    
-    <h3 class="text-xl font-bold mt-6 mb-4">我的设计理念</h3>
-    <p class="mb-4">在我的设计实践中，我将创新作为核心驱动力，探索设计的边界，以实现空间的最大潜能。我相信，通过创新的设计，我们不仅能够提升商业价值，还能够激发人们的想象力和创造力。</p>
-    
-    <h3 class="text-xl font-bold mt-6 mb-4">我的专业服务</h3>
-    <ul class="list-disc pl-6 mb-4">
-      <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满足商业需求和用户体验。</li>
-      <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的有力媒介。</li>
-      <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持美学的高标准。</li>
-    </ul>
-
-    <h3 class="text-xl font-bold mt-6 mb-4">合作流程</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="p-4 bg-gray-100 rounded">
-        <h4 class="font-bold mb-2">定金支付</h4>
-        <p>在合同签订之际，甲方需向乙方支付设计费用总额的20%作为定金。</p>
-      </div>
-      <div class="p-4 bg-gray-100 rounded">
-        <h4 class="font-bold mb-2">首期款项</h4>
-        <p>待平面方案获得双方确认后，甲方应支付设计费用总额的40%。</p>
-      </div>
-      <div class="p-4 bg-gray-100 rounded">
-        <h4 class="font-bold mb-2">二期款项</h4>
-        <p>在效果方案确认后，甲方需支付设计费用总额的40%。</p>
-      </div>
-    </div>
-    
-    <button class="absolute top-4 right-4 text-2xl close-modal">&times;</button>
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Disable right click on images
-  document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-      return false;
-    }
-  });
-
-  // Disable keyboard shortcuts for saving
-  document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
-      e.preventDefault();
-      return false;
-    }
-  });
-
-  // Disable drag and drop of images
-  document.addEventListener('dragstart', function(e) {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-      return false;
-    }
-  });
-
-  // 导航交互
-  const navItems = document.querySelectorAll('.nav-item');
-  
-  navItems.forEach(item => {
-    item.addEventListener('click', function() {
-      const type = this.querySelector('.en').textContent;
-      if (type === 'About') {
-        document.getElementById('aboutModal').style.display = 'block';
-      } else if (type === 'Project') {
-        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
-      } else if (type === 'Contact') {
-        document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-
-  // 关闭模态框
-  document.querySelector('.close-modal').addEventListener('click', function() {
-    document.getElementById('aboutModal').style.display = 'none';
-  });
-
-  // 项目数据
-  const projects = Array(40).fill().map((_, i) => {
-    if (i === 0) {
-      return {
-        id: 1,
-        title: 'killers巨石舞室',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/05/681823a32f4ea.jpg',
-        description: `
-Killer舞蹈工作室，中国街舞界的翘楚，2024年WOD中国区冠军得主，以其舞蹈实力和创新精神引领街舞文化。位于广州海珠智汇创意园顶楼，空间开阔无柱，为舞者提供无限自由。设计灵感源自舞者的力量与决断，以巨石元素为核心，将稳固与重量感融入空间，可视化舞者的能量。外立面设计借鉴巨石的稳固与力量，内部结构灵活多变，适应不同规模的舞蹈课程和排练，最大可容纳100人。每个角落都能感受到舞者的力量和舞蹈的热情，激励每个人追求卓越。Killer舞室的设计语言，将力量感与创新精神融入每一个角落，塑造了一个激发灵感和释放个性的空间，成为街舞爱好者的专业训练场所，同时推动华南地区街舞文化发展.
-
-
-`,
-     images: [
-  "https://vip.wmhua.cn/2025/05/05/68181610f1bad.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818164a69aba.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161630be5.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161706120.jpg",
-  "https://vip.wmhua.cn/2025/05/05/681816164d8d9.jpg",
-  "https://vip.wmhua.cn/2025/05/05/681816177a953.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181618c3c8d.jpg",
-  "https://vip.wmhua.cn/2025/05/05/681816178d055.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181617b22c5.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181616d4187.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181616792b3.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161867b2a.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181618f277f.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181619e7fb2.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181619d6a32.jpg",
-  "https://vip.wmhua.cn/2025/05/05/681816128b4f1.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181613f00d1.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181615909bf.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181617968ce.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161ce5b6a.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161cdf595.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161cd4ebb.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161d4ff73.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161ba3f2c.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161c775f2.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161c3e022.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818161925cc1.jpg",
-  "https://vip.wmhua.cn/2025/05/05/681816943bf54.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167982a02.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167bacd94.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167ba1f07.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167c21982.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167ba618c.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167c43976.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167c72d91.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167cb4339.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167c4cb59.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167acba78.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68181677d835c.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167a89eb4.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167b6ae6a.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818167a12212.jpg"
-]
-      };
-    }
-    if (i === 1) {
-      return {
-        id: 2,
-        title: '福升玉器珠宝',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/05/681813ce12f23.png',
-        description: `福升玉器珠宝店以其精致的内部装修和匠心独运的设计，为顾客提供了一个高端的珠宝购物体验。店内的灯光与陈列设计巧妙结合，使每件珠宝都散发出独特的光彩。我们精心挑选的玉器和珠宝，不仅展现了传统文化的魅力，也融入了现代设计的创新。`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/05/681811589fe10.png',
-  'https://vip.wmhua.cn/2025/05/05/6818115881eeb.png',
-  'https://vip.wmhua.cn/2025/05/05/68181157f3957.png',
-  'https://vip.wmhua.cn/2025/05/05/681811594579b.png',
-  'https://vip.wmhua.cn/2025/05/05/68181154541fc.png',
-  'https://vip.wmhua.cn/2025/05/05/6818115c223f6.png',
-  'https://vip.wmhua.cn/2025/05/05/6818115f8672e.png',
-  'https://vip.wmhua.cn/2025/05/05/68181143cb831.png',
-  'https://vip.wmhua.cn/2025/05/05/681811444935a.png',
-  'https://vip.wmhua.cn/2025/05/05/6818113e3a01a.jpg'
-]
-      };
-    }
-    if (i === 2) {
-      return {
-        id: 3,
-        title: '野望蛋糕店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/05/6818268b056c1.jpg',
-        description: `作为设计师，我将这家蛋糕店的空间设计成一场视觉与味觉的盛宴。店内布局以“花与蛋糕的和谐”为核心理念，每个设计细节都旨在创造一个既现代又温馨的环境。墙面采用淡雅色彩，与精心挑选的鲜花装饰相映成趣，而蛋糕展示区则以简洁线条和明亮灯光突出每一款蛋糕的独特性。空间规划考虑到顾客的流动和互动，确保每位顾客都能享受到舒适而愉悦的购物体验。无论是选择特别的礼物，还是享受一段宁静的下午茶时光，这里的空间设计都旨在提升感官享受，让顾客在每一个细节中感受到精致与关怀。`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/05/681825b1669c0.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825b168625.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825b110908.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825af8404e.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825ad1bb6d.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825b173821.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825aaba1e5.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825b1478af.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825adb90ea.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825b07e0b7.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825ab9a2e8.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825aa00718.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681825a9ea20c.jpg'
-]
-      };
-    }
-    if (i === 3) {
-      return {
-        id: 4,
-        title: '鼓屿音乐工作室',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/05/68182b9be0877.png',
-        description: `欢迎来到鼓屿音乐，一个将音乐元素与教培空间完美融合的创新设计。在这里，音乐不仅仅是教学的内容，更是环境设计的灵魂。作为一名设计师，我将音乐的精髓融入到鼓屿音乐的每一个角落。前台设计巧妙地将音响设备整合其中，不仅作为空间的声音源泉，也是视觉焦点，展现音乐的力量和动感。休息区的茶几，由架子鼓的鼓架创意改造，为等待的家长和学生提供了一个既实用又充满节奏感的休息场所。墙上的壁灯和休息区的吊灯，采用镲片改造而成，光影之间，仿佛能听到金属的清脆回响，为空间增添了一抹独特的音乐色彩。而挂钥匙的挂杆，则是利用架子鼓的鼓棒精心打造，既实用又具有装饰性，体现了音乐与日常生活的紧密联系。鼓屿音乐的设计，是对音乐教培空间的一次革新。我们不仅教授音乐，更通过环境设计，让音乐的韵律和节奏渗透到每一个细节，让每一位踏入鼓屿音乐的人都能感受到音乐的魅力。`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/05/681829e37f6eb.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829e0c8c22.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829ed48076.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829eb3ea77.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829ebcd5a3.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829ece59d6.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829e550d7a.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829e8d8afc.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829e6abc8f.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829e5f272b.jpg',
-  'https://vip.wmhua.cn/2025/05/05/681829ec5655e.jpg'
-]
-      };
-    }
-    if (i === 4) {
-      return {
-        id: 5,
-        title: '潘府金山村',
-        category: '建筑设计',
-        image: 'https://vip.wmhua.cn/2025/05/05/68183134d7408.jpg',
-        description: `探索极简主义的纯粹美学，我们为您呈现这座白色自建房设计。以白色为主调，融合现代与自然元素，这座建筑不仅是居所，更是艺术的体现。简洁的线条勾勒出空间的流畅感，每一处细节都透露着精致与考究。为您的兄伯俩打造一个既现代又温馨的家，让生活回归本质，享受宁静与和谐。欢迎浏览我们的官网，了解更多关于这座白色极简风格建筑的设计理念与细节。`,
-      images: [
-  "https://vip.wmhua.cn/2025/05/05/68182d39cce75.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3ac2d06.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d402cda9.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3d4435c.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3cc8067.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3f7585f.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3c9336a.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3f8a238.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3deb159.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3f17f18.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3d5184e.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3d43e15.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3e786a7.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d52b42e4.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d42cdf88.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d4421964.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818bece40a50.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818be411dfcc.jpg",
-  "https://vip.wmhua.cn/2025/05/05/68182d3ef3e3f.jpg"
-]
-      };
-    }
-    if (i === 5) {
-      return {
-        id: 6, 
-        title: '翡翠年华',
-        category: '私宅设计',
-        image: 'https://vip.wmhua.cn/2025/05/04/6817883d28c78.png',
-        description: `为90后夫妻打造的侘寂风家居，以简约自然为核心。空间内，质朴的木质与柔和的光线交织，营造出宁静而温馨的氛围。墙面保留原始质感，家具简约实用，每件物品都诉说着时间的故事。在这里，不完美被欣然接受，生活回归本真，让心灵在静谧中找到归属。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/04/68178211606bb.png",
-  "https://vip.wmhua.cn/2025/05/04/68178210e0215.png",
-  "https://vip.wmhua.cn/2025/05/04/6817820d859f6.png",
-  "https://vip.wmhua.cn/2025/05/04/6817820d2bd71.png",
-  "https://vip.wmhua.cn/2025/05/04/681782069195d.png",
-  "https://vip.wmhua.cn/2025/05/04/681781f17da9f.png",
-  "https://vip.wmhua.cn/2025/05/04/681782096166d.png",
-  "https://vip.wmhua.cn/2025/05/04/681781eeb86ed.png",
-  "https://vip.wmhua.cn/2025/05/04/681781e8c3374.png",
-  "https://vip.wmhua.cn/2025/05/04/681781d9c23f6.png",
-  "https://vip.wmhua.cn/2025/05/04/68178206a78b5.png",
-  "https://vip.wmhua.cn/2025/05/04/681781ee87f97.png",
-  "https://vip.wmhua.cn/2025/05/04/681781d672460.png",
-  "https://vip.wmhua.cn/2025/05/04/681781c97e9dd.png",
-  "https://vip.wmhua.cn/2025/05/04/681781e30c5a3.png",
-  "https://vip.wmhua.cn/2025/05/04/681781d7c269c.png",
-  "https://vip.wmhua.cn/2025/05/04/681781c3e4143.png",
-  "https://vip.wmhua.cn/2025/05/04/681781c62ea57.png",
-  "https://vip.wmhua.cn/2025/05/04/681781c4e10c7.png",
-  "https://vip.wmhua.cn/2025/05/04/681781b75d128.png",
-  "https://vip.wmhua.cn/2025/05/04/681781fea2431.png",
-  "https://vip.wmhua.cn/2025/05/04/681781ec8366a.png",
-  "https://vip.wmhua.cn/2025/05/04/681782b670aec.png",
-  "https://vip.wmhua.cn/2025/05/04/681782c2b5938.png",
-  "https://vip.wmhua.cn/2025/05/04/681782c15a0a5.png",
-  "https://vip.wmhua.cn/2025/05/04/681782b0bc0d5.png",
-  "https://vip.wmhua.cn/2025/05/04/6817828dd1f48.png",
-  "https://vip.wmhua.cn/2025/05/04/681782ad4226a.png",
-  "https://vip.wmhua.cn/2025/05/04/681782ab610e7.png",
-  "https://vip.wmhua.cn/2025/05/04/681782c4a177c.png",
-  "https://vip.wmhua.cn/2025/05/04/681782c2d4a31.png",
-  "https://vip.wmhua.cn/2025/05/04/681782bdea237.png",
-  "https://vip.wmhua.cn/2025/05/04/681782a16d086.png",
-  "https://vip.wmhua.cn/2025/05/04/681782b6b235f.png",
-  "https://vip.wmhua.cn/2025/05/04/681781f1923d2.png",
-  "https://vip.wmhua.cn/2025/05/04/6817825b9913e.jpg"
-]
-      };
-    }
-    if (i === 6) {
-      return {
-        id: 7,
-        title: '茉沏概念方案',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/05/6818d85d12b50.jpg',
-        description: `“入画茶沏”灵感源自于江南的独特文化和优秀国画。江南自古以来就是中国国画的重要发源地之一，其山水风光常常成为画家笔下的主题。我们希望通过“入画茶沏”的概念，让顾客在品茶的过程中感受到与江南国画相融合的情境，成为画中的一部分，与画中的山水相互映衬，感受到自然与艺术的奇妙交融。`,
-       images:[
-  "https://vip.wmhua.cn/2025/05/05/6818d7d897b47.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818d7d90062b.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818d7d92238c.jpg",
-  "https://vip.wmhua.cn/2025/05/05/6818d7d92a3e3.jpg"
-]
-      };
-    }
-    if (i === 7) {
-      return {
-        id: 8,
-        title: '上海南山嘉定售楼处展墙',
-        category: '展览设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/68196f7bee095.png',
-        description: `这个展览设计项目展现了创新的售楼处展示空间设计理念。我们通过独特的空间布局和灯光设计，为地产项目创造最佳的展示效果。空间动线规划流畅，让访客能够自然地了解项目信息。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，成功打造出一个专业而富有吸引力的售楼处展示空间。`,
-       images: [
-  "https://vip.wmhua.cn/2025/05/06/68196ed2e7d4f.png",
-  "https://vip.wmhua.cn/2025/05/06/68196ed48a7be.png",
-  "https://vip.wmhua.cn/2025/05/06/68196ed516f29.png",
-  "https://vip.wmhua.cn/2025/05/06/68196ed7cb6eb.png"
-]
-      };
-    }
-    if (i === 8) {
-      return {
-        id: 9,
-        title: '济高保利·云上璟誉',
-        category: '展览设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/681970e05ab35.png',
-        description: `这个展览设计项目展现了创新的售楼处展示空间设计理念。我们通过独特的空间布局和灯光设计，为地产项目创造最佳的展示效果。空间动线规划流畅，让访客能够自然地了解项目信息。我们运用了先进的多媒体技术和互动装置，提升参观体验。整体设计既突出项目特色，又营造出令人印象深刻的空间氛围，成功打造出一个专业而富有吸引力的售楼处展示空间。`,
-       images: [
-  "https://vip.wmhua.cn/2025/05/06/6819709171361.png",
-  "https://vip.wmhua.cn/2025/05/06/68197092b1500.png",
-  "https://vip.wmhua.cn/2025/05/06/6819709446b80.png"
-]
-      };
-    }
-    if (i === 9) {
-      return {
-        id: 10,
-        title: '羲皇.颐和云境',
-        category: '展览设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/68197440dcda3.jpg',
-        description: `一个将艺术与设计完美融合的展厅。在这里，每一处细节都经过精心雕琢，每一束光线都为展示而设。我们的设计不仅仅是空间的构建，更是对美学的深刻诠释。期待您的品鉴，共同见证设计与艺术的和谐共鸣。`,
-       images: [
-  "https://vip.wmhua.cn/2025/05/06/68197285be241.png",
-  "https://vip.wmhua.cn/2025/05/06/6819728642a14.png",
-  "https://vip.wmhua.cn/2025/05/06/6819729574d7d.png",
-  "https://vip.wmhua.cn/2025/05/06/6819728ebb572.png",
-  "https://vip.wmhua.cn/2025/05/06/68197298eb6ff.png",
-  "https://vip.wmhua.cn/2025/05/06/681972978cd62.png",
-  "https://vip.wmhua.cn/2025/05/06/681972988e3d6.png",
-  "https://vip.wmhua.cn/2025/05/06/681972907e1a2.png",
-  "https://vip.wmhua.cn/2025/05/06/6819728c8bc8f.png",
-  "https://vip.wmhua.cn/2025/05/06/6819728eb6ef9.png",
-  "https://vip.wmhua.cn/2025/05/06/68197297cad0a.png",
-  "https://vip.wmhua.cn/2025/05/06/68197297b8914.png",
-  "https://vip.wmhua.cn/2025/05/06/68197294516ba.png",
-  "https://vip.wmhua.cn/2025/05/06/681972819ac43.png",
-  "https://vip.wmhua.cn/2025/05/06/68197281ca7a3.png",
-  "https://vip.wmhua.cn/2025/05/06/6819728088bec.png",
-  "https://vip.wmhua.cn/2025/05/06/6819728081cb1.png"
-]
-      };
-    }
-    if (i === 10) {
-      return {
-        id: 11,
-        title: '茂华星河颂展',
-        category: '展览设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/68197aa1a7680.png',
-        description: `茂华星河，一个从《只此青绿》中汲取灵感的展览设计项目，将中国传统美学与现代展览空间完美融合。我们的设计团队深入探索了中国古典艺术的精髓，特别是宋代青绿山水画的静谧与深远，将其转化为现代展览空间的语言。通过使用柔和的青绿色调和精致的空间布局，我们创造了一个既能展示茂华星河项目特色，又能让观众沉浸在东方美学中的展览环境。设计中的每一处细节，从灯光到展台，都旨在传达一种宁静与和谐，引导观众体验一场穿越时空的艺术之旅。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819799a0fe3b.png",
-  "https://vip.wmhua.cn/2025/05/06/681979b9d9ddf.png",
-  "https://vip.wmhua.cn/2025/05/06/6819799672c33.png",
-  "https://vip.wmhua.cn/2025/05/06/68197980533a0.png",
-  "https://vip.wmhua.cn/2025/05/06/6819798ddb007.png",
-  "https://vip.wmhua.cn/2025/05/06/681979614ddbe.png",
-  "https://vip.wmhua.cn/2025/05/06/6819796a8dbf3.jpg"
-]      };
-    }
-    if (i === 11) {
-      return {
-        id: 12,
-        title: '流形鱼缸',
-        category: '产品设计',  
-        image: 'https://vip.wmhua.cn/2025/05/06/68197c50cecd7.jpg',
-        description: `在这个浮华的世界里，我们寻找着一份与自然共鸣的情感。我们的设计灵感源自自然界中生命的奇妙生长，那种万物共同重叠生长生牛不息的了量。通过观察自然的野蛮生长繁衍，我们汲取了灵感，并将这种生命之美融入到流形术鱼缸的设计中。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/68197bb250121.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68197bb0ea0d9.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68197bb0f09d2.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68197bb0eb66b.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68197bb0e0133.jpg"
-]
-
-      };
-    }
-    if (i === 12) {
-      return {
-        id: 13,
-        title: '骨椅',
-        category: '产品设计',  
-        image: 'https://vip.wmhua.cn/2025/05/06/68197db95a19e.jpg',
-        description: `在自然界中，骨骼以其独特的结构和支撑力，赋予生物以力量和灵活性。受到这一启发，我们自豪地呈现“骨椅”，一把将自然界的精妙设计融入现代家具的杰作。`,
-       images: [
-  "https://vip.wmhua.cn/2025/05/06/68197d21c4c84.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68197d2931962.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68197d231167c.jpg"
-]
-
-      };
-    }
-    if (i === 13) {
-      return {
-        id: 14,
-        title: '海珠新城南岸',
-        category: '规划设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/68198164988c2.jpg',
-        description: `水系组织了村落的架构，划分不同的片区，关系着贸易与文化的中心，串联起各个公共空间。我们希望延续水系与场地的关系,考虑河道对地下设施有很大影响,所以将河道的形式以“高线”的方式提取出来，以容纳不同的公共活动，串联整个空间的各个节点。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/68198074ab62d.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68198074be02b.jpg",
-  "https://vip.wmhua.cn/2025/05/06/681980748c4b3.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68198074b948d.jpg",
-  "https://vip.wmhua.cn/2025/05/06/681980742109a.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68198075a7480.jpg",
-  "https://vip.wmhua.cn/2025/05/06/68198072981a9.jpg"
-]
-
-      };
-    }
-    if (i === 14) {
-      return {
-        id: 15,
-        title: 'MODE时装周',
-        category: '展览设计',
-        image:'https://vip.wmhua.cn/2025/05/06/68198470b3fa2.png',
-        description: `在时尚的海洋中，每一件服装都是一个故事，每一次交流都是一次灵感的碰撞。上海MODE时装周，作为潮流的汇聚地，我们特别设计了“连接与分享”门头装置，旨在通过这个独特的空间，激发参展者之间的分享与交流，让时尚的火花在这里迸发。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/681983976d4f6.jpg",
-  "https://vip.wmhua.cn/2025/05/06/681983a20eb7a.png",
-  "https://vip.wmhua.cn/2025/05/06/6819839c70de8.png",
-  "https://vip.wmhua.cn/2025/05/06/681983a21f674.png",
-  "https://vip.wmhua.cn/2025/05/06/6819839bd7ac0.png",
-  "https://vip.wmhua.cn/2025/05/06/6819839de2b4a.png",
-  "https://vip.wmhua.cn/2025/05/06/68198395107ed.png",
-  "https://vip.wmhua.cn/2025/05/06/6819839e79a35.png",
-  "https://vip.wmhua.cn/2025/05/06/6819839e0e89a.png",
-  "https://vip.wmhua.cn/2025/05/06/6819839ee9dcd.png",
-  "https://vip.wmhua.cn/2025/05/06/681983973b616.png",
-  "https://vip.wmhua.cn/2025/05/06/681983a0927c0.png",
-  "https://vip.wmhua.cn/2025/05/06/681983a0668cb.png",
-  "https://vip.wmhua.cn/2025/05/06/68198391da854.png"
-]
-      };
-    }
-    if (i === 15) {
-      return {
-        id: 16,
-        title: '莲塘村第一食堂',
-        category: '建筑设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/681986faee8d9.png',
-        description: `莲塘村第一食堂，一座承载着社区记忆的老建筑，即将焕发新生。我们的目标是将其改造成一个充满古朴感的法餐厅，同时保留其历史的痕迹和文化价值。通过精心的设计，我们将让这座建筑在新时代中继续讲述它的故事。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819863fbe219.png",
-  "https://vip.wmhua.cn/2025/05/06/6819863d81a62.png",
-  "https://vip.wmhua.cn/2025/05/06/6819863ae1010.png",
-  "https://vip.wmhua.cn/2025/05/06/6819863bcd078.png",
-  "https://vip.wmhua.cn/2025/05/06/681986320c301.png",
-  "https://vip.wmhua.cn/2025/05/06/6819863ca3088.png",
-  "https://vip.wmhua.cn/2025/05/06/68198629ab86f.png",
-  "https://vip.wmhua.cn/2025/05/06/68198628b4d29.png",
-  "https://vip.wmhua.cn/2025/05/06/68198628cc097.png",
-  "https://vip.wmhua.cn/2025/05/06/6819863e2385d.png",
-  "https://vip.wmhua.cn/2025/05/06/681986282e079.png"
-]
-
-      };
-    }
-    if (i === 16) {
-      return {
-        id: 17,
-        title: '潮宏基花丝概念店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/68198a3255d3a.png',
-        description: `整个店铺都以“燕京八绝之首的花丝镶嵌”为创意灵感，于孔隙中洞见经典如故，于光影间感知非遗承继，打造出东方新境，让你“一步一景”，在每一个细节中都能感受到“花丝魅力”~
-`,
-       images: [
-  "https://vip.wmhua.cn/2025/05/06/68198987cbd8d.png",
-  "https://vip.wmhua.cn/2025/05/06/6819898571f6c.png",
-  "https://vip.wmhua.cn/2025/05/06/68198984a8d23.png",
-  "https://vip.wmhua.cn/2025/05/06/681989869a353.png",
-  "https://vip.wmhua.cn/2025/05/06/68198986ce9d1.png",
-  "https://vip.wmhua.cn/2025/05/06/6819898689df8.png",
-  "https://vip.wmhua.cn/2025/05/06/6819897f24953.jpg"
-]
-      };
-    }
-    if (i === 17) {
-      return {
-        id: 18,
-        title: '潮宏基花丝SI店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819b7bb2c057.jpg',
-        description: `整个店铺都以“燕京八绝之首的花丝镶嵌”为创意灵感，于孔隙中洞见经典如故，于光影间感知非遗承继，打造出东方新境，让你“一步一景”，在每一个细节中都能感受到“花丝魅力`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819b5937f69e.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5973dafe.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59717bd6.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59bc08aa.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59830083.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59a56f93.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59be9106.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59c1ca3b.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59b4f72c.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b598e9b3e.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59928f23.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b599bee70.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59a92942.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5993acab.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5962f44a.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59a21b45.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59c3aac6.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59c3a1d4.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59c7551f.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b59c9f841.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d89c860.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d90fab6.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d97901a.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d8b20d1.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d9a2be9.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d924da8.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d62735d.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d6f37c7.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d909da5.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819b5d97b3e4.jpg"
-]
-      };
-    }
-    if (i === 18) {
-      return {
-        id: 19,
-        title: '星期六鞋店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819bc16157cf.png',
-        description: `在现代社会，女性的力量不容小觑。她们是独立的个体，拥有自主的意志和不屈的灵魂。“星期六鞋垫”不仅仅是鞋垫，它是当代女性精神的延伸，是她们独立、自主、不被定义性格的象征。我们从自然界中汲取灵感，提炼出那些比例均衡且充满力量感的元素。如同巨石，这些元素被巧妙地融入到“星期六鞋垫”的设计之中，旨在激发每一位女性内在的力量。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819bb52b98f0.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb52ecf64.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb4b57ff0.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb5068e2f.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb5071e6e.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb5267aef.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb52799e9.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bb52b98ea.png"
-]
-      };
-    }
-    if (i === 19) {
-      return {
-        id: 20,
-        title: '潮宏基成都万象城店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819bd678555c.png',
-        description: `整个店铺都以“燕京八绝之首的花丝镶嵌”为创意灵感，于孔隙中洞见经典如故，于光影间感知非遗承继，打造出东方新境，让你“一步一景”，在每一个细节中都能感受到“花丝魅力。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819bd1a98833.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819bd1a9d8ea.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819bd1c6851d.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bd1d24333.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bd1d44c89.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bd1ea6b2c.png",
-  "https://vip.wmhua.cn/2025/05/06/6819bd2d04f1d.gif",
-  "https://vip.wmhua.cn/2025/05/06/6819bd2e34293.gif"
-]
-      };
-    }
-    if (i === 20) {
-      return {
-        id: 21,
-        title: 'X-BEAUTY迪拜店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819c1a34805a.png',
-        description: `汲取宇宙黑洞的深邃引力，我们缔造了一个美妆殿堂，它以其无与伦比的吸引力，成为时尚界的一个璀璨焦点`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819c0af9b1f7.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0b19a44b.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0af76d04.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0b18484e.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0af8a65e.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0b0279d5.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0b0308d1.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0aff23dd.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c0ab97b35.png"
-]
-      };
-    }
-    if (i === 21) {
-      return {
-        id: 22,
-        title: '不息潮牌买手店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819c500d1a2f.png',
-        description: `有些人有些物， 日出而作日落而息 有些物有些人， 日出而息日落而作 太阳的存在才让万物生长，轮回与交替 也是太阳的存在创造了自然规律，让万物自然生生不息。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819c3b330440.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ae76027.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c3add2fae.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c3b06587a.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3afbc702.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ae87d65.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ad92740.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ab34e3a.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c3afdb9b5.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ada01e5.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3a7ba527.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3af6e964.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ae10e23.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3a95529f.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ac893df.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3aa25a52.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ab67a1d.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ad11006.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3a7babb8.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3a56014b.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c3abc852f.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ab1df63.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3a7555e8.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c3a4d7c47.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c3ab404af.png"
-]
-      };
-    }
-    if (i === 22) {
-      return {
-        id: 23,
-        title: '花西子旗舰店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819c7e7e5318.jpg',
-        description: `古画里，如云如雾的留白空间把画中的近、中、远各个场景连接起来，串成一副完整的画卷。设计提取古画中的留白线索，成为空间中的引子。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819c72745896.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c72984b82.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c729656c6.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c72977bf3.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c729351d7.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c729129e2.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c729396ec.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c72955dfe.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c7283975c.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c72851fb6.jpg"
-]
-      };
-    }
-    if (i === 23) {
-      return {
-        id: 24,
-        title: '蚂蚁集团官方礼品店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819ca8d8e9ba.jpg',
-        description: `城市的发展让人们更加向往自然在有限的钢筋混凝土寻找自然之境希望在这营造出万物彼此共同连接重看并生长，演经生命成长的过程当中的不同状态赋予能量，即共荣。相互联系，包容，互助互惠，将空间内无限生命力延续至深远的未来。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819c919442c0.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c91898c50.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c91940922.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c91806566.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c9184f07f.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c91f24ba0.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c9203ce02.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c921d9669.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c92014a91.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c9215fdcf.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c920d3dc9.png",
-  "https://vip.wmhua.cn/2025/05/06/6819c917a42ae.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c91787e08.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c916a6959.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819c916bcc94.jpg"
-]
-      };
-    }
-    if (i === 24) {
-      return {
-        id: 25,
-        title: '越秀地产城市展厅',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819cc3568574.jpg',
-        description: `设计以带有指引性的景观园路，串联四个不同氛围的空间，给人们带来丰富的感官体验与互动，一步步酝酿着情绪，共同探寻隐藏在繁华都市中的秘境。`,
-        images: [
-  "https://vip.wmhua.cn/2025/05/06/6819cbccd1d53.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbccf06a2.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbccd9ddc.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbcd1110e.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbcd07a2e.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbcd12d37.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbcb9b491.jpg",
-  "https://vip.wmhua.cn/2025/05/06/6819cbcb84493.jpg"
-]
-      };
-    }
-    if (i === 25) {
-      return {
-        id: 26,
-        title: 'ST&SAT鞋店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819cf0e91125.png',
-        description: `18世纪末，一位英国自然哲学家记载了一个匪夷所思的故事:
-字宙中存在着大量的“引力怪兽”，它们像幽灵般游荡在空旷的星际之中,没有人能够直接看到它们。只有当它们的身边恰好有发光的物质围绕时,它们的行踪才会暴露这位自然哲学家将这些引力怪兽称为“暗星”,后来，这些暗星有了一个更响亮的名字--黑洞。`,
-        images: [
-  'https://vip.wmhua.cn/2025/05/06/6819cea961dbf.png',
-  'https://vip.wmhua.cn/2025/05/06/6819cea9f13c4.png',
-  'https://vip.wmhua.cn/2025/05/06/6819ceaa1ef93.png',
-  'https://vip.wmhua.cn/2025/05/06/6819cea9536e7.png',
-  'https://vip.wmhua.cn/2025/05/06/6819cea9c0e27.png'
-]
-
-      };
-    }
-    if (i === 26) {
-      return {
-        id: 27,
-        title: '世贸深港国际中心主题街区',
-        category: '规划设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819d0cc939c0.jpg',
-        description: `以历史为纽带，将粤港澳地历史文化遗产有效串联沟通，构建成一个极富历史底蕴的“文化遗产游径”系统展示的包容性和“岭南文化特质”`,
-        images: [
-  'https://vip.wmhua.cn/2025/05/06/6819d02c3a949.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d02b96d6d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d02b443d4.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d02b77197.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d02b410b5.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d02c2baeb.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d02c31d62.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d02ced468.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d02c486eb.png'
-]
-
-      };
-    }
-    if (i === 27) {
-      return {
-        id: 28,
-        title: 'PARK CAFE南宁店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819d2743db3d.png',
-        description: `在旭辉咖啡厅，我们致力于打造一个不仅仅是品尝咖啡的地方，而是一个能够激发灵感、享受生活、交流思想的空间。我们的设计概念融合了现代美学与舒适体验，旨在为顾客提供一个既温馨又充满活力的环境。`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/06/6819d1d1a85f4.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d1d677f01.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d1cb9feb8.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d1cb66da8.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d1cbc0c2c.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d1d29d77e.png',
-  'https://vip.wmhua.cn/2025/05/06/6819d1c9a7a4e.png'
-]
-
-      };
-    }
-    if (i === 28) {
-      return {
-        id: 29,
-        title: '东莞水乡招商展示中心',
-        category: '建筑设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819d437e5f14.jpg',
-        description: `这是一个充满现代感的建筑设计项目。我们在设计过程中特别注重建筑与环境的和谐统一，采用了大量环保材料和智能化设施。项目整体风格简约大气，通过传统元素与现代设计的完美结合，打造出既有传统韵味又富有现代感的建筑空间。建筑内部的功能分区经过精心规划，既保证了实用性，又创造出独特的视觉体验。我们还特别注重与周边自然环境的融合，打造出一个与自然共生的空间。`,
-        images: [
-  'https://vip.wmhua.cn/2025/05/06/6819d39f54bd3.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39ff3c6a.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39f57648.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39fe4bef.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39f97909.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39f7771d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39f53701.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819d39f711f0.jpg'
-]
-
-      };
-    }
-    if (i === 29) {
-      return {
-        id: 30,
-        title: '喜茶上海迪士尼白日梦店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819dd1215ce4.jpg',
-        description: `“平行宇宙”并非某个故事，而是写意地传达出灵感碰撞与孕育的过程，这个不断运行中的“灵感宇宙”，也回应着迪士尼一个个经典故事背后的无限遐想。以克制与留白承载千万想象与欢乐，营造别样梦幻氛围。
- 这样的设计策略也让焕新后的门店完整诠释了喜茶与迪士尼追求内在的共鸣，而非表象的相似。在商业空间追求“戏剧化”叙事设计的当下，选择做减法的抽象空间表达，是喜茶的设计语言，也是一种品牌文化的自信。
-`,
-        images: [
-  'https://vip.wmhua.cn/2025/05/06/6819da90454d2.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8919763.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da908bc14.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8e552d6.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da893e779.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8aa5e68.jpg',
-'https://vip.wmhua.cn/2025/05/06/6819da8c08184.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da897f00b.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da88d78d6.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8c6d3d3.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8b34fd2.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8b091df.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8b8dfba.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8bd3db7.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8c12492.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8e1c7f6.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8e9f280.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8de9073.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da8ef364b.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da90108db.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da90573d5.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da92d9582.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da90e255c.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da914da39.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da91a84d0.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da936789c.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da93c2232.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819da9309654.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dad0bf255.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dad0b998d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dacf06ddb.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dad2d22ee.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dadf82ea4.gif',
-  'https://vip.wmhua.cn/2025/05/06/6819daccbaebe.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dacdef517.gif',
-  'https://vip.wmhua.cn/2025/05/06/6819dace0e104.png',
-  'https://vip.wmhua.cn/2025/05/06/6819dacf2e07d.png',
-  'https://vip.wmhua.cn/2025/05/06/6819dacf406f0.gif',
-  'https://vip.wmhua.cn/2025/05/06/6819dacc6b3ea.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819dad2cca48.gif'
-]
-
-      };
-    }
-if (i === 30) {
-      return {
-        id: 31,
-        title: '旭辉淮安招商中心',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819e19f769e0.jpg',
-        description: `淮安市境内河湖交错，水网纵横，京杭大运河、淮沭新河、苏北灌概总渠、淮河入江水道、淮河入海水道、废黄河、六塘河、盐河。淮河于流等9条河流在境内纵贯横穿，全国五大淡水湖之一的洪泽湖大部分位于市境内，还有白马湖、高邮湖、宝应湖等中小型湖泊镶嵌其间。是典型的“平原水乡”`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/06/6819e07bb4201.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e079090b6.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07e736c8.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07c7e75b.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07ad4327.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07f6bdad.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07f34bb8.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07b72a7b.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07d1c923.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07e35c29.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07e9ad8e.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07f34260.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07ce6263.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07e9f67c.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07c05fce.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e07def8cc.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e0814cdb9.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e0810c74d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e0810451e.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e081ef503.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e08343522.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e08120b8d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e081d6ed5.jpg'
-]
-
-      };
-    }
-if (i === 31) {
-      return {
-        id: 32,
-        title: '意大利Chiesa Diruta教堂改造',
-        category: '建筑设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819e325116dd.jpg',
-        description: `Chiesa Diruta教堂建于15世纪，曾是该地区最重要的教堂，但在地震和火灾的影响下被遗弃。东南角已经坍塌，向城市开放。我们希望在整个中殿中创造一个新的东南-西北轴线，将城市生活引入教堂，同时在将堕落的教堂改造成音乐厅的过程中仍然保持开放性。新轴线将教堂分为两部分，原旧轴线连接整个教堂的新功能。
-
-教堂的一半将作为城市的记忆，作为Grottole的新城广场和开放的舞台，融入市民的生活。教堂的另外一半将被一个新的体量覆盖，作为一个具有现代设施的当代音乐厅，保留了教堂圆顶下的核心空间。沿着对角线轴线的两个大台阶作为室内和室外两个音乐厅的礼堂，连接空间的功能和流通，以及市民的文化生活和城市的历史记忆。`,
-        images: [
-  'https://vip.wmhua.cn/2025/05/06/6819e2bb2cce3.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e2bb39a0b.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e2bbaa13d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e2bb43278.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e2bb1756e.jpg'
-]
-
-      };
-    }
-if (i === 32) {
-      return {
-        id: 33,
-        title: '西安恒志蓝田小镇马场',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819e4745f1d4.png',
-        description: `在空间当中置入一片 100 米的墙，分割空间的同时作为空间叙事的载体，如框景般把室外景色引入室内。`,
-        images: [
-  'https://vip.wmhua.cn/2025/05/06/6819e411cd6d2.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e411992d9.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e40df39db.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e41128935.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e411b3690.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e411274fb.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e40ac73d9.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e40bdf46e.png'
-]
-
-      };
-    }
-if (i === 33) {
-      return {
-        id: 34,
-        title: '海珠创新湾城市展厅',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819e7674e058.png',
-        description: `珠光海珠创新湾展示中心，承载着共建“一带一路”、促进对粤港澳大湾区核心内涵的高度认同及海珠创新湾可持续发展规划的展示功能，亦是呈现珠光集团文化、企业精神融入新格局和展现新作为的重要窗口。
-紧扣创新湾主题，深层次讨论大湾区“川流不息”的精神内核，本案概念将自然脉络、海珠水乡及城市创新缩影融为一体，用清晰统一的设计语言贯穿整个展厅始终，以体现规划馆的创新性、未来感。
-同时，拟以“渊澄取映“喻珠光谦虚沉静而又源远流长的经营理念和发展势头，凸显集团行业地位和战略前瞻视野。
-`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/06/6819e66b76f17.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66ad11f9.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66af0c47.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66a0611d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e6697985e.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66911159.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66ae9b07.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66b1bddb.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66a37a99.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66a5e80d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66abc97d.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e669b008c.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e66ad90ad.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66b2f773.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66aebc0a.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e66b343f8.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819e66a921c5.jpg'
-]
-
-      };
-    }
-    if (i === 34) {
-      return {
-        id: 35,
-        title: '喜茶GO创新店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819e8badc5a8.png',
-        description: `“盒子”的装置概念是想让环境与人们之间有一个交互体验，事实上，又是人、饮品、环境这三者交流的载体，如同催化剂一般激活整个空间。用这样一个灵活的框架打造一个空间计划。
-
-用“喜盒”概念作为喜茶“GO”核心承载物装置，它既是实现城市密集式分布的主体，也是喜茶品牌、产品、服务与消费者最直接的互动连接（服务站）。
-`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/06/6819e84e5abf0.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e837f36b3.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e834a808e.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e82f9c190.png'
-]
-
-      };
-    }
- if (i === 35) {
-      return {
-        id: 36,
-        title: '喜茶成都红唐店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819ea1f2715d.png',
-        description: `在喜茶成都红唐go店，我们以“Go”为灵感，不仅仅是指围棋的“Go”，而是象征着前进、探索和活力的“Go”。我们的设计旨在捕捉这种精神，将喜茶的年轻、时尚和创新的品牌理念与成都的传统文化和现代活力相结合。
-`,
-       images: [
-  'https://vip.wmhua.cn/2025/05/06/6819e9a2034ab.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e999bcfda.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e9a0567b1.png',
-  'https://vip.wmhua.cn/2025/05/06/6819e98b5a874.png'
-]
-
-      };
-    }
- if (i === 36) {
-      return {
-        id: 37,
-        title: '喜茶深圳彩田万家店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819eb3b6f2ed.png',
-        description: `在喜茶成都红唐go店，我们以“Go”为灵感，不仅仅是指围棋的“Go”，而是象征着前进、探索和活力的“Go”。我们的设计旨在捕捉这种精神，将喜茶的年轻、时尚和创新的品牌理念与成都的传统文化和现代活力相结合。
-`,
-      images: [
-  'https://vip.wmhua.cn/2025/05/06/6819eadad1547.png',
-  'https://vip.wmhua.cn/2025/05/06/6819eadd8a1be.png',
-  'https://vip.wmhua.cn/2025/05/06/6819eadb6923e.png'
-]
-
-      };
-    }
- if (i === 37) {
-      return {
-        id: 38,
-        title: '优剪轻时尚店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819ec52b33b1.jpg',
-        description: `在“优剪轻时尚店”，我们致力于将剪发转变为一种年轻、时尚的生活态度。我们理解年轻人对个性和潮流的追求，因此，我们的设计理念是将传统剪发服务与现代时尚元素相结合，为年轻顾客提供一个既能展现个性又能享受时尚潮流的空间。
-`,
-      images: [
-  'https://vip.wmhua.cn/2025/05/06/6819ebff479bb.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ec00661d8.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ebfe8aa0c.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ebfd62d21.jpg'
-]
-
-      };
-    }
- if (i === 38) {
-      return {
-        id: 39,
-        title: 'Mithridate北京国贸店',
-        category: '商业设计',
-        image: 'https://vip.wmhua.cn/2025/05/06/6819ee0f36bbb.jpg',
-        description: `"UNISEX" 探寻自我、突破边界，创造无限可能性，从无限可能性 
-的形态转换于空间中，天花与墙面纵横之间的衔接，带来多维度 
-的空间层次。线条定义空间“优雅”的含义，让人在不同空间中 
-都能游刃有余地释放独特魅力。
-
-`,
-     images: [
-  'https://vip.wmhua.cn/2025/05/06/6819ed8c40389.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed8e07b6a.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed8d561b0.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed8ae1ef9.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed8d36551.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed8d4128e.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed9026e7f.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed8ecd9a9.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed9122429.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed9161050.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed90849a9.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed914d5ec.jpg',
-  'https://vip.wmhua.cn/2025/05/06/6819ed913ec45.jpg'
-]
-
-      };
-    }
-
-
-
-    // Return null for any projects beyond 39
-    return null;
-  }).filter(project => project !== null);
-
-  // 渲染项目
-  function renderProjects(filteredProjects) {
-    const projectsContainer = document.getElementById('projects');
-    projectsContainer.innerHTML = '';
-    
-    filteredProjects.forEach(project => {
-      const projectCard = document.createElement('div');
-      projectCard.className = 'project-card';
-      projectCard.innerHTML = `
-        <div style="aspect-ratio: 4/3; overflow: hidden;">
-          <img src="${project.image}" alt="Project ${project.id}" class="w-full h-full object-cover">
-        </div>
-        <div class="p-4">
-          <h3 class="text-xl font-bold">${project.title}</h3>
-          <p class="text-gray-600">${project.category}</p>
-        </div>
-      `;
-      
-      projectCard.addEventListener('click', () => showProjectDetail(project));
-      projectsContainer.appendChild(projectCard);
-    });
-  }
-
-  // 初始渲染
-  renderProjects(projects);
-
-  // 搜索功能
-  const searchInput = document.querySelector('input[type="text"]');
-  searchInput.addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    const filteredProjects = projects.filter(project => 
-      project.title.toLowerCase().includes(searchTerm) || 
-      project.category.toLowerCase().includes(searchTerm)
-    );
-    renderProjects(filteredProjects);
-  });
-
-  // 分类功能
-  const categoryBtns = document.querySelectorAll('.category-btn');
-  categoryBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const category = this.textContent;
-      const filteredProjects = category === '全部项目' 
-        ? projects 
-        : projects.filter(project => project.category === category);
-      renderProjects(filteredProjects);
-      
-      // 更新按钮状态
-      categoryBtns.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-
-  // 显示项目详情
-  function showProjectDetail(project) {
-    const modal = document.createElement('div');
-    modal.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center overflow-y-auto';
-    modal.innerHTML = `
-      <div class="bg-white w-full max-w-7xl mx-4 my-8 rounded-lg overflow-hidden relative">
-        <button class="absolute top-6 right-6 text-gray-800 text-4xl z-10 hover:text-gray-600 transition-colors duration-300" 
-                style="width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center">
-          &times;
-        </button>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <base href="." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KING-DESIGN</title>
+    <!-- 引入 Tailwind CSS 和必需的 JavaScript 库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
         
-        <!-- Added a container with max-height and scrolling -->
-        <div class="max-h-[90vh] overflow-y-auto">
-          <div class="p-6 md:p-10">
-            <!-- Project title and description -->
-            <div class="mb-10">
-              <h2 class="text-3xl md:text-4xl font-bold mb-6">${project.title}</h2>
-              <p class="text-gray-600 text-lg">${project.description}</p>
-            </div>
-            
-            <!-- Images container -->
-            <div class="space-y-8"> 
-              ${project.images.map(img => `
-                <div class="w-full">
-                  <img src="${img}" alt="Project detail" class="w-full rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // The rest of the showProjectDetail function remains the same...
-    
-    // Add image preview modal
-    const imagePreviewModal = document.createElement('div');
-    imagePreviewModal.className = 'fixed inset-0 bg-black bg-opacity-95 z-[60] items-center justify-center hidden';
-    imagePreviewModal.innerHTML = `
-      <button class="absolute top-6 right-6 text-white text-4xl z-10 hover:text-gray-300 transition-colors duration-300">
-        &times;
-      </button>
-      <img src="" alt="Preview" class="max-h-[90vh] max-w-[90vw] object-contain">
-    `;
-    document.body.appendChild(imagePreviewModal);
-
-    // Add click handlers for images
-    modal.querySelectorAll('img').forEach(img => {
-        img.addEventListener('click', () => {
-            imagePreviewModal.querySelector('img').src = img.src;
-            imagePreviewModal.style.display = 'flex';
-        });
-    });
-
-    // Close preview modal
-    imagePreviewModal.addEventListener('click', () => {
-        imagePreviewModal.style.display = 'none';
-    });
-    
-    imagePreviewModal.querySelector('button').addEventListener('click', (e) => {
-        e.stopPropagation();
-        imagePreviewModal.style.display = 'none';
-    });
-
-    // Function to properly close modal and restore scroll
-    const closeModal = () => {
-        modal.classList.add('opacity-0');
-        document.body.style.overflow = '';
-        imagePreviewModal.remove();
-        setTimeout(() => {
-            modal.remove();
-        }, 300);
-    };
-
-    // Close modal when clicking outside
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #333;
+            --accent-color: #gold;
         }
-    });
-
-    // Close button functionality
-    modal.querySelector('button').addEventListener('click', () => {
-        closeModal();
-    });
-
-    // Add transition for smooth appearance
-    modal.style.transition = 'opacity 0.3s ease';
-    document.body.appendChild(modal);
-    
-    // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
-
-    // Add keyboard support for closing (Escape key)
-    const handleEscape = (e) => {
-        if (e.key === 'Escape') {
-            if (imagePreviewModal.style.display === 'flex') {
-                imagePreviewModal.style.display = 'none';
-            } else {
-                closeModal();
-                document.removeEventListener('keydown', handleEscape);
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: #fafafa;
+            color: var(--primary-color);
+        }
+        
+        .nav-item {
+            position: relative;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::after {
+            content: attr(data-cn);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-item:hover .en {
+            opacity: 0;
+        }
+        
+        .nav-item:hover::after {
+            opacity: 1;
+        }
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+        
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .search-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .project-grid {
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+                max-width: 95vw;
+            }
+            
+            .hero-text {
+                font-size: 2rem;
+            }
+            
+            .search-box {
+                margin: 0 1rem;
+            }
+            
+            .nav-item {
+                padding: 0.25rem 0.5rem;
             }
         }
-    };
-    document.addEventListener('keydown', handleEscape);
-  }
-});
-</script>
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: relative;
+            background: white;
+            max-width: 90vw;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border-radius: 12px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        
+        .hero-text {
+            font-size: 3rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #1a1a1a, #4a4a4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 8s ease infinite;
+        }
+        
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .aspect-w-16 {
+            position: relative;
+            padding-bottom: 56.25%;
+            margin-bottom: 2rem;
+        }
+        
+        .project-card img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+        }
+        
+        .aspect-w-16 img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .aspect-w-16:hover img {
+            transform: scale(1.02);
+        }
+        
+        .flex.flex-wrap.justify-center.gap-4.mt-8 {
+            gap: 1.5rem !important;
+        }
+        
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem;
+            background-color: #f3f4f6;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .category-btn.active {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        
+        img {
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            pointer-events: none;
+        }
+    </style>
+</head>
 
-</body></html>
+<body>
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 p-4 md:p-6 flex justify-between items-center">
+        <div class="text-xl md:text-2xl font-bold">KING-DESIGN</div>
+        <div class="flex gap-4 md:gap-8">
+            <div class="nav-item" data-cn="关于"><span class="en">About</span></div>
+            <div class="nav-item" data-cn="项目"><span class="en">Project</span></div>
+            <div class="nav-item" data-cn="联系"><span class="en">Contact</span></div>
+        </div>
+    </nav>
+
+    <main class="pt-24">
+        <section class="hero min-h-screen flex flex-col justify-center items-center text-center p-4">
+            <h1 class="hero-text mb-8">DESIGN FOR THE FUTURE,<br>CRAFTED FOR TODAY</h1>
+            <p class="max-w-2xl mx-auto text-gray-600 mb-12">
+                Independent designer creating sustainable, timeless pieces that challenge conventional
+                fashion boundaries while embracing individual expression.
+            </p>
+            <div class="search-box w-full max-w-xl mx-auto">
+                <input type="text" placeholder=" 搜 索 项 ⽬ ..." class="w-full p-4 rounded-lg border border-gray-200 focus:outline-none focus:border-gray-400">
+            </div>
+            <div class="flex flex-wrap justify-center gap-8 mt-8">
+                <button class="category-btn active">全部项⽬</button>
+                <button class="category-btn">规划设计</button>
+                <button class="category-btn">建筑设计</button>
+                <button class="category-btn">商业设计</button>
+                <button class="category-btn">展览设计</button>
+                <button class="category-btn">私宅设计</button>
+                <button class="category-btn">产品设计</button>
+            </div>
+        </section>
+        <section id="projects" class="project-grid">
+            <!-- 项目将通过 JavaScript 动态生成 -->
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <h3 class="text-2xl font-bold mb-4">联系方式</h3>
+                    <p>邮箱：king1014852873@gmail.com</p>
+                    <p>电话：13229362048</p>
+                    <p>INS：101485king</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-6">关于我</h2>
+            <p class="mb-4">您好，我是 king，一名热情的独立商业空间设计师。我坚信创新设计
+                赋能无限可能，致力于通过前沿的设计思维和技术，为客户打造既实用又富有创意的商业空
+                间。</p>
+            <h3 class="text-xl font-bold mt-6 mb-4">我的设计理念</h3>
+            <p class="mb-4">在我的设计实践中，我将创新作为核心驱动力，探索设计的边界，以
+                实现空间的最大潜能。我相信，通过创新的设计，我们不仅能够提升商业价值，还能够激发
+                人们的想象力和创造力。</p>
+            <h3 class="text-xl font-bold mt-6 mb-4">我的专业服务</h3>
+            <ul class="list-disc pl-6 mb-4">
+                <li>空间规划与优化：我专注于空间的功能性和效率，确保每个设计都能满
+                    足商业需求和用户体验。</li>
+                <li>品牌故事融入：我将您的品牌精神和故事融入空间设计，让空间成为品牌传播的
+                    有力媒介。</li>
+                <li>材料与技术创新：我不断探索新材料和技术，以实现设计的可持续性，同时保持
+                    美学的高标准。</li>
+            </ul>
+            <h3 class="text-xl font-bold mt-6 mb-4">合作流程</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 bg-gray-100 rounded">
+                    <h4 class="font-bold mb-2">定金支付</h4>
+                    <p>在合同签订之际，甲方需向乙方支付设计费用总额的 20%作为定金。</p>
+                </div>
+                <div class="p-4 bg-gray-100 rounded">
+                    <h4 class="font-bold mb-2">首期款项</h4>
+                    <p>待平面方案获得双方确认后，甲方应支付设计费用总额的 40%。</p>
+                </div>
+                <div class="p-4 bg-gray-100 rounded">
+                    <h4 class="font-bold mb-2">二期款项</h4>
+                    <p>在效果方案确认后，甲方需支付设计费用总额的 40%。</p>
+                </div>
+            </div>
+            <button class="absolute top-4 right-4 text-2xl close-modal">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 禁用右键点击图片
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // 禁用键盘快捷键保存
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // 禁用拖拽图片
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // 导航交互
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const type = this.querySelector('.en').textContent;
+                    if (type === 'About') {
+                        document.getElementById('aboutModal').style.display = 'block';
+                    } else if (type === 'Project') {
+                        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+                    } else if (type === 'Contact') {
+                        document.querySelector('footer').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 关闭模态框
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                document.getElementById('aboutModal').style.display = 'none';
+            });
+
+            // 项目数据
+            const projects = [
+                {
+                    id: 1,
+                    title: 'killers 巨石舞室',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/05/681823a32f4ea.jpg',
+                    description: `Killer 舞蹈工作室，中国街舞界的翘楚，2024 年 WOD 中国区冠军得主，以其舞蹈实力和创新精神引领街舞文化。位于广州海珠智汇创意园顶楼，空间开阔无柱，为舞者提供无限自由。设计灵感源自舞者的力与决断，以巨石元素为核心，将稳固与重量感融入空间，可视化舞者的能量。外立面设计借鉴巨石的稳固与力量，内部结构灵活多变，适应不同规模的舞蹈课程和排练，最大可容纳 100 人。每个角落都能感受到舞者的力和舞蹈的热情，激励每个人追求卓越。Killer 舞室的设计语言，将力量感与创新精神融入每一个角落，塑造了一个激发灵感和释放个性的空间，成为街舞爱好者的专业训练场所，同时推动华南地区街舞文化发展。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/05/68181610f1bad.jpg", "https://vip.wmhua.cn/2025/05/05/6818164a69aba.jpg", "https://vip.wmhua.cn/2025/05/05/6818161630be5.jpg", "https://vip.wmhua.cn/2025/05/05/6818161706120.jpg", "https://vip.wmhua.cn/2025/05/05/681816164d8d9.jpg", "https://vip.wmhua.cn/2025/05/05/681816177a953.jpg", "https://vip.wmhua.cn/2025/05/05/68181618c3c8d.jpg", "https://vip.wmhua.cn/2025/05/05/681816178d055.jpg", "https://vip.wmhua.cn/2025/05/05/68181617b22c5.jpg", "https://vip.wmhua.cn/2025/05/05/68181616d4187.jpg", "https://vip.wmhua.cn/2025/05/05/68181616792b3.jpg", "https://vip.wmhua.cn/2025/05/05/6818161867b2a.jpg", "https://vip.wmhua.cn/2025/05/05/68181618f277f.jpg", "https://vip.wmhua.cn/2025/05/05/68181619e7fb2.jpg", "https://vip.wmhua.cn/2025/05/05/68181619d6a32.jpg", "https://vip.wmhua.cn/2025/05/05/681816128b4f1.jpg", "https://vip.wmhua.cn/2025/05/05/68181613f00d1.jpg", "https://vip.wmhua.cn/2025/05/05/68181615909bf.jpg", "https://vip.wmhua.cn/2025/05/05/68181617968ce.jpg", "https://vip.wmhua.cn/2025/05/05/6818161ce5b6a.jpg", "https://vip.wmhua.cn/2025/05/05/6818161cdf595.jpg", "https://vip.wmhua.cn/2025/05/05/6818161cd4ebb.jpg", "https://vip.wmhua.cn/2025/05/05/6818161d4ff73.jpg",
+                        "https://vip.wmhua.cn/2025/05/05/6818161ba3f2c.jpg", "https://vip.wmhua.cn/2025/05/05/6818161c775f2.jpg", "https://vip.wmhua.cn/2025/05/05/6818161c3e022.jpg", "https://vip.wmhua.cn/2025/05/05/6818161925cc1.jpg", "https://vip.wmhua.cn/2025/05/05/681816943bf54.jpg", "https://vip.wmhua.cn/2025/05/05/6818167982a02.jpg", "https://vip.wmhua.cn/2025/05/05/6818167bacd94.jpg", "https://vip.wmhua.cn/2025/05/05/6818167ba1f07.jpg", "https://vip.wmhua.cn/2025/05/05/6818167c21982.jpg", "https://vip.wmhua.cn/2025/05/05/6818167ba618c.jpg", "https://vip.wmhua.cn/2025/05/05/6818167c43976.jpg", "https://vip.wmhua.cn/2025/05/05/6818167c72d91.jpg", "https://vip.wmhua.cn/2025/05/05/6818167cb4339.jpg", "https://vip.wmhua.cn/2025/05/05/6818167c4cb59.jpg", "https://vip.wmhua.cn/2025/05/05/6818167acba78.jpg", "https://vip.wmhua.cn/2025/05/05/68181677d835c.jpg", "https://vip.wmhua.cn/2025/05/05/6818167a89eb4.jpg", "https://vip.wmhua.cn/2025/05/05/6818167b6ae6a.jpg", "https://vip.wmhua.cn/2025/05/05/6818167a12212.jpg"
+                    ]
+                },
+                {
+                    id: 2,
+                    title: '福升玉器珠宝',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/05/681813ce12f23.png',
+                    description: `福升玉器珠宝店以其精致的内部装修和匠心独运的设计，为顾客提供了⼀个⾼端的珠宝购物体验。店内的灯光与陈列设计巧妙结合，使每件珠宝都散发出独特的光彩。我们精⼼挑选的⽟器和珠宝，不仅展现了传统⽂化的魅⼒，也融⼊了现代设计的创新。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/05/681811589fe10.png', 'https://vip.wmhua.cn/2025/05/05/6818115881eeb.png', 'https://vip.wmhua.cn/2025/05/05/68181157f3957.png', 'https://vip.wmhua.cn/2025/05/05/681811594579b.png', 'https://vip.wmhua.cn/2025/05/05/68181154541fc.png', 'https://vip.wmhua.cn/2025/05/05/6818115c223f6.png', 'https://vip.wmhua.cn/2025/05/05/6818115f8672e.png', 'https://vip.wmhua.cn/2025/05/05/68181143cb831.png', 'https://vip.wmhua.cn/2025/05/05/681811444935a.png', 'https://vip.wmhua.cn/2025/05/05/6818113e3a01a.jpg'
+                    ]
+                },
+                {
+                    id: 3,
+                    title: '野望蛋糕店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/05/6818268b056c1.jpg',
+                    description: `作为设计师，我将这家蛋糕店的空间设计成⼀场视觉与味觉的盛宴。店内布局以“花与蛋糕的和谐”为核⼼理念，每个设计细节都旨在创造⼀个既现代⼜温馨的环 境。墙⾯采⽤淡雅⾊彩，与精⼼挑选的鲜花装饰相映成趣，⽽蛋糕展示区则以简洁线条和明 亮灯光突出每⼀款蛋糕的独特性。空间规划考虑到顾客的流动和互动，确保每位顾客都能享 受到舒适⽽愉悦的购物体验。⽄论是选择特别的礼物，还是享受⼀段宁静的下午茶时光，这 ⾥的空间设计都旨在提升感官享受，让顾客在每⼀个细节中感受到精致与关怀。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/05/681825b1669c0.jpg', 'https://vip.wmhua.cn/2025/05/05/681825b168625.jpg', 'https://vip.wmhua.cn/2025/05/05/681825b110908.jpg', 'https://vip.wmhua.cn/2025/05/05/681825af8404e.jpg', 'https://vip.wmhua.cn/2025/05/05/681825ad1bb6d.jpg', 'https://vip.wmhua.cn/2025/05/05/681825b173821.jpg', 'https://vip.wmhua.cn/2025/05/05/681825aaba1e5.jpg', 'https://vip.wmhua.cn/2025/05/05/681825b1478af.jpg', 'https://vip.wmhua.cn/2025/05/05/681825adb90ea.jpg', 'https://vip.wmhua.cn/2025/05/05/681825b07e0b7.jpg', 'https://vip.wmhua.cn/2025/05/05/681825ab9a2e8.jpg', 'https://vip.wmhua.cn/2025/05/05/681825aa00718.jpg', 'https://vip.wmhua.cn/2025/05/05/681825a9ea20c.jpg'
+                    ]
+                },
+                {
+                    id: 4,
+                    title: '鼓屿音乐工作室',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/05/68182b9be0877.png',
+                    description: `欢迎来到鼓屿音乐，⼀个将⾳乐元素与教培空间完美融合的创新设计。在这⾥，⾳乐不仅仅是教学的内容，更是环境设计的灵魂。作为⼀名设计师，我将⾳乐的精 髓融⼊到鼓屿⾳乐的每⼀个⻆落。前台设计巧妙地将⾳响设备整合其中，不仅作为空间的声 ⾳源泉，也是视觉焦点，展现⾳乐的⼒量和动感。休息区的茶⼾，由架⼦⿎的⿎架创意改造， 为等待的家⻓和学⽣提供了⼀个既实⽤⼜充满节奏感的休息场所。墙上的壁灯和休息区的吊 灯，采⽤镲⽚改造 ⽽成，光影之间，仿佛能听到⾦属的清脆回响，为空间增添了⼀抹独特的 ⾳乐⾊彩。⽄⽽挂钥匙的挂杆，则是利⽤架⼦⿎的⿎棒精⼼打造，既实⽤⼜具有装饰性，体现 了⾳乐与⽇常⽣活的紧密联系。鼓屿⾳乐的设计，是对⾳乐教培空间的⼀次⾰新。我们不仅 教授⾳乐，更通过环境设计，让⾳乐的韵律和节奏渗透到每⼀个细节，让每⼀位踏⼊鼓屿⾳ 乐的⼈都能感受到⾳乐的魅⼒。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/05/681829e37f6eb.jpg', 'https://vip.wmhua.cn/2025/05/05/681829e0c8c22.jpg', 'https://vip.wmhua.cn/2025/05/05/681829ed48076.jpg', 'https://vip.wmhua.cn/2025/05/05/681829eb3ea77.jpg', 'https://vip.wmhua.cn/2025/05/05/681829ebcd5a3.jpg', 'https://vip.wmhua.cn/2025/05/05/681829ece59d6.jpg', 'https://vip.wmhua.cn/2025/05/05/681829e550d7a.jpg', 'https://vip.wmhua.cn/2025/05/05/681829e8d8afc.jpg', 'https://vip.wmhua.cn/2025/05/05/681829e6abc8f.jpg', 'https://vip.wmhua.cn/2025/05/05/681829e5f272b.jpg', 'https://vip.wmhua.cn/2025/05/05/681829ec5655e.jpg'
+                    ]
+                },
+                {
+                    id: 5,
+                    title: '潘府金山村',
+                    category: '建筑设计',
+                    image: 'https://vip.wmhua.cn/2025/05/05/68183134d7408.jpg',
+                    description: `探索极简主义的纯粹美学，我们为您呈现这座⽩⾊⾃建房设计。以⽩ 色为主调，融合现代与⾃然元素，这座建筑不仅是居所，更是艺术的体现。简洁的线条勾勒 出空间的流畅感，每⼀处细节都透露着精致与考究。为您的兄伯俩打造⼀个既现代⼜温馨的 家，让⽣活回归本质，享受宁静与和谐。欢迎浏览我们的官⽹，了解更多关于这座⽩⾊极简 ⻛格建筑的设计理念与细节。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/05/68182d39cce75.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3ac2d06.jpg", "https://vip.wmhua.cn/2025/05/05/68182d402cda9.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3d4435c.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3cc8067.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3f7585f.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3c9336a.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3f8a238.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3deb159.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3f17f18.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3d5184e.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3d43e15.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3e786a7.jpg", "https://vip.wmhua.cn/2025/05/05/68182d52b42e4.jpg",
+                        "https://vip.wmhua.cn/2025/05/05/68182d42cdf88.jpg", "https://vip.wmhua.cn/2025/05/05/68182d4421964.jpg", "https://vip.wmhua.cn/2025/05/05/6818bece40a50.jpg", "https://vip.wmhua.cn/2025/05/05/6818be411dfcc.jpg", "https://vip.wmhua.cn/2025/05/05/68182d3ef3e3f.jpg"
+                    ]
+                },
+                {
+                    id: 6,
+                    title: '翡翠年华',
+                    category: '私宅设计',
+                    image: 'https://vip.wmhua.cn/2025/05/04/6817883d28c78.png',
+                    description: `为 90 后夫妻打造的侘寂⻛家居，以简约⾃然为核⼼。空间内，质朴的 ⾊质与柔和的光线交织，营造出宁静⽽温馨的氛围。墙⾯保留原始质感，家具简约实⽤，每 件物品都诉说着时间的故事。在这⾥，不完美被欣然接受，⽣活回归本真，让⼼灵在静谧中 找到归属。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/04/68178211606bb.png", "https://vip.wmhua.cn/2025/05/04/68178210e0215.png", "https://vip.wmhua.cn/2025/05/04/6817820d859f6.png", "https://vip.wmhua.cn/2025/05/04/6817820d2bd71.png", "https://vip.wmhua.cn/2025/05/04/681782069195d.png", "https://vip.wmhua.cn/2025/05/04/681781f17da9f.png", "https://vip.wmhua.cn/2025/05/04/681782096166d.png", "https://vip.wmhua.cn/2025/05/04/681781eeb86ed.png", "https://vip.wmhua.cn/2025/05/04/681781e8c3374.png", "https://vip.wmhua.cn/2025/05/04/681781d9c23f6.png", "https://vip.wmhua.cn/2025/05/04/68178206a78b5.png", "https://vip.wmhua.cn/2025/05/04/681781ee87f97.png", "https://vip.wmhua.cn/2025/05/04/681781d672460.png", "https://vip.wmhua.cn/2025/05/04/681781c97e9dd.png", "https://vip.wmhua.cn/2025/05/04/681781e30c5a3.png", "https://vip.wmhua.cn/2025/05/04/681781d7c269c.png", "https://vip.wmhua.cn/2025/05/04/681781c3e4143.png", "https://vip.wmhua.cn/2025/05/04/681781c62ea57.png", "https://vip.wmhua.cn/2025/05/04/681781c4e10c7.png", "https://vip.wmhua.cn/2025/05/04/681781b75d128.png", "https://vip.wmhua.cn/2025/05/04/681781fea2431.png", "https://vip.wmhua.cn/2025/05/04/681781ec8366a.png", "https://vip.wmhua.cn/2025/05/04/681782b670aec.png", "https://vip.wmhua.cn/2025/05/04/681782c2b5938.png", "https://vip.wmhua.cn/2025/05/04/681782c15a0a5.png",
+                        "https://vip.wmhua.cn/2025/05/04/681782b0bc0d5.png", "https://vip.wmhua.cn/2025/05/04/6817828dd1f48.png", "https://vip.wmhua.cn/2025/05/04/681782ad4226a.png", "https://vip.wmhua.cn/2025/05/04/681782ab610e7.png", "https://vip.wmhua.cn/2025/05/04/681782c4a177c.png", "https://vip.wmhua.cn/2025/05/04/681782c2d4a31.png", "https://vip.wmhua.cn/2025/05/04/681782bdea237.png", "https://vip.wmhua.cn/2025/05/04/681782a16d086.png", "https://vip.wmhua.cn/2025/05/04/681782b6b235f.png", "https://vip.wmhua.cn/2025/05/04/681781f1923d2.png", "https://vip.wmhua.cn/2025/05/04/6817825b9913e.jpg"
+                    ]
+                },
+                {
+                    id: 7,
+                    title: '茉沏概念方案',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/05/6818d85d12b50.jpg',
+                    description: `“⼊画茶沏”灵感源⾃于江南的独特⽂化和优秀国画。江南⾃古以来就 是中国国画的重要发源地之⼀，其⼭⽔⻛光常常成为画家笔下的主题。我们希望通过“⼊画 茶沏”的概念，让顾客在品茶的过程中感受到与江南国画相融合的情境，成为画中的⼀部分， 与画中的⼭⽔相互映衬，感受到⾃然与艺术的奇妙交融。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/05/6818d7d897b47.jpg", "https://vip.wmhua.cn/2025/05/05/6818d7d90062b.jpg", "https://vip.wmhua.cn/2025/05/05/6818d7d92238c.jpg", "https://vip.wmhua.cn/2025/05/05/6818d7d92a3e3.jpg"
+                    ]
+                },
+                {
+                    id: 8,
+                    title: '上海南⼭嘉定售楼处展墙',
+                    category: '展览设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68196f7bee095.png',
+                    description: `这个展览设计项⽬展现了创新的售楼处展示空间设计理念。我们通过 独特的空间布局和灯光设计，为地产项⽬创造最佳的展示效果。空间动线规划流畅，让访客 能够⾃然地了解项⽬信息。我们运⽤了先进的多媒体技术和互动装置，提升参观体验。整体 设计既突出项⽬特⾊，⼜营造出令⼈印象深刻的空间氛围，成功打造出⼀个专业⽽富有吸引 ⼒的售楼处展示空间。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/68196ed2e7d4f.png", "https://vip.wmhua.cn/2025/05/06/68196ed48a7be.png", "https://vip.wmhua.cn/2025/05/06/68196ed516f29.png", "https://vip.wmhua.cn/2025/05/06/68196ed7cb6eb.png"
+                    ]
+                },
+                {
+                    id: 9,
+                    title: '济⾼保利·云上璟誉',
+                    category: '展览设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/681970e05ab35.png',
+                    description: `这个展览设计项⽬展现了创新的售楼处展示空间设计理念。我们通过 独特的空间布局和灯光设计，为地产项⽬创造最佳的展示效果。空间动线规划流畅，让访客 能够⾃然地了解项⽬信息。我们运⽤了先进的多媒体技术和互动装置，提升参观体验。整体 设计既突出项⽬特⾊，⼜营造出令⼈印象深刻的空间氛围，成功打造出⼀个专业⽽富有吸引 ⼒的售楼处展示空间。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819709171361.png", "https://vip.wmhua.cn/2025/05/06/68197092b1500.png", "https://vip.wmhua.cn/2025/05/06/6819709446b80.png"
+                    ]
+                },
+                {
+                    id: 10,
+                    title: '羲皇.颐和云境',
+                    category: '展览设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68197440dcda3.jpg',
+                    description: `⼀个将艺术与设计完美融合的展厅。在这⾥，每⼀处细节都经过精⼼ 雕琢，每⼀束光线都为展示⽽设。我们的设计不仅仅是空间的构建，更是对美学的深刻诠释。 期待您的品鉴，共同⻅证设计与艺术的和谐共鸣。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/68197285be241.png", "https://vip.wmhua.cn/2025/05/06/6819728642a14.png", "https://vip.wmhua.cn/2025/05/06/6819729574d7d.png", "https://vip.wmhua.cn/2025/05/06/6819728ebb572.png", "https://vip.wmhua.cn/2025/05/06/68197298eb6ff.png", "https://vip.wmhua.cn/2025/05/06/681972978cd62.png", "https://vip.wmhua.cn/2025/05/06/681972988e3d6.png", "https://vip.wmhua.cn/2025/05/06/681972907e1a2.png", "https://vip.wmhua.cn/2025/05/06/6819728c8bc8f.png",
+                        "https://vip.wmhua.cn/2025/05/06/6819728eb6ef9.png", "https://vip.wmhua.cn/2025/05/06/68197297cad0a.png", "https://vip.wmhua.cn/2025/05/06/68197297b8914.png", "https://vip.wmhua.cn/2025/05/06/68197294516ba.png", "https://vip.wmhua.cn/2025/05/06/681972819ac43.png", "https://vip.wmhua.cn/2025/05/06/68197281ca7a3.png", "https://vip.wmhua.cn/2025/05/06/6819728088bec.png", "https://vip.wmhua.cn/2025/05/06/6819728081cb1.png"
+                    ]
+                },
+                {
+                    id: 11,
+                    title: '茂华星河颂展',
+                    category: '展览设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68197aa1a7680.png',
+                    description: `茂华星河，⼀个从《只此⻘绿》中汲取灵感的展览设计项⽬，将中国传 统美学与现代展览空间完美融合。我们的设计团队深⼊探索了中国古典艺术的精髓，特别是 宋代⻘绿⼭⽔画的静谧与深远，将其转化为现代展览空间的语⾔。通过使⽤柔和的⻘绿⾊调 和精致的空间布局，我们创造了⼀个既能展示茂华星河项⽬特⾊，⼜能让观众沉浸在东⽅美 学中的展览环境。设计中的每⼀处细节，从灯光到展台，都旨在传达⼀种宁静与和谐，引导 观众体验⼀场穿越时空的艺术之旅。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819799a0fe3b.png", "https://vip.wmhua.cn/2025/05/06/681979b9d9ddf.png", "https://vip.wmhua.cn/2025/05/06/6819799672c33.png", "https://vip.wmhua.cn/2025/05/06/68197980533a0.png", "https://vip.wmhua.cn/2025/05/06/6819798ddb007.png", "https://vip.wmhua.cn/2025/05/06/681979614ddbe.png", "https://vip.wmhua.cn/2025/05/06/6819796a8dbf3.jpg"
+                    ]
+                },
+                {
+                    id: 12,
+                    title: '流形⻥缸',
+                    category: '产品设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68197c50cecd7.jpg',
+                    description: `在这个浮华的世界⾥，我们寻找着⼀份与⾃然共鸣的情感。我们的设 计灵感源⾃⾃然界中⽣命的奇妙⽣⻓，那种万物共同重叠⽣⻓⽣⽄不息的了量。通过观察⾃ 然的野蛮⽣⻓繁衍，我们汲取了灵感，并将这种⽣命之美融⼊到流形术⻥缸的设计中。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/68197bb250121.jpg",
+                        "https://vip.wmhua.cn/2025/05/06/68197bb0ea0d9.jpg", "https://vip.wmhua.cn/2025/05/06/68197bb0f09d2.jpg", "https://vip.wmhua.cn/2025/05/06/68197bb0eb66b.jpg", "https://vip.wmhua.cn/2025/05/06/68197bb0e0133.jpg"
+                    ]
+                },
+                {
+                    id: 13,
+                    title: '⻣椅',
+                    category: '产品设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68197db95a19e.jpg',
+                    description: `在⾃然界中，⻣骼以其独特的结构和⽀撑⼒，赋予⽣物以⼒量和灵活 性。受到这⼀启发，我们⾃豪地呈现“⻣椅”，⼀把将⾃然界的精妙设计融⼊现代家具的杰作。 `,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/68197d21c4c84.jpg", "https://vip.wmhua.cn/2025/05/06/68197d2931962.jpg", "https://vip.wmhua.cn/2025/05/06/68197d231167c.jpg"
+                    ]
+                },
+                {
+                    id: 14,
+                    title: '海珠新城南岸',
+                    category: '规划设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68198164988c2.jpg',
+                    description: `⽔系组织了村落的架构，划分不同的⽚区，关系着贸易与⽄化的中⼼， 串联起各个公共空间。我们希望延续⽔系与场地的关系,考虑河道对地下设施有很⼤影响,所 以将河道的形式以“⾼线”的⽅式提取出来，以容纳不同的公共活动，串联整个空间的各个节 点。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/68198074ab62d.jpg", "https://vip.wmhua.cn/2025/05/06/68198074be02b.jpg", "https://vip.wmhua.cn/2025/05/06/681980748c4b3.jpg", "https://vip.wmhua.cn/2025/05/06/68198074b948d.jpg", "https://vip.wmhua.cn/2025/05/06/681980742109a.jpg", "https://vip.wmhua.cn/2025/05/06/68198075a7480.jpg", "https://vip.wmhua.cn/2025/05/06/68198072981a9.jpg"
+                    ]
+                },
+                {
+                    id: 15,
+                    title: 'MODE 时装周',
+                    category: '展览设计',
+                    image:'https://vip.wmhua.cn/2025/05/06/68198470b3fa2.png',
+                    description: `在时尚的海洋中，每⼀件服装都是⼀个故事，每⼀次交流都是⼀次灵 感的碰撞。上海 MODE 时装周，作为潮流的汇聚地，我们特别设计了“连接与分享”⻔头装 置，旨在通过这个独特的空间，激发参展者之间的分享与交流，让时尚的⽕花在这⾥迸发。 `,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/681983976d4f6.jpg", "https://vip.wmhua.cn/2025/05/06/681983a20eb7a.png", "https://vip.wmhua.cn/2025/05/06/6819839c70de8.png", "https://vip.wmhua.cn/2025/05/06/681983a21f674.png", "https://vip.wmhua.cn/2025/05/06/6819839bd7ac0.png", "https://vip.wmhua.cn/2025/05/06/6819839de2b4a.png", "https://vip.wmhua.cn/2025/05/06/68198395107ed.png", "https://vip.wmhua.cn/2025/05/06/6819839e79a35.png", "https://vip.wmhua.cn/2025/05/06/6819839e0e89a.png", "https://vip.wmhua.cn/2025/05/06/6819839ee9dcd.png", "https://vip.wmhua.cn/2025/05/06/681983973b616.png", "https://vip.wmhua.cn/2025/05/06/681983a0927c0.png", "https://vip.wmhua.cn/2025/05/06/681983a0668cb.png", "https://vip.wmhua.cn/2025/05/06/68198391da854.png"
+                    ]
+                },
+                {
+                    id: 16,
+                    title: '莲塘村第⼀⻝堂',
+                    category: '建筑设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/681986faee8d9.png',
+                    description: `莲塘村第⼀⻝堂，⼀座承载着社区记忆的⽼建筑，即将焕发新⽣。我 们的⽬标是将其改造成⼀个充满古朴感的法餐厅，同时保留其历史的痕迹和⽄化价值。通过 精⼼的设计，我们将让这座建筑在新时代中继续讲述它的故事。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819863fbe219.png", "https://vip.wmhua.cn/2025/05/06/6819863d81a62.png", "https://vip.wmhua.cn/2025/05/06/6819863ae1010.png",
+                        "https://vip.wmhua.cn/2025/05/06/6819863bcd078.png", "https://vip.wmhua.cn/2025/05/06/681986320c301.png", "https://vip.wmhua.cn/2025/05/06/6819863ca3088.png", "https://vip.wmhua.cn/2025/05/06/68198629ab86f.png", "https://vip.wmhua.cn/2025/05/06/68198628b4d29.png", "https://vip.wmhua.cn/2025/05/06/68198628cc097.png", "https://vip.wmhua.cn/2025/05/06/6819863e2385d.png", "https://vip.wmhua.cn/2025/05/06/681986282e079.png"
+                    ]
+                },
+                {
+                    id: 17,
+                    title: '潮宏基花丝概念店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/68198a3255d3a.png',
+                    description: `整个店铺都以“燕京⼋绝之⾸的花丝镶嵌”为创意灵感，于孔隙中洞⻅ 经典如故，于光影间感知⾄遗承继，打造出东⽅新境，让你“⼀步⼀景”，在每⼀个细节中都 能感受到“花丝魅⼒”~ `,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/68198987cbd8d.png", "https://vip.wmhua.cn/2025/05/06/6819898571f6c.png", "https://vip.wmhua.cn/2025/05/06/68198984a8d23.png", "https://vip.wmhua.cn/2025/05/06/681989869a353.png", "https://vip.wmhua.cn/2025/05/06/68198986ce9d1.png", "https://vip.wmhua.cn/2025/05/06/6819897f24953.jpg"
+                    ]
+                },
+                {
+                    id: 18,
+                    title: '潮宏基花丝 SI 店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819b7bb2c057.jpg',
+                    description: `整个店铺都以“燕京⼋绝之⾸的花丝镶嵌”为创意灵感，于孔隙中洞⻅ 经典如故，于光影间感知⾄遗承继，打造出东⽅新境，让你“⼀步⼀景”，在每⼀个细节中都 能感受到“花丝魅⼒`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819b5937f69e.jpg",
+                        "https://vip.wmhua.cn/2025/05/06/6819b5973dafe.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59717bd6.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59bc08aa.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59830083.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59a56f93.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59be9106.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59c1ca3b.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59b4f72c.jpg", "https://vip.wmhua.cn/2025/05/06/6819b598e9b3e.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59928f23.jpg", "https://vip.wmhua.cn/2025/05/06/6819b599bee70.jpg", "https://vip.wmhua.cn/2025/05/06/6819b59a92942.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d89c860.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d90fab6.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d97901a.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d8b20d1.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d9a2be9.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d924da8.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d62735d.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d6f37c7.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d909da5.jpg", "https://vip.wmhua.cn/2025/05/06/6819b5d97b3e4.jpg"
+                    ]
+                },
+                {
+                    id: 19,
+                    title: '星期六鞋店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819bc16157cf.png',
+                    description: `在现代社会，⼥性的⼒量不容⼩觑。她们是独⽴的个体，拥有⾃主的 意志和不屈的灵魂。“星期六鞋垫”不仅仅是鞋垫，它是当代⼥性精神的延伸，是她们独⽴、 ⾃主、不被定义性格的象征。我们从⾃然界中汲取灵感，提炼出那些⽐例均衡且充满⼒量感 的元素。如同巨⽯，这些元素被巧妙地融⼊到“星期六鞋垫”的设计之中，旨在激发每⼀位⼥ 性内在的⼒量。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819bb52b98f0.png", "https://vip.wmhua.cn/2025/05/06/6819bb52ecf64.png", "https://vip.wmhua.cn/2025/05/06/6819bb4b57ff0.png", "https://vip.wmhua.cn/2025/05/06/6819bb5068e2f.png", "https://vip.wmhua.cn/2025/05/06/6819bb5071e6e.png", "https://vip.wmhua.cn/2025/05/06/6819bb5267aef.png", "https://vip.wmhua.cn/2025/05/06/6819bb52799e9.png", "https://vip.wmhua.cn/2025/05/06/6819bb52b98ea.png"
+                    ]
+                },
+                {
+                    id: 20,
+                    title: '潮宏基成都万象城店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819bd678555c.png',
+                    description: `整个店铺都以“燕京⼋绝之⾸的花丝镶嵌”为创意灵感，于孔隙中洞⻅ 经典如故，于光影间感知⾄遗承继，打造出东⽅新境，让你“⼀步⼀景”，在每⼀个细节中都 能感受到“花丝魅⼒。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819bd1a98833.jpg", "https://vip.wmhua.cn/2025/05/06/6819bd1a9d8ea.jpg", "https://vip.wmhua.cn/2025/05/06/6819bd1c6851d.png", "https://vip.wmhua.cn/2025/05/06/6819bd1d24333.png", "https://vip.wmhua.cn/2025/05/06/6819bd1d44c89.png", "https://vip.wmhua.cn/2025/05/06/6819bd1ea6b2c.png", "https://vip.wmhua.cn/2025/05/06/6819bd2d04f1d.gif", "https://vip.wmhua.cn/2025/05/06/6819bd2e34293.gif"
+                    ]
+                },
+                {
+                    id: 21,
+                    title: 'X-BEAUTY 迪拜店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819c1a34805a.png',
+                    description: `汲取宇宙⿊洞的深邃引⼒，我们缔造了⼀个美妆殿堂，它以其⽄与伦 比的吸引⼒，成为时尚界的⼀个璀璨焦点`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819c0af9b1f7.png", "https://vip.wmhua.cn/2025/05/06/6819c0b19a44b.png", "https://vip.wmhua.cn/2025/05/06/6819c0af76d04.png",
+                        "https://vip.wmhua.cn/2025/05/06/6819c0b18484e.png", "https://vip.wmhua.cn/2025/05/06/6819c0ab97b35.png"
+                    ]
+                },
+                {
+                    id: 22,
+                    title: '不息潮牌买⼿店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819c500d1a2f.png',
+                    description: `有些⼈有些物， ⽄出⽄落⽄息 有些物有些⼈， ⽄出⽄息⽇落⽄ 作 太阳的存在才让万物⽣ ⽄，轮回与交替 也是太阳的存在创造了⾃然规律，让万物⾃然⽣ ⽄不息。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819c3b330440.png", "https://vip.wmhua.cn/2025/05/06/6819c3ae76027.jpg", "https://vip.wmhua.cn/2025/05/06/6819c3add2fae.jpg", "https://vip.wmhua.cn/2025/05/06/6819c3b06587a.png", "https://vip.wmhua.cn/2025/05/06/6819c3afbc702.png", "https://vip.wmhua.cn/2025/05/06/6819c3ae87d65.png", "https://vip.wmhua.cn/2025/05/06/6819c3ad92740.png", "https://vip.wmhua.cn/2025/05/06/6819c3ab34e3a.jpg", "https://vip.wmhua.cn/2025/05/06/6819c3afdb9b5.png", "https://vip.wmhua.cn/2025/05/06/6819c3ada01e5.png", "https://vip.wmhua.cn/2025/05/06/6819c3a7ba527.png", "https://vip.wmhua.cn/2025/05/06/6819c3ac893df.png", "https://vip.wmhua.cn/2025/05/06/6819c3aa25a52.png", "https://vip.wmhua.cn/2025/05/06/6819c3ab67a1d.png", "https://vip.wmhua.cn/2025/05/06/6819c3ad11006.png", "https://vip.wmhua.cn/2025/05/06/6819c3a7babb8.png", "https://vip.wmhua.cn/2025/05/06/6819c3a56014b.jpg", "https://vip.wmhua.cn/2025/05/06/6819c3abc852f.png"
+                    ]
+                },
+                {
+                    id: 23,
+                    title: '花⻄⼦旗舰店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819c7e7e5318.jpg',
+                    description: `古画⾥，如云如雾的留⽩空间把画中的近、中、远各个场景连接起来， 串成⼀副完整的画卷。设计提取古画中的留⽩线索，成为空间中的引⼦。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819c72745896.jpg", "https://vip.wmhua.cn/2025/05/06/6819c72984b82.jpg", "https://vip.wmhua.cn/2025/05/06/6819c729656c6.jpg", "https://vip.wmhua.cn/2025/05/06/6819c72977bf3.jpg", "https://vip.wmhua.cn/2025/05/06/6819c729351d7.jpg", "https://vip.wmhua.cn/2025/05/06/6819c729129e2.jpg", "https://vip.wmhua.cn/2025/05/06/6819c729396ec.jpg", "https://vip.wmhua.cn/2025/05/06/6819c72955dfe.jpg", "https://vip.wmhua.cn/2025/05/06/6819c7283975c.jpg", "https://vip.wmhua.cn/2025/05/06/6819c72851fb6.jpg"
+                    ]
+                },
+                {
+                    id: 24,
+                    title: '蚂蚁集团官⽅礼品店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819ca8d8e9ba.jpg',
+                    description: `城市的发展让⼈们更加向往⾃然在有限的钢筋混凝⼟寻找⾃然之境希 望在这营造出万物彼此共同连接重看并⽣⻄，演经⽣命成⻄的过程当中的不同状态赋予能量， 即共荣。相互联系，包容，互助互惠，将空间内⽄限⽣命⼒延续⾄深远的未来。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819c919442c0.jpg", "https://vip.wmhua.cn/2025/05/06/6819c91898c50.jpg", "https://vip.wmhua.cn/2025/05/06/6819c91940922.jpg", "https://vip.wmhua.cn/2025/05/06/6819c91806566.jpg", "https://vip.wmhua.cn/2025/05/06/6819c9184f07f.jpg", "https://vip.wmhua.cn/2025/05/06/6819c91f24ba0.png", "https://vip.wmhua.cn/2025/05/06/6819c9203ce02.png", "https://vip.wmhua.cn/2025/05/06/6819c921d9669.png", "https://vip.wmhua.cn/2025/05/06/6819c92014a91.png",
+                        "https://vip.wmhua.cn/2025/05/06/6819c9215fdcf.png", "https://vip.wmhua.cn/2025/05/06/6819c9213ec45.png"
+                    ]
+                },
+                {
+                    id: 25,
+                    title: '越秀地产城市展厅',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819cc3568574.jpg',
+                    description: `设计以带有指引性的景观园路，串联四个不同氛围的空间，给⼈们带 来丰富的感官体验与互动，⼀步步酝酿着情绪，共同探寻隐藏在繁华都市中的秘境。`,
+                    images: [
+                        "https://vip.wmhua.cn/2025/05/06/6819cbccd1d53.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbccf06a2.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbccd9ddc.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbcd1110e.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbcd07a2e.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbcd12d37.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbcb9b491.jpg", "https://vip.wmhua.cn/2025/05/06/6819cbcb84493.jpg"
+                    ]
+                },
+                {
+                    id: 26,
+                    title: 'ST&SAT 鞋店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819cf0e91125.png',
+                    description: `18 世纪末，⼀位英国⾃然哲学家记载了⼀个匪夷所思的故事： 字宙中存在着⼤量的“引⼒怪兽”，它们像幽灵般游荡在空旷的星际之中,没有⼈能够直接看 到它们。只有当它们的身边恰好有发光的物质围绕时,它们的⾏踪才会暴露这位⾃然哲学家 将这些引⼒怪兽称为“暗星”,后来，这些暗星有了⼀个更响亮的名字--⿊洞。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819cea961dbf.png', 'https://vip.wmhua.cn/2025/05/06/6819cea9f13c4.png', 'https://vip.wmhua.cn/2025/05/06/6819ceaa1ef93.png', 'https://vip.wmhua.cn/2025/05/06/6819cea9536e7.png',
+                        'https://vip.wmhua.cn/2025/05/06/6819cea9c0e27.png'
+                    ]
+                },
+                {
+                    id: 27,
+                    title: '世贸深港国际中⼼主题街区',
+                    category: '规划设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819d0cc939c0.jpg',
+                    description: `以历史为纽带，将粤港澳地历史⽄化遗产有效串联沟通，构建成⼀个 极富历史底蕴的“⽄化遗产游径”系统展示的包容性和“岭南⽄化特质”`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819d02c3a949.png', 'https://vip.wmhua.cn/2025/05/06/6819d02b96d6d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d02b443d4.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d02b77197.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d02b410b5.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d02c2baeb.png', 'https://vip.wmhua.cn/2025/05/06/6819d02c31d62.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d02ced468.png', 'https://vip.wmhua.cn/2025/05/06/6819d02c486eb.png'
+                    ]
+                },
+                {
+                    id: 28,
+                    title: 'PARK CAFE 南宁店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819d2743db3d.png',
+                    description: `在旭辉咖啡厅，我们致⼒于打造⼀个不仅仅是品尝咖啡的地⽅，⽄是 ⼀个能够激发灵感、享受⽣活、交流思想的空间。我们的设计概念融合了现代美学与舒适体 验，旨在为顾客提供⼀个既温馨⼄充满活⼒的环境。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819d1d1a85f4.png', 'https://vip.wmhua.cn/2025/05/06/6819d1d677f01.png', 'https://vip.wmhua.cn/2025/05/06/6819d1cb9feb8.png', 'https://vip.wmhua.cn/2025/05/06/6819d1cb66da8.png', 'https://vip.wmhua.cn/2025/05/06/6819d1cbc0c2c.png', 'https://vip.wmhua.cn/2025/05/06/6819d1d29d77e.png', 'https://vip.wmhua.cn/2025/05/06/6819d1c9a7a4e.png'
+                    ]
+                },
+                {
+                    id: 29,
+                    title: '东莞⽔乡招商展示中⼼',
+                    category: '建筑设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819d437e5f14.jpg',
+                    description: `这是⼀个充满现代感的建筑设计项⽬。我们在设计过程中特别注重建 筑与环境的和谐统⼀，采⽤了⼤量环保材料和智能化设施。项⽬整体⻛格简约⼤⽄，通过传 统元素与现代设计的完美结合，打造出既有传统韵味⼄富有现代感的建筑空间。建筑内部的 功能分区经过精⼼规划，既保证了实⽤性，⼄创造出独特的视觉体验。我们还特别注重与周 边⾃然环境的融合，打造出⼀个与⾃然共⽣的空间。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819d39f54bd3.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39ff3c6a.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39f57648.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39fe4bef.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39f97909.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39f7771d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39f53701.jpg', 'https://vip.wmhua.cn/2025/05/06/6819d39f711f0.jpg'
+                    ]
+                },
+                {
+                    id: 30,
+                    title: '喜茶上海迪⼠尼⽩⽇梦店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819dd1215ce4.jpg',
+                    description: `“平⾏宇宙”并⾄某个故事，⽄是写意地传达出灵感碰撞与孕育的过程， 这个不断运⾏中的“灵感宇宙”，也回应着迪⼠尼⼀个个经典故事背后的⽄限遐想。以克制与 留⽩承载千万想象与欢乐，营造别样梦幻氛围。 这样的设计策略也让焕新后的⻔店完整诠释了喜茶与迪⼠尼追求内在的共鸣，⽄⾄表象的 相似。在商业空间追求“戏剧化”叙事设计的当下，选择做减法的抽象空间表达，是喜茶的设 计语⾔，也是⼀种品牌⽄化的⾃信。 `,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819da90454d2.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8919763.jpg',
+                        'https://vip.wmhua.cn/2025/05/06/6819da908bc14.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8e552d6.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da893e779.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8aa5e68.jpg',
+                        'https://vip.wmhua.cn/2025/05/06/6819da8c08184.jpg',
+                        'https://vip.wmhua.cn/2025/05/06/6819da897f00b.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da88d78d6.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8c6d3d3.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8b34fd2.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8b091df.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8b8dfba.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8bd3db7.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8c12492.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8e1c7f6.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da8e9f280.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da90108db.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da90573d5.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da92d9582.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da90e255c.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da914da39.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da91a84d0.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da936789c.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da93c2232.jpg', 'https://vip.wmhua.cn/2025/05/06/6819da9309654.jpg', 'https://vip.wmhua.cn/2025/05/06/6819dad0bf255.jpg', 'https://vip.wmhua.cn/2025/05/06/6819dad0b998d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819dacf06ddb.jpg', 'https://vip.wmhua.cn/2025/05/06/6819dacdef517.gif', 'https://vip.wmhua.cn/2025/05/06/6819dace0e104.png', 'https://vip.wmhua.cn/2025/05/06/6819dacd4e07d.png', 'https://vip.wmhua.cn/2025/05/06/6819dacf2e07d.png', 'https://vip.wmhua.cn/2025/05/06/6819dacf406f0.gif', 'https://vip.wmhua.cn/2025/05/06/6819dacd6b3ea.jpg', 'https://vip.wmhua.cn/2025/05/06/6819dad2cca48.gif'
+                    ]
+                },
+                {
+                    id: 31,
+                    title: '旭辉淮安招商中⼼',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819e19f769e0.jpg',
+                    description: `淮安市境内河湖交错，⽔⽄纵横，京杭⼤运河、淮沭新河、苏北灌概总 渠、淮河⼊江⽔道、淮河⼊海⽔道、废⻩河、六塘河、盐河。淮河于流等 9 条河流在境内纵 贯横穿，全国五⼤淡⽔湖之⼀的洪泽湖⼤部分位于市境内，还有⽩⻦湖、⾼邮湖、宝应湖等 中⼩型湖泊镶嵌其间。是典型的“平原⽔乡”`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819e07bb4201.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e079090b6.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07e736c8.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07c7e75b.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07ad4327.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07f6bdad.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07f34bb8.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07b72a7b.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07d1c923.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07e35c29.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07e9ad8e.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07f34260.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07ce6263.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e07e9f67c.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e0814cdb9.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e0810c74d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e0810451e.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e081ef503.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e08343522.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e08120b8d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e081d6ed5.jpg'
+                    ]
+                },
+                {
+                    id: 32,
+                    title: '意⼤利 Chiesa Diruta 教堂改造',
+                    category: '建筑设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819e325116dd.jpg',
+                    description: `Chiesa Diruta 教堂建于 15 世纪，曾是该地区最重要的教堂，但在地震 和⽄灾的影响下被遗弃。东南⻆已经坍塌，向城市开放。我们希望在整个中殿中创造⼀个新 的东南-⻄北轴线，将城市⽣活引⼊教堂，同时在将堕落的教堂改造成⾳乐厅的过程中仍然 保持开放性。新轴线将教堂分为两部分，原旧轴线连接整个教堂的新功能。
+                    教堂的⼀半将作为城市的记忆，作为 Grottole 的新城⼄场和开放的舞台，融⼊市⺠的⽣ 活。 教堂的另外⼀半将被⼀个新的体量覆盖，作为⼀个具有现代设施的当代⾳乐厅，保留了教堂 圆顶下的核⼼空间。沿着对⾆线轴线的两个⼤台阶作为室内和室外两个⾳乐厅的礼堂，连接 空间的功能和流通，以及市⺠的⽄化⽣活和城市的历史记忆。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819e2bb2cce3.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e2bb39a0b.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e2bbaa13d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e2bb43278.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e2bb1756e.jpg'
+                    ]
+                },
+                {
+                    id: 33,
+                    title: '⻄安恒志蓝⽥⼩镇⻢场',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819e4745f1d4.png',
+                    description: `在空间当中置⼊⼀⽄ 100 ⽄的墙，分割空间的同时作为空间叙事的载 体，如框景般把室外景⾊引⼊室内。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819e411cd6d2.png', 'https://vip.wmhua.cn/2025/05/06/6819e411992d9.png', 'https://vip.wmhua.cn/2025/05/06/6819e40df39db.png', 'https://vip.wmhua.cn/2025/05/06/6819e41128935.png', 'https://vip.wmhua.cn/2025/05/06/6819e411b3690.png', 'https://vip.wmhua.cn/2025/05/06/6819e411274fb.png', 'https://vip.wmhua.cn/2025/05/06/6819e40ac73d9.png', 'https://vip.wmhua.cn/2025/05/06/6819e40bdf46e.png'
+                    ]
+                },
+                {
+                    id: 34,
+                    title: '海珠创新湾城市展厅',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819e7674e058.png',
+                    description: `珠光海珠创新湾展示中⼼，承载着共建“⼀带⼀路”、促进对粤港澳⼤湾 区核⼼内涵的⾼度认同及海珠创新湾可持续发展规划的展示功能，亦是呈现珠光集团⽄化、 企业精神融⼊新格局和展现新作为的重要窗⼝。 紧扣创新湾主题，深层次讨论⼤湾区“川流不息”的精神内核，本案概念将⾃然脉络、海珠⽔ 乡及城市创新缩影融为⼀体，⽤清晰统⼀的设计语⾔贯穿整个展厅始终，以体现规划馆的创 新性、未来感。 同时，拟以“渊澄取映“喻珠光谦虚沉静⽄⼄源远流⻄的经营理念和发展势头，凸显集团⾏业 地位和战略前瞻视野。 `,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819e66b76f17.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66ad11f9.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66af0c47.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66a0611d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e6697985e.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66911159.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66ae9b07.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66b1bddb.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66a37a99.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66a5e80d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66abc97d.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e669b008c.png', 'https://vip.wmhua.cn/2025/05/06/6819e66ad90ad.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66b343f8.jpg', 'https://vip.wmhua.cn/2025/05/06/6819e66a921c5.jpg'
+                    ]
+                },
+                {
+                    id: 35,
+                    title: '喜茶 GO 创新店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819e8badc5a8.png',
+                    description: `“盒⼦”的装置概念是想让环境与⼈们之间有⼀个交互体验，事实上， ⽄是⼈、饮品、环境这三者交流的载体，如同催化剂⼀般激活整个空间。⽤这样⼀个灵活的 框架打造⼀个空间计划。
+                    ⽄“喜盒”概念作为喜茶“GO”核⼼承载物装置，它既是实现城市密集式分布的主体，也是喜 茶品牌、产品、服务与消费者最直接的互动连接（服务站）。 `,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819e84e5abf0.png', 'https://vip.wmhua.cn/2025/05/06/6819e837f36b3.png', 'https://vip.wmhua.cn/2025/05/06/6819e834a808e.png', 'https://vip.wmhua.cn/2025/05/06/6819e82f9c190.png'
+                    ]
+                },
+                {
+                    id: 36,
+                    title: '喜茶成都红唐店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819ea1f2715d.png',
+                    description: `在喜茶成都红唐 go 店，我们以“Go”为灵感，不仅仅是指围棋的“Go”， ⽄是象征着前进、探索和活⼒的“Go”。我们的设计旨在捕捉这种精神，将喜茶的年轻、时尚 和创新的品牌理念与成都的传统⽄化和现代活⼒相结合。 `,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819e9a2034ab.png', 'https://vip.wmhua.cn/2025/05/06/6819e999bcfda.png', 'https://vip.wmhua.cn/2025/05/06/6819e9a0567b1.png', 'https://vip.wmhua.cn/2025/05/06/6819e98b5a874.png'
+                    ]
+                },
+                {
+                    id: 37,
+                    title: '喜茶深圳彩⽥万家店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819eb3b6f2ed.png',
+                    description: `在喜茶成都红唐 go 店，我们以“Go”为灵感，不仅仅是指围棋的“Go”， ⽄是象征着前进、探索和活⼒的“Go”。我们的设计旨在捕捉这种精神，将喜茶的年轻、时尚 和创新的品牌理念与成都的传统⽄化和现代活⼒相结合。 `,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819eadad1547.png', 'https://vip.wmhua.cn/2025/05/06/6819eadd8a1be.png', 'https://vip.wmhua.cn/2025/05/06/6819eadb6923e.png'
+                    ]
+                },
+                {
+                    id: 38,
+                    title: '优剪轻时尚店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819ec52b33b1.jpg',
+                    description: `在“优剪轻时尚店”，我们致⼒于将剪发转变为⼀种年轻、时尚的⽣活态 度。我们理解年轻⼈对个性和潮流的追求，因此，我们的设计理念是将传统剪发服务与现代 时尚元素相结合，为年轻顾客提供⼀个既能展现个性⼄能享受时尚潮流的空间。 `,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819ebff479bb.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ec00661d8.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ebfe8aa0c.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ebfd62d21.jpg'
+                    ]
+                },
+                {
+                    id: 39,
+                    title: 'Mithridate 北京国贸店',
+                    category: '商业设计',
+                    image: 'https://vip.wmhua.cn/2025/05/06/6819ee0f36bbb.jpg',
+                    description: `"UNISEX" 探寻⾃我、突破边界，创造⽄限可能性，从⽄限可能性 的形态转换于空间中，天花与墙⾯纵横之间的衔接，带来多维度 的空间层次。线条定义空间“优雅”的含义，让⼈在不同空间中 ⃽游刃有余地释放独特魅⼒。`,
+                    images: [
+                        'https://vip.wmhua.cn/2025/05/06/6819ed8c40389.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed8e07b6a.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed8d561b0.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed8ae1ef9.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed8d36551.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed8d4128e.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed9026e7f.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed8ecd9a9.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed9122429.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed9161050.jpg',
+                        'https://vip.wmhua.cn/2025/05/06/6819ed90849a9.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed914d5ec.jpg', 'https://vip.wmhua.cn/2025/05/06/6819ed913ec45.jpg'
+                    ]
+                }
+            ];
+
+            // 渲染项目
+            function renderProjects(filteredProjects) {
+                const projectsContainer = document.getElementById('projects');
+                projectsContainer.innerHTML = '';
+                filteredProjects.forEach(project => {
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'project-card';
+                    projectCard.innerHTML = `
+                        <div style="aspect-ratio: 4/3; overflow: hidden;">
+                            <img src="${project.image}" alt="Project ${project.id}" class="w-full h-full object-cover" loading="lazy">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-bold">${project.title}</h3>
+                            <p class="text-gray-600">${project.category}</p>
+                        </div>
+                    `;
+                    projectCard.addEventListener('click', () => showProjectDetail(project));
+                    projectsContainer.appendChild(projectCard);
+                });
+            }
+
+            // 初始渲染
+            renderProjects(projects);
+
+            // 搜索贴吧功能
+            const searchInput = document.querySelector('input[type="text"]');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const filteredProjects = projects.filter(project =>
+                    project.title.toLowerCase().includes(searchTerm) || project.category.toLowerCase().includes(searchTerm)
+                );
+                renderProjects(filteredProjects);
+            });
+
+            // 分类功能
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.textContent;
+                    const filteredProjects = category === '全部项⽬'
+                        ? projects
+                        : projects.filter(project => project.category === category);
+                    renderProjects(filteredProjects);
+
+                    // 更新按钮状态
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 显示项目详情
+            function showProjectDetail(project) {
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center overflow-y-auto';
+                modal.innerHTML = `
+                    <div class="bg-white w-full max-w-7xl mx-4 my-8 rounded-lg overflow-hidden relative">
+                        <button class="absolute top-6 right-6 text-gray-800 text-4xl z-10 hover:text-gray-600 transition-colors duration-300"
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center">
+                            &times;
+                        </button>
+                        <div class="max-h-[90vh] overflow-y-auto">
+                            <div class="p-6 md:p-10">
+                                <div class="mb-10">
+                                    <h2 class="text-3xl md:text-4xl font-bold mb-6">${project.title}</h2>
+                                    <p class="text-gray-600 text-lg">${project.description}</p>
+                                </div>
+                                <div class="space-y-8">
+                                    ${project.images.map(img => `
+                                        <div class="w-full">
+                                            <img src="${img}" alt="Project detail" class="w-full rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer" loading="lazy">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // 添加图片预览功能
+                const imagePreviewModal = document.createElement('div');
+                imagePreviewModal.className = 'fixed inset-0 bg-black bg-opacity-95 z-[60] items-center justify-center hidden';
+                imagePreviewModal.innerHTML = `
+                    <button class="absolute top-6 right-6 text-white text-4xl z-10 hover:text-gray-300 transition-colors duration-300">
+                        &times;
+                    </button>
+                    <img src="" alt="Preview" class="max-h-[90vh] max-w-[90vw] object-contain">
+                `;
+                document.body.appendChild(imagePreviewModal);
+
+                modal.querySelectorAll('img').forEach(img => {
+                    img.addEventListener('click', () => {
+                        imagePreviewModal.querySelector('img').src = img.src;
+                        imagePreviewModal.style.display = 'flex';
+                    });
+                });
+
+                imagePreviewModal.addEventListener('click', () => {
+                    imagePreviewModal.style.display = 'none';
+                });
+
+                imagePreviewModal.querySelector('button').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    imagePreviewModal.style.display = 'none';
+                });
+
+                const closeModal = () => {
+                    modal.classList.add('opacity-0');
+                    document.body.style.overflow = '';
+                    imagePreviewModal.remove();
+                    setTimeout(() => {
+                        modal.remove();
+                    }, 300);
+                };
+
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+
+                modal.querySelector('button').addEventListener('click', () => {
+                    closeModal();
+                });
+
+                modal.style.transition = 'opacity 0.3s ease';
+                document.body.appendChild(modal);
+                document.body.style.overflow = 'hidden';
+
+                const handleEscape = (e) => {
+                    if (e.key === 'Escape') {
+                        if (imagePreviewModal.style.display === 'flex') {
+                            imagePreviewModal.style.display = 'none';
+                        } else {
+                            closeModal();
+                            document.removeEventListener('keydown', handleEscape);
+                        }
+                    }
+                };
+                document.addEventListener('keydown', handleEscape);
+            }
+        });
+    </script>
+</body>
+</html>
