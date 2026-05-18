@@ -2217,6 +2217,126 @@ body.v63Locked{overflow:hidden!important}
 }
 </style>
 
+
+
+<style id="v66-manage-page-css">
+/* V66：底部新增“管理”，用于数据导入 / 数据导出，保持苹果磨砂玻璃风格 */
+.tabs{
+  grid-template-columns:repeat(3,1fr) !important;
+}
+.nav{
+  width:min(470px,calc(100% - 28px)) !important;
+  gap:10px !important;
+}
+.tab b{
+  font-size:20px !important;
+  line-height:1.05 !important;
+}
+.tab span{
+  font-size:12px !important;
+}
+.plus{
+  width:66px !important;
+  height:66px !important;
+  min-width:66px !important;
+  font-size:38px !important;
+}
+.managePage{
+  min-height:calc(100vh - 170px);
+}
+.manageHeroCard{
+  border-radius:34px !important;
+  padding:24px !important;
+  margin:10px 0 18px !important;
+}
+.manageHeroTitle{
+  font-size:28px;
+  font-weight:1000;
+  letter-spacing:-.8px;
+}
+.manageHeroSub{
+  margin-top:8px;
+  color:#8e8e93;
+  font-size:14px;
+  font-weight:850;
+  line-height:1.55;
+}
+.manageActions{
+  display:grid;
+  gap:14px;
+}
+.manageAction{
+  width:100%;
+  border:0;
+  border-radius:30px;
+  padding:18px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:rgba(255,255,255,.62);
+  backdrop-filter:blur(28px) saturate(170%);
+  -webkit-backdrop-filter:blur(28px) saturate(170%);
+  border:1px solid rgba(255,255,255,.72);
+  box-shadow:0 12px 34px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.82);
+  color:#111;
+}
+.manageAction:active{
+  transform:scale(.97);
+}
+.manageActionIcon{
+  width:54px;
+  height:54px;
+  min-width:54px;
+  border-radius:20px;
+  background:rgba(255,255,255,.76);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 8px 18px rgba(0,0,0,.055);
+}
+.manageActionText{
+  flex:1;
+  min-width:0;
+}
+.manageActionTitle{
+  font-size:19px;
+  font-weight:1000;
+}
+.manageActionSub{
+  margin-top:5px;
+  color:#8e8e93;
+  font-size:13px;
+  font-weight:850;
+  line-height:1.35;
+}
+.manageActionArrow{
+  color:#b8b8bd;
+  font-size:28px;
+  font-weight:700;
+}
+.manageTip{
+  margin-top:16px;
+  padding:15px 17px;
+  border-radius:24px;
+  background:rgba(255,255,255,.48);
+  color:#777;
+  font-size:13px;
+  font-weight:850;
+  line-height:1.55;
+  border:1px solid rgba(255,255,255,.62);
+}
+@media(max-width:390px){
+  .nav{width:calc(100% - 22px) !important;gap:8px !important;}
+  .tabs{padding:7px !important;gap:3px !important;}
+  .tab{padding:8px 1px !important;}
+  .tab b{font-size:18px !important;}
+  .tab span{font-size:11px !important;}
+  .plus{width:60px !important;height:60px !important;min-width:60px !important;font-size:34px !important;}
+}
+</style>
+
 </head>
 <body class="v63Locked v63Locked">
 <div id="v63LockScreen">
@@ -2358,6 +2478,34 @@ body.v63Locked{overflow:hidden!important}
     </div>
   </section>
 
+
+  <section id="pageManage" class="hidden managePage">
+    <div class="top"><div class="h1">管理</div><button class="iconBtn" onclick="v64ExportData()">↗</button></div>
+    <div class="card manageHeroCard">
+      <div class="manageHeroTitle">数据管理</div>
+      <div class="manageHeroSub">当前数据保存在本机浏览器里。换手机、换电脑或清理浏览器前，先导出备份；新设备打开后再导入即可恢复资产数据。</div>
+    </div>
+    <div class="manageActions">
+      <button class="manageAction" type="button" onclick="v64ImportData()">
+        <span class="manageActionIcon">⇣</span>
+        <span class="manageActionText">
+          <span class="manageActionTitle">数据导入</span>
+          <span class="manageActionSub">选择之前导出的 JSON 备份文件，恢复到当前浏览器。</span>
+        </span>
+        <span class="manageActionArrow">›</span>
+      </button>
+      <button class="manageAction" type="button" onclick="v64ExportData()">
+        <span class="manageActionIcon">⇡</span>
+        <span class="manageActionText">
+          <span class="manageActionTitle">数据导出</span>
+          <span class="manageActionSub">导出完整资产数据备份，用于换设备、换浏览器或长期保存。</span>
+        </span>
+        <span class="manageActionArrow">›</span>
+      </button>
+    </div>
+    <div class="manageTip">提示：这个单文件 App 不需要服务器，数据默认只在当前浏览器保存。导出的文件请自己保存好，导入会覆盖当前浏览器里的资产数据。</div>
+  </section>
+
 </div>
 
 
@@ -2399,6 +2547,7 @@ body.v63Locked{overflow:hidden!important}
   <div class="tabs">
     <button class="tab active" onclick="go('pageHome',this)"><b>⌂</b><span>资产</span></button>
     <button class="tab" onclick="go('pageTrend',this)"><b>⌁</b><span>洞察</span></button>
+    <button class="tab" onclick="go('pageManage',this)"><b>☷</b><span>管理</span></button>
   </div>
   <button class="plus" onclick="openEdit()">+</button>
 </div>
