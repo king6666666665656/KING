@@ -2608,6 +2608,7 @@ body.v63Locked{overflow:hidden!important}
     <div class="formRow"><span class="formIcon">😀</span><label>图标</label><input id="emoji" placeholder="📦"></div>
     <div class="formRow"><span class="formIcon">📉</span><label>当前估值</label><input id="currentValue" type="number" step="0.01" placeholder="可不填"></div>
     <div class="formRow"><span class="formIcon">🕘</span><label>最近使用</label><input id="lastUseDate" type="date"></div>
+    <div class="formRow"><span class="formIcon">📦</span><label>退役时间</label><input id="retireDate" type="date" placeholder="未退役"></div>
     <div class="formRow"><span class="formIcon">💸</span><label>卖出价格</label><input id="sellPrice" type="number" step="0.01" placeholder="未卖出"></div>
     <div class="formRow"><span class="formIcon">📅</span><label>卖出日期</label><input id="sellDate" type="date"></div>
     <div class="formRow"><span class="formIcon">🎨</span><label>贴纸模式 <span class="vipBadge">◆</span></label><select id="sticker"><option>默认</option><option>极简</option><option>可爱</option><option>收藏品</option><option>工作装备</option></select></div>
@@ -2630,6 +2631,11 @@ let data=JSON.parse(localStorage.getItem(KEY)||'{"assets":[],"wishes":[],"catego
 let filter="all";
 const fmt=n=>"¥"+(Number(n)||0).toLocaleString("zh-CN",{minimumFractionDigits:2,maximumFractionDigits:2});
 const daysBetween=(a,b=new Date())=>Math.max(1,Math.ceil((new Date(b)-new Date(a))/(86400000)));
+function assetEndDate(a){
+  if(a && a.status==="sold" && a.sellDate) return a.sellDate;
+  if(a && a.status==="retired" && (a.retireDate||a.retiredDate)) return a.retireDate||a.retiredDate;
+  return new Date();
+}
 function save(){
   try{
     localStorage.setItem(KEY,JSON.stringify(data));
@@ -2678,7 +2684,7 @@ if(id==="pageTrend"){
 }
 }
 function setFilter(f,btn){filter=f;document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));btn.classList.add("active");render();}
-function costPerDay(a){let end=a.status==="sold"&&a.sellDate?a.sellDate:new Date();let used=daysBetween(a.buyDate,end);let net=(+a.price||0)-(+a.sellPrice||0);return Math.max(0,net)/used;}
+function costPerDay(a){let end=assetEndDate(a);let used=daysBetween(a.buyDate,end);let net=(+a.price||0)-(+a.sellPrice||0);return Math.max(0,net)/used;}
 
 let currentImageData="";
 function renderEditIcon(){
@@ -2716,6 +2722,7 @@ function openEdit(id){
   if($("status")) $("status").value=a?.status||"active";
   if($("currentValue")) $("currentValue").value=a?.currentValue||"";
   if($("lastUseDate")) $("lastUseDate").value=a?.lastUseDate||"";
+  if($("retireDate")) $("retireDate").value=a?.retireDate||a?.retiredDate||"";
   if($("sellPrice")) $("sellPrice").value=a?.sellPrice||"";
   if($("sellDate")) $("sellDate").value=a?.sellDate||"";
   if($("tags")) $("tags").value=(a?.tags||[]).join(",");
@@ -2733,14 +2740,29 @@ function openEdit(id){
 }
 function closeEdit(){editPanel.classList.add("hidden")}
 function toggleStatus(s){
-  if(s==="retired"){retiredSwitch.classList.toggle("on"); if(retiredSwitch.classList.contains("on")) soldSwitch.classList.remove("on");}
-  if(s==="sold"){soldSwitch.classList.toggle("on"); if(soldSwitch.classList.contains("on")) retiredSwitch.classList.remove("on");}
+  const today=new Date().toISOString().slice(0,10);
+  const retireDateEl=document.getElementById("retireDate");
+  const sellDateEl=document.getElementById("sellDate");
+  if(s==="retired"){
+    retiredSwitch.classList.toggle("on");
+    if(retiredSwitch.classList.contains("on")){
+      soldSwitch.classList.remove("on");
+      if(retireDateEl && !retireDateEl.value) retireDateEl.value=today;
+    }
+  }
+  if(s==="sold"){
+    soldSwitch.classList.toggle("on");
+    if(soldSwitch.classList.contains("on")){
+      retiredSwitch.classList.remove("on");
+      if(sellDateEl && !sellDateEl.value) sellDateEl.value=today;
+    }
+  }
 }
 function saveAsset(){
   try{
     const $ = id => document.getElementById(id);
     const nameEl=$("name"), emojiEl=$("emoji"), priceEl=$("price"), buyDateEl=$("buyDate"), categoryEl=$("category");
-    const currentValueEl=$("currentValue"), lastUseDateEl=$("lastUseDate"), sellPriceEl=$("sellPrice"), sellDateEl=$("sellDate"), tagsEl=$("tags"), noteEl=$("note"), extrasEl=$("extras"), stickerEl=$("sticker");
+    const currentValueEl=$("currentValue"), lastUseDateEl=$("lastUseDate"), retireDateEl=$("retireDate"), sellPriceEl=$("sellPrice"), sellDateEl=$("sellDate"), tagsEl=$("tags"), noteEl=$("note"), extrasEl=$("extras"), stickerEl=$("sticker");
     const editIdEl=$("editId");
     const retiredEl=$("retiredSwitch"), soldEl=$("soldSwitch"), pinEl=$("pinSwitch"), exTotalEl=$("excludeTotalSwitch"), exDailyEl=$("excludeDailySwitch");
 
@@ -2762,6 +2784,7 @@ function saveAsset(){
       status: st,
       currentValue: currentValueEl && currentValueEl.value ? +currentValueEl.value : 0,
       lastUseDate: lastUseDateEl ? lastUseDateEl.value : "",
+      retireDate: retireDateEl ? retireDateEl.value : "",
       sellPrice: sellPriceEl && sellPriceEl.value ? +sellPriceEl.value : 0,
       sellDate: sellDateEl ? sellDateEl.value : "",
       tags: tagsEl && tagsEl.value ? tagsEl.value.split(/[,，]/).map(x=>x.trim()).filter(Boolean) : [],
@@ -2787,7 +2810,7 @@ function saveAsset(){
 }
 function deleteAsset(){let id=+viewPanel.dataset.id||+editId.value;if(confirm("确定删除？")){data.assets=data.assets.filter(x=>x.id!==id);closeView();closeEdit();save();}}
 function viewAsset(id){
- let a=data.assets.find(x=>x.id===id), used=daysBetween(a.buyDate,a.status==="sold"&&a.sellDate?a.sellDate:new Date());
+ let a=data.assets.find(x=>x.id===id), used=daysBetween(a.buyDate,assetEndDate(a));
  viewPanel.dataset.id=id;
  viewPanel.classList.remove("hidden");
  viewContent.innerHTML=`
@@ -2812,6 +2835,7 @@ function viewAsset(id){
     ${(a.tags&&a.tags.length)?`<div class="infoLine"><span class="k">标签</span><span class="v">${a.tags.join("、")}</span></div>`:""}
     ${a.note?`<div class="infoLine"><span class="k">备注</span><span class="v">${a.note}</span></div>`:""}
     ${a.extras?`<div class="infoLine"><span class="k">附加项</span><span class="v">${a.extras}</span></div>`:""}
+    ${a.status==="retired"&&(a.retireDate||a.retiredDate)?`<div class="infoLine"><span class="k">退役时间</span><span class="v">${formatDateCN(a.retireDate||a.retiredDate)}</span></div>`:""}
     ${a.status==="sold"?`<div class="infoLine"><span class="k">卖出价格</span><span class="v">${fmt(a.sellPrice)}</span></div>`:""}
   </div>
   <button class="deleteWide" onclick="deleteAsset()">🗑️　删除</button>`;
@@ -2820,7 +2844,7 @@ function viewAsset(id){
 function formatDateCN(s){let d=new Date(s);return `${d.getFullYear()} 年 ${d.getMonth()+1} 月 ${d.getDate()} 日`}
 function drawDetailCost(a){
  let c=document.getElementById("detailCostCanvas"); if(!c)return; let ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);
- let used=daysBetween(a.buyDate,a.status==="sold"&&a.sellDate?a.sellDate:new Date()), price=(+a.price||0)-(+a.sellPrice||0);
+ let used=daysBetween(a.buyDate,assetEndDate(a)), price=(+a.price||0)-(+a.sellPrice||0);
  let vals=[]; for(let i=1;i<=Math.min(used,30);i++){vals.push(price/i)}
  if(vals.length<2){vals=[price,price/2,price/3,price/4,price/5,price/6]}
  let max=Math.max(...vals,1), min=Math.min(...vals,0);
@@ -2836,7 +2860,7 @@ function closeView(){viewPanel.classList.add("hidden")}
 function stateText(s){return s==="active"?"服役中":s==="retired"?"已退役":"已卖出"}
 function stateCls(s){return s==="retired"?"retired":s==="sold"?"sold":""}
 function showSearch(){let q=prompt("搜索资产名称 / 类别 / 标签");if(!q)return;filter="all";let found=data.assets.filter(a=>(a.name+a.category+(a.tags||[]).join("")).includes(q));items.innerHTML=found.map(cardHtml).join("")||'<div class="empty">没找到</div>'}
-function cardHtml(a){let used=daysBetween(a.buyDate,a.status==="sold"&&a.sellDate?a.sellDate:new Date());return `<div class="item" onclick="viewAsset(${a.id})"><div class="state"><span class="dot ${stateCls(a.status)}"></span>${stateText(a.status)}</div><div class="emoji">${iconHTML(a,"assetIconImg")}</div><div class="name">${a.name}</div><div class="sub">${fmt(a.price)}｜已使用 ${used} 天</div><div class="daily">${fmt(costPerDay(a))}<small>/天</small></div></div>`}
+function cardHtml(a){let used=daysBetween(a.buyDate,assetEndDate(a));return `<div class="item" onclick="viewAsset(${a.id})"><div class="state"><span class="dot ${stateCls(a.status)}"></span>${stateText(a.status)}</div><div class="emoji">${iconHTML(a,"assetIconImg")}</div><div class="name">${a.name}</div><div class="sub">${fmt(a.price)}｜已使用 ${used} 天</div><div class="daily">${fmt(costPerDay(a))}<small>/天</small></div></div>`}
 function render(){
  let q=(document.getElementById("assetSearch")?.value||"").trim().toLowerCase();
  let sort=document.getElementById("assetSort")?.value||"default";
@@ -5200,5 +5224,19 @@ function v54PickIcon(icon){
 })();
 </script>
 
+
+<script id="v64-retire-date-fix">
+(function(){
+  const oldSave = window.saveAsset;
+  window.saveAsset = function(){
+    const retEl=document.getElementById('retireDate');
+    const sw=document.getElementById('retiredSwitch');
+    if(sw && sw.classList.contains('on') && retEl && !retEl.value){
+      retEl.value=new Date().toISOString().slice(0,10);
+    }
+    return oldSave.apply(this, arguments);
+  };
+})();
+</script>
 </body>
 </html>
