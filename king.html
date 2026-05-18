@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#b8ff18"/>
 <title>有数 · 资产日均成本</title>
-<link rel="manifest" href="manifest.json"/>
+<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%20%20%22name%22%3A%20%22有数%20·%20资产日均成本%22%2C%20%20%22short_name%22%3A%20%22有数%22%2C%20%20%22start_url%22%3A%20%22./index.html%22%2C%20%20%22display%22%3A%20%22standalone%22%2C%20%20%22background_color%22%3A%20%22#f5f5f7%22%2C%20%20%22theme_color%22%3A%20%22#85ed00%22%2C%20%20%22icons%22%3A%20%5B%5D%7D">
 <style>
 :root{--bg:#f3f4f5;--card:#fff;--txt:#17181c;--muted:#9a9a9d;--lime:#85ed00;--lime2:#c8ff43;--line:#ececef;--red:#ef4444;--yellow:#f7c600;--gray:#aaa;--shadow:0 14px 40px rgba(0,0,0,.06)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Microsoft YaHei",Arial,sans-serif}
@@ -2129,8 +2129,108 @@ body{
 }
 </style>
 
+
+<style id="v63-password-persistence-css">
+body.v63Locked{overflow:hidden!important}
+#v63LockScreen{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 20% -10%,rgba(133,237,0,.35),transparent 32%),linear-gradient(180deg,#f7f7f9,#ececf1);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}
+.v63LockCard{width:min(386px,calc(100vw - 36px));border-radius:34px;padding:30px 24px 24px;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.82);box-shadow:0 20px 60px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.9);text-align:center}
+.v63LockIcon{width:78px;height:78px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.75);font-size:36px;box-shadow:0 12px 30px rgba(0,0,0,.07)}
+.v63LockTitle{font-size:28px;font-weight:1000;letter-spacing:-1px;margin-bottom:6px}
+.v63LockSub{font-size:13px;color:#8e8e93;font-weight:850;margin-bottom:22px}
+#v63PasswordInput{width:100%;height:54px;border:0;border-radius:22px;background:rgba(255,255,255,.82);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 8px 20px rgba(0,0,0,.045);text-align:center;font-size:24px;font-weight:1000;letter-spacing:8px;outline:none}
+#v63UnlockBtn{width:100%;height:54px;border:0;border-radius:999px;margin-top:14px;background:#111;color:#fff;font-size:17px;font-weight:1000;box-shadow:0 14px 34px rgba(0,0,0,.22)}
+.v63LockError{height:20px;margin-top:10px;font-size:13px;color:#ff3b30;font-weight:900}
+.v63SaveBadge{position:fixed;right:16px;top:16px;z-index:999999;padding:8px 12px;border-radius:999px;background:rgba(17,17,17,.76);color:#fff;font-size:12px;font-weight:900;opacity:0;transform:translateY(-8px);transition:.22s ease;pointer-events:none}
+.v63SaveBadge.show{opacity:1;transform:translateY(0)}
+</style>
+
+
+<style id="v64-import-export-css">
+/* V64：数据导入 / 导出 */
+.v64DataTools{
+  width:min(390px, calc(100vw - 32px));
+  margin:16px auto 110px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.v64DataBtn{
+  height:52px;
+  border:0;
+  border-radius:24px;
+  background:rgba(255,255,255,.72);
+  color:#111;
+  font-size:14px;
+  font-weight:1000;
+  box-shadow:0 10px 28px rgba(0,0,0,.055), inset 0 1px 0 rgba(255,255,255,.9);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+}
+.v64DataBtn:active{transform:scale(.96)}
+.v64Toast{
+  position:fixed;
+  left:50%;
+  top:72px;
+  transform:translateX(-50%) translateY(-10px);
+  z-index:2147483647;
+  padding:11px 18px;
+  border-radius:999px;
+  background:rgba(17,17,17,.82);
+  color:#fff;
+  font-size:14px;
+  font-weight:950;
+  opacity:0;
+  pointer-events:none;
+  transition:.22s ease;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+.v64Toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+</style>
+
+
+<style id="v65-single-html-css">
+.v65SingleTip{
+  position:fixed;
+  left:50%;
+  top:14px;
+  transform:translateX(-50%) translateY(-8px);
+  z-index:9999999;
+  padding:9px 13px;
+  border-radius:999px;
+  background:rgba(17,17,17,.78);
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  opacity:0;
+  pointer-events:none;
+  transition:.22s ease;
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.v65SingleTip.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+</style>
+
 </head>
-<body>
+<body class="v63Locked v63Locked">
+<div id="v63LockScreen">
+  <div class="v63LockCard">
+    <div class="v63LockIcon">🔐</div>
+    <div class="v63LockTitle">有数</div>
+    <div class="v63LockSub">请输入密码进入资产系统</div>
+    <input id="v63PasswordInput" type="password" inputmode="numeric" maxlength="12" placeholder="••••" autocomplete="off" />
+    <button id="v63UnlockBtn" type="button">进入</button>
+    <div class="v63LockError" id="v63LockError"></div>
+  </div>
+</div>
+<div class="v63SaveBadge" id="v63SaveBadge">已保存到网页</div>
+
 <div id="app" class="app greenBg">
   <section id="pageHome">
     <div class="top"><div class="h1">资产</div><button class="iconBtn" onclick="showSearch()">⌕</button></div>
@@ -2826,7 +2926,7 @@ function roundRect(ctx,x,y,w,h,r){
 }
 
 seed();render();
-if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{})}
+if("serviceWorker" in navigator){Promise.resolve().catch(()=>{})}
 </script>
 
 <div class="emojiPicker" id="emojiPicker">
@@ -4614,6 +4714,340 @@ function v54PickIcon(icon){
       try{renderDailyRank()}catch(e){}
     }
   },1200);
+})();
+</script>
+
+
+<script id="v63-password-persistence-js">
+(function(){
+  const PASSWORD="1014";
+  const MAIN_KEY="youshu_app_data_v63";
+  const BACKUP_KEY="youshu_app_data_backup_v63";
+  const LEGACY_KEYS=["asset_daily_cost_v2","asset_daily_cost","assets","youshu_data"];
+
+  function badge(msg){
+    const b=document.getElementById("v63SaveBadge");
+    if(!b)return;
+    b.textContent=msg||"已保存到网页";
+    b.classList.add("show");
+    clearTimeout(window.__v63BadgeTimer);
+    window.__v63BadgeTimer=setTimeout(()=>b.classList.remove("show"),1200);
+  }
+
+  function currentData(){
+    try{ if(typeof data!=="undefined" && data) return data; }catch(e){}
+    return null;
+  }
+
+  function readStored(){
+    const keys=[MAIN_KEY].concat(LEGACY_KEYS);
+    for(const k of keys){
+      try{
+        const raw=localStorage.getItem(k);
+        if(!raw)continue;
+        const obj=JSON.parse(raw);
+        if(obj && (Array.isArray(obj.assets)||Array.isArray(obj))){
+          return Array.isArray(obj)?{assets:obj}:obj;
+        }
+      }catch(e){}
+    }
+    return null;
+  }
+
+  function saveToWeb(silent){
+    try{
+      const d=currentData();
+      if(!d)return;
+      const raw=JSON.stringify(d);
+      localStorage.setItem(MAIN_KEY,raw);
+      localStorage.setItem(BACKUP_KEY,raw);
+      localStorage.setItem("asset_daily_cost_v2",raw);
+      if(!silent)badge("已保存到网页");
+    }catch(e){}
+  }
+
+  function restoreFromWeb(){
+    try{
+      const stored=readStored();
+      if(!stored||!stored.assets)return;
+      if(typeof data!=="undefined" && data){
+        if(!Array.isArray(data.assets)||data.assets.length===0){
+          data.assets=stored.assets||[];
+        }
+        Object.keys(stored).forEach(k=>{
+          if(k!=="assets" && data[k]===undefined)data[k]=stored[k];
+        });
+      }
+    }catch(e){}
+  }
+
+  function unlock(){
+    const input=document.getElementById("v63PasswordInput");
+    const err=document.getElementById("v63LockError");
+    const val=(input&&input.value||"").trim();
+    if(val===PASSWORD){
+      sessionStorage.setItem("youshu_unlocked","1");
+      const s=document.getElementById("v63LockScreen");
+      if(s)s.remove();
+      document.body.classList.remove("v63Locked");
+      restoreFromWeb();
+      try{ if(typeof render==="function")render(); }catch(e){}
+    }else{
+      if(err)err.textContent="密码错误";
+      if(input){input.value="";input.focus();}
+    }
+  }
+
+  function initLock(){
+    const screen=document.getElementById("v63LockScreen");
+    if(sessionStorage.getItem("youshu_unlocked")==="1"){
+      if(screen)screen.remove();
+      document.body.classList.remove("v63Locked");
+      setTimeout(restoreFromWeb,50);
+      return;
+    }
+    const input=document.getElementById("v63PasswordInput");
+    const btn=document.getElementById("v63UnlockBtn");
+    if(btn)btn.addEventListener("click",unlock);
+    if(input)input.addEventListener("keydown",e=>{if(e.key==="Enter")unlock();});
+    setTimeout(()=>{if(input)input.focus();},250);
+  }
+
+  function wrapSave(){
+    if(!window.__v63SaveWrapped){
+      const oldSave=window.save;
+      if(typeof oldSave==="function"){
+        window.__v63SaveWrapped=true;
+        window.save=function(){
+          const r=oldSave.apply(this,arguments);
+          setTimeout(()=>saveToWeb(false),20);
+          return r;
+        };
+      }
+    }
+    if(!window.__v63SaveAssetWrapped){
+      const oldSaveAsset=window.saveAsset;
+      if(typeof oldSaveAsset==="function"){
+        window.__v63SaveAssetWrapped=true;
+        window.saveAsset=function(){
+          const r=oldSaveAsset.apply(this,arguments);
+          setTimeout(()=>saveToWeb(false),80);
+          setTimeout(()=>{try{if(typeof render==="function")render();}catch(e){}},120);
+          return r;
+        };
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    initLock();
+    restoreFromWeb();
+    wrapSave();
+    setTimeout(()=>{try{if(typeof render==="function")render();}catch(e){}},120);
+  });
+
+  window.addEventListener("beforeunload",()=>saveToWeb(true));
+  document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")saveToWeb(true);});
+  document.addEventListener("input",()=>setTimeout(()=>saveToWeb(true),200));
+  document.addEventListener("click",()=>setTimeout(()=>{wrapSave();saveToWeb(true);},300));
+  setInterval(()=>{wrapSave();saveToWeb(true);},2500);
+})();
+</script>
+
+
+<input id="v64ImportFile" type="file" accept="application/json,.json" style="display:none" />
+<div id="v64Toast" class="v64Toast">已完成</div>
+
+
+<script id="v64-import-export-js">
+(function(){
+  function toast(msg){
+    const t=document.getElementById("v64Toast");
+    if(!t) return;
+    t.textContent=msg || "已完成";
+    t.classList.add("show");
+    clearTimeout(window.__v64ToastTimer);
+    window.__v64ToastTimer=setTimeout(()=>t.classList.remove("show"),1500);
+  }
+
+  function getAppData(){
+    try{
+      if(typeof data !== "undefined" && data) return data;
+    }catch(e){}
+    const keys=["youshu_app_data_v63","asset_daily_cost_v2","asset_daily_cost"];
+    for(const k of keys){
+      try{
+        const raw=localStorage.getItem(k);
+        if(raw) return JSON.parse(raw);
+      }catch(e){}
+    }
+    return {assets:[]};
+  }
+
+  function setAppData(obj){
+    if(!obj) throw new Error("empty");
+    if(Array.isArray(obj)) obj={assets:obj};
+    if(!Array.isArray(obj.assets)) throw new Error("bad");
+
+    try{
+      if(typeof data !== "undefined"){
+        Object.keys(data).forEach(k=>delete data[k]);
+        Object.assign(data,obj);
+      }
+    }catch(e){}
+
+    const raw=JSON.stringify(obj);
+    localStorage.setItem("youshu_app_data_v63",raw);
+    localStorage.setItem("youshu_app_data_backup_v63",raw);
+    localStorage.setItem("asset_daily_cost_v2",raw);
+
+    try{ if(typeof save === "function") save(); }catch(e){}
+    try{ if(typeof render === "function") render(); }catch(e){}
+  }
+
+  window.v64ExportData=function(){
+    try{
+      const obj=getAppData();
+      const payload={
+        app:"有数",
+        version:"V64",
+        exportedAt:new Date().toISOString(),
+        data:obj
+      };
+      const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+      const a=document.createElement("a");
+      const date=new Date().toISOString().slice(0,10);
+      a.href=URL.createObjectURL(blob);
+      a.download="有数资产数据备份_"+date+".json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+      toast("数据已导出");
+    }catch(e){
+      toast("导出失败");
+    }
+  };
+
+  window.v64ImportData=function(){
+    document.getElementById("v64ImportFile")?.click();
+  };
+
+  function addButtons(){
+    const pages=[
+      document.getElementById("pageSetting"),
+      document.getElementById("pageSettings"),
+      document.querySelector(".settingsPage"),
+      document.querySelector(".settingPage")
+    ].filter(Boolean);
+
+    let target=pages[0];
+
+    if(!target){
+      target=[...document.querySelectorAll("section,div")].find(el=>{
+        const txt=(el.textContent||"").replace(/\s+/g,"");
+        return txt.includes("设置") && txt.includes("货币单位");
+      });
+    }
+    if(!target || target.querySelector(".v64DataTools")) return;
+
+    const box=document.createElement("div");
+    box.className="v64DataTools";
+    box.innerHTML=`
+      <button class="v64DataBtn" type="button" onclick="v64ExportData()">导出数据</button>
+      <button class="v64DataBtn" type="button" onclick="v64ImportData()">导入数据</button>
+    `;
+    target.appendChild(box);
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    addButtons();
+    const f=document.getElementById("v64ImportFile");
+    if(f && !f.dataset.bound){
+      f.dataset.bound="1";
+      f.addEventListener("change",()=>{
+        const file=f.files && f.files[0];
+        if(!file) return;
+        const reader=new FileReader();
+        reader.onload=function(){
+          try{
+            const obj=JSON.parse(String(reader.result||"{}"));
+            const dataObj=obj.data || obj;
+            setAppData(dataObj);
+            toast("数据已导入");
+            f.value="";
+          }catch(e){
+            toast("导入失败");
+          }
+        };
+        reader.readAsText(file);
+      });
+    }
+  });
+
+  setInterval(addButtons,1200);
+})();
+</script>
+
+
+<div id="v65SingleTip" class="v65SingleTip">单文件版已加载</div>
+<script id="v65-single-html-js">
+(function(){
+  // 单文件版本：所有 App 代码都在当前 HTML 内，不依赖 manifest.json / sw.js 文件。
+  // 数据仍保存在浏览器 localStorage 中；导入/导出可用于迁移。
+  function tip(msg){
+    const t=document.getElementById("v65SingleTip");
+    if(!t)return;
+    t.textContent=msg||"已保存";
+    t.classList.add("show");
+    clearTimeout(window.__v65TipTimer);
+    window.__v65TipTimer=setTimeout(()=>t.classList.remove("show"),1300);
+  }
+  document.addEventListener("DOMContentLoaded",()=>setTimeout(()=>tip("单文件版已加载"),700));
+
+  // 每次数据变更时，统一写入单文件主数据键
+  function persist(){
+    try{
+      if(typeof data!=="undefined" && data){
+        const raw=JSON.stringify(data);
+        localStorage.setItem("youshu_single_html_data", raw);
+        localStorage.setItem("youshu_app_data_v63", raw);
+        localStorage.setItem("asset_daily_cost_v2", raw);
+      }
+    }catch(e){}
+  }
+
+  function restore(){
+    try{
+      const raw=localStorage.getItem("youshu_single_html_data") || localStorage.getItem("youshu_app_data_v63") || localStorage.getItem("asset_daily_cost_v2");
+      if(!raw)return;
+      const obj=JSON.parse(raw);
+      if(obj && Array.isArray(obj.assets) && typeof data!=="undefined"){
+        if(!Array.isArray(data.assets) || data.assets.length===0){
+          data.assets=obj.assets;
+        }
+      }
+    }catch(e){}
+  }
+
+  const oldSave=window.save;
+  if(typeof oldSave==="function" && !window.__v65SaveWrapped){
+    window.__v65SaveWrapped=true;
+    window.save=function(){
+      const r=oldSave.apply(this,arguments);
+      persist();
+      return r;
+    };
+  }
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    restore();
+    setTimeout(()=>{try{if(typeof render==="function")render()}catch(e){}},100);
+  });
+  document.addEventListener("input",()=>setTimeout(persist,200));
+  document.addEventListener("click",()=>setTimeout(persist,350));
+  window.addEventListener("beforeunload",persist);
+  setInterval(persist,2500);
 })();
 </script>
 
